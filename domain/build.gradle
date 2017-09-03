@@ -1,0 +1,9 @@
+apply plugin: 'java'
+
+apply from: '../versions.gradle'
+
+dependencies {
+    implementation "io.reactivex.rxjava2:rxjava:$rxjavaVersion"
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+}
+
