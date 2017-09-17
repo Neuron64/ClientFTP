@@ -1,6 +1,7 @@
 package com.neuron64.ftp.client.ui.login;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
 
 import com.neuron64.ftp.client.ui.base.BasePresenter;
 import com.neuron64.ftp.client.ui.base.BaseView;
@@ -16,18 +17,20 @@ public interface LoginContract {
 
     interface View extends BaseView<Presenter> {
 
-        void attachPresenter(@NonNull Presenter presenter);
-
         void showConnection(@NonNull List<UserConnection> connections);
+
+        void showEmptyList();
 
         void showLoadingIndicator();
 
         void hideLoadingIndicator();
 
-        void showError();
+        void showSnackBar(@StringRes int message);
     }
 
-    interface Presenter extends BasePresenter{
-        void attachView(@NonNull View view);
+    interface Presenter extends BasePresenter<View>{
+
+        void createConnection();
+
     }
 }

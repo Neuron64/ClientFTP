@@ -20,7 +20,13 @@ public class ConnectionDataRepository implements ConnectionRepository {
     public Single<List<UserConnection>> getAllConnection() {
         return RealmService.getAllUserConnection()
                 .flatMap(Observable::fromIterable)
-                .map(new ConnectionMapper())
+                .map(new ConnectionMapper().map)
                 .toList();
+    }
+
+    @Override
+    public void saveConnection(UserConnection connection) throws Exception {
+        com.neuron64.ftp.data.model.local.UserConnection userConnection = new ConnectionMapper().reverseMap.apply(connection);
+        RealmService.saveConnection(userConnection);
     }
 }

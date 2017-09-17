@@ -9,7 +9,6 @@ import com.neuron64.ftp.client.di.component.DaggerApplicationComponent;
 import com.neuron64.ftp.client.di.module.ApplicationModule;
 import com.neuron64.ftp.client.di.module.DataModule;
 import com.neuron64.ftp.client.di.module.InteractorModule;
-import com.neuron64.ftp.client.di.module.PresenterModule;
 import com.squareup.picasso.Picasso;
 
 import io.realm.Realm;

@@ -32,6 +32,7 @@ apply from: '../versions.gradle'
 dependencies {
     implementation project(':domain')
     implementation project(':data')
+    implementation 'commons-net:commons-net:3.6'
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "com.google.dagger:dagger:$dagger2Version"

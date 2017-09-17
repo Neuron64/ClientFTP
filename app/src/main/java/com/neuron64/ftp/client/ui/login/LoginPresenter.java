@@ -2,7 +2,11 @@ package com.neuron64.ftp.client.ui.login;
 
 import android.support.annotation.NonNull;
 
+import com.neuron64.ftp.client.R;
 import com.neuron64.ftp.domain.interactor.GetAllConnection;
+import com.neuron64.ftp.domain.model.UserConnection;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -32,6 +36,11 @@ public class LoginPresenter implements LoginContract.Presenter{
     }
 
     @Override
+    public void createConnection() {
+        //TODO: create connection
+    }
+
+    @Override
     public void subscribe() {
         initData();
     }
@@ -43,9 +52,14 @@ public class LoginPresenter implements LoginContract.Presenter{
 
     private void initData(){
         connectionUseCase.execute(connections -> loginView.showConnection(connections),
-                throwable -> loginView.showError(),
+                throwable -> loginView.showSnackBar(R.string.error_get_user_connections),
                 disposable1 -> loginView.showLoadingIndicator(),
                 () -> loginView.hideLoadingIndicator(),
                 null);
+    }
+
+    private void showConnections(List<UserConnection> userConnections){
+        if(userConnections.isEmpty()) loginView.showEmptyList();
+        else loginView.showConnection(userConnections);
     }
 }

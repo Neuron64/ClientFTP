@@ -14,4 +14,6 @@ public interface ConnectionRepository {
 
     Single<List<UserConnection>> getAllConnection();
 
+    void saveConnection(UserConnection connection) throws Exception;
+
 }

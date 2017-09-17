@@ -1,6 +1,8 @@
 package com.neuron64.ftp.client.di.module;
 
 import com.neuron64.ftp.client.di.scope.ViewScope;
+import com.neuron64.ftp.client.ui.login.CreateConnectionContract;
+import com.neuron64.ftp.client.ui.login.CreateConnectionPresenter;
 import com.neuron64.ftp.client.ui.login.LoginContract;
 import com.neuron64.ftp.client.ui.login.LoginPresenter;
 import com.neuron64.ftp.domain.interactor.GetAllConnection;
@@ -18,5 +20,10 @@ public class PresenterModule {
     @ViewScope @Provides
     LoginContract.Presenter login(GetAllConnection connectionUseCase){
         return new LoginPresenter(connectionUseCase);
+    }
+
+    @ViewScope @Provides
+    CreateConnectionContract.Presenter createConnection(){
+        return new CreateConnectionPresenter();
     }
 }
