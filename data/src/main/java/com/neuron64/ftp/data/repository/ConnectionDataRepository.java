@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.neuron64.ftp.data.database.RealmService;
 import com.neuron64.ftp.data.mapper.ConnectionMapper;
-import com.neuron64.ftp.domain.ConnectionRepository;
+import com.neuron64.ftp.domain.repository.ConnectionRepository;
 import com.neuron64.ftp.domain.model.UserConnection;
 
 import io.reactivex.Observable;

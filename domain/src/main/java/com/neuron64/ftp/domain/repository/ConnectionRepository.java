@@ -1,4 +1,4 @@
-package com.neuron64.ftp.domain;
+package com.neuron64.ftp.domain.repository;
 
 import com.neuron64.ftp.domain.model.UserConnection;
 

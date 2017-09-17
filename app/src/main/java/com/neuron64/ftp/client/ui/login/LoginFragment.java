@@ -1,6 +1,7 @@
 package com.neuron64.ftp.client.ui.login;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -8,10 +9,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.neuron64.ftp.client.App;
 import com.neuron64.ftp.client.R;
+import com.neuron64.ftp.client.di.component.DaggerViewComponent;
+import com.neuron64.ftp.client.di.module.PresenterModule;
+import com.neuron64.ftp.client.ui.base.BaseFragment;
 import com.neuron64.ftp.domain.model.UserConnection;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -22,13 +29,11 @@ import static com.neuron64.ftp.client.util.Preconditions.checkNotNull;
  * Created by Neuron on 02.09.2017.
  */
 
-public class LoginFragment extends Fragment implements LoginContract.View{
+public class LoginFragment extends BaseFragment implements LoginContract.View{
 
     private static final String TAG = "LoginFragment";
 
     private LoginContract.Presenter presenter;
-
-    private Unbinder unbinder;
 
     public static LoginFragment newInstance(){
         return new LoginFragment();
@@ -39,31 +44,39 @@ public class LoginFragment extends Fragment implements LoginContract.View{
         super.onCreate(savedInstanceState);
     }
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_login, container, false);
+    protected int layoutId() {
+        return R.layout.fragment_login;
+    }
 
-        unbinder = ButterKnife.bind(root);
-        return root;
+    @Inject @Override
+    public void attachPresenter(@NonNull LoginContract.Presenter presenter) {
+        this.presenter = presenter;
+        this.presenter.attachView(this);
+    }
+
+    @Override
+    public void initializeDependencies() {
+        DaggerViewComponent.builder()
+                .applicationComponent(App.getAppInstance().getAppComponent())
+                .presenterModule(new PresenterModule())
+                .build().inject(this);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        presenter.subscribe();
+        if(presenter!=null){
+            presenter.subscribe();
+        }
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        presenter.unsubscribe();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        unbinder.unbind();
+        if(presenter != null) {
+            presenter.unsubscribe();
+        }
     }
 
     @Override

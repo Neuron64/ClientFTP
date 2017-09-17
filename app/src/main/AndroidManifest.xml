@@ -3,7 +3,7 @@
     package="com.neuron64.ftp.client">
 
     <application
-        android:name=".ui.base.App"
+        android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"

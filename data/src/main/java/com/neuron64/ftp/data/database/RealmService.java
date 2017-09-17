@@ -1,7 +1,5 @@
 package com.neuron64.ftp.data.database;
 
-import android.support.annotation.NonNull;
-
 import com.neuron64.ftp.data.model.local.UserConnection;
 
 import java.util.List;

@@ -2,11 +2,9 @@ package com.neuron64.ftp.client.ui.login;
 
 import android.support.annotation.NonNull;
 
-import com.neuron64.ftp.domain.usecase.ConnectionUseCase;
+import com.neuron64.ftp.domain.interactor.GetAllConnection;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
+import javax.inject.Inject;
 
 import static com.neuron64.ftp.client.util.Preconditions.checkNotNull;
 
@@ -18,20 +16,19 @@ import static com.neuron64.ftp.client.util.Preconditions.checkNotNull;
 public class LoginPresenter implements LoginContract.Presenter{
 
     @NonNull
-    private CompositeDisposable subscription;
-
-    @NonNull
     private LoginContract.View loginView;
 
     @NonNull
-    private ConnectionUseCase connectionUseCase;
+    private GetAllConnection connectionUseCase;
 
-    public LoginPresenter(@NonNull LoginContract.View loginView, @NonNull ConnectionUseCase connectionUseCase) {
-        this.loginView = checkNotNull(loginView);
+    @Inject
+    public LoginPresenter(@NonNull GetAllConnection connectionUseCase) {
         this.connectionUseCase = checkNotNull(connectionUseCase);
+    }
 
-        this.subscription = new CompositeDisposable();
-        this.loginView.setPresenter(this);
+    @Override
+    public void attachView(@NonNull LoginContract.View loginView){
+        this.loginView = checkNotNull(loginView);
     }
 
     @Override
@@ -41,15 +38,14 @@ public class LoginPresenter implements LoginContract.Presenter{
 
     @Override
     public void unsubscribe() {
-        subscription.clear();
+        connectionUseCase.dispose();
     }
 
     private void initData(){
-        Disposable disposable = connectionUseCase.getAllConnection().observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(disposable1 -> loginView.showLoadingIndicator())
-                .doAfterTerminate(loginView::hideLoadingIndicator)
-                .subscribe(loginView::showConnection,
-                        throwable -> loginView.showError());
-        subscription.add(disposable);
+        connectionUseCase.execute(connections -> loginView.showConnection(connections),
+                throwable -> loginView.showError(),
+                disposable1 -> loginView.showLoadingIndicator(),
+                () -> loginView.hideLoadingIndicator(),
+                null);
     }
 }

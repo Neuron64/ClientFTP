@@ -1,6 +1,6 @@
 package com.neuron64.ftp.data.repository;
 
-import com.neuron64.ftp.domain.ConnectionRepository;
+import com.neuron64.ftp.domain.repository.ConnectionRepository;
 
 public class RepositoryProvider {
 
