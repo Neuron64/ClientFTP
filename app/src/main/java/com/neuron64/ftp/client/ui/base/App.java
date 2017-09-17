@@ -1,4 +1,4 @@
-package com.neuron64.ftp.client;
+package com.neuron64.ftp.client.ui.base;
 
 import android.app.Application;
 import android.support.annotation.NonNull;

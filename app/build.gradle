@@ -10,7 +10,10 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        multiDexEnabled true
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -27,10 +30,13 @@ android {
 apply from: '../versions.gradle'
 
 dependencies {
-    compile project(':domain')
-    compile project(':data')
+    implementation project(':domain')
+    implementation project(':data')
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "com.google.dagger:dagger:$dagger2Version"
+    annotationProcessor "com.google.dagger:dagger-compiler:$dagger2Version"
+    implementation "com.jakewharton.rxrelay2:rxrelay:$rxelayVersion"
     implementation "com.jakewharton.picasso:picasso2-okhttp3-downloader:$okhttp3DownloaderVersion"
     implementation "com.jakewharton:butterknife:$butterKnifeVersion"
     annotationProcessor "com.jakewharton:butterknife-compiler:$butterKnifeVersion"

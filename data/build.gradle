@@ -5,7 +5,6 @@ android {
     compileSdkVersion 26
     buildToolsVersion "26.0.0"
 
-
     defaultConfig {
         minSdkVersion 23
         targetSdkVersion 26
@@ -14,6 +13,7 @@ android {
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
+        multiDexEnabled true
     }
 
     buildTypes {
@@ -41,7 +41,6 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "commons-net:commons-net:$apacheCommonsNetVersion"
     implementation "io.reactivex.rxjava2:rxjava:$rxjavaVersion"
-    implementation "io.reactivex.rxjava2:rxandroid:$rxandroidVersion"
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
     implementation "com.jakewharton.picasso:picasso2-okhttp3-downloader:$okhttp3DownloaderVersion"
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttpVersion"

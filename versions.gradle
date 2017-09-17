@@ -11,4 +11,6 @@ ext {
     junitVersion = '4.12'
     espressoCoreVersion = '3.0.1'
     apacheCommonsNetVersion = '3.6'
+    rxelayVersion = '2.0.0'
+    dagger2Version = '2.11'
 }

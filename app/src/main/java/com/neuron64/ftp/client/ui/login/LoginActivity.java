@@ -1,4 +1,4 @@
-package com.neuron64.ftp.client.login;
+package com.neuron64.ftp.client.ui.login;
 
 import android.os.Bundle;
 import android.os.PersistableBundle;

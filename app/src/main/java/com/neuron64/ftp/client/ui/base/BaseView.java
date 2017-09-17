@@ -1,4 +1,4 @@
-package com.neuron64.ftp.client;
+package com.neuron64.ftp.client.ui.base;
 
 /**
  * Created by Neuron on 02.09.2017.

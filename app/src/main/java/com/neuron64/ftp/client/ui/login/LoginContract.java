@@ -1,7 +1,7 @@
-package com.neuron64.ftp.client.login;
+package com.neuron64.ftp.client.ui.login;
 
-import com.neuron64.ftp.client.BasePresenter;
-import com.neuron64.ftp.client.BaseView;
+import com.neuron64.ftp.client.ui.base.BasePresenter;
+import com.neuron64.ftp.client.ui.base.BaseView;
 import com.neuron64.ftp.domain.model.UserConnection;
 
 import java.util.List;
