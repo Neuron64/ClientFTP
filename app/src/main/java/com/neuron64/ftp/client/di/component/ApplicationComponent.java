@@ -10,8 +10,8 @@ import com.neuron64.ftp.client.ui.base.BaseActivity;
 import com.neuron64.ftp.client.ui.base.BaseFragment;
 import com.neuron64.ftp.client.ui.base.bus.RxBus;
 import com.neuron64.ftp.domain.executor.BaseSchedulerProvider;
+import com.neuron64.ftp.domain.interactor.CreateConnectionUserCase;
 import com.neuron64.ftp.domain.interactor.GetAllConnection;
-import com.neuron64.ftp.domain.interactor.SaveConnectionInteractor;
 import com.neuron64.ftp.domain.repository.ConnectionRepository;
 
 import javax.inject.Singleton;
@@ -39,5 +39,7 @@ public interface ApplicationComponent {
 
     //use case
     GetAllConnection getAllConnection();
-    SaveConnectionInteractor saveConnectionInteractor();
+    CreateConnectionUserCase createConnectionUserCase();
+
+//    SaveConnectionInteractor saveConnectionInteractor();
 }

@@ -1,7 +1,7 @@
 package com.neuron64.ftp.client.di.module;
 
 import com.neuron64.ftp.domain.executor.BaseSchedulerProvider;
-import com.neuron64.ftp.domain.interactor.SaveConnectionInteractor;
+import com.neuron64.ftp.domain.interactor.CreateConnectionUserCase;
 import com.neuron64.ftp.domain.repository.ConnectionRepository;
 import com.neuron64.ftp.domain.interactor.GetAllConnection;
 
@@ -22,9 +22,13 @@ public class InteractorModule {
         return new GetAllConnection(schedulerProvider, connectionRepository);
     }
 
-    @Singleton @Provides
-    SaveConnectionInteractor saveConnectionInteractor(ConnectionRepository connectionRepository){
-        return new SaveConnectionInteractor(connectionRepository);
-    }
+//    @Singleton @Provides
+//    SaveConnectionInteractor saveConnectionInteractor(ConnectionRepository connectionRepository){
+//        return new SaveConnectionInteractor(connectionRepository);
+//    }
 
+    @Singleton @Provides
+    CreateConnectionUserCase saveConnectionInteractor(BaseSchedulerProvider schedulerProvider, ConnectionRepository connectionRepository){
+        return new CreateConnectionUserCase(schedulerProvider, connectionRepository);
+    }
 }

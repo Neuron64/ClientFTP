@@ -6,7 +6,7 @@ package com.neuron64.ftp.domain.model;
 
 public class UserConnection {
 
-    private int id;
+    private String id;
 
     private String nameConnection;
 
@@ -18,7 +18,7 @@ public class UserConnection {
 
     private String port;
 
-    public UserConnection(int id, String nameConnection, String host, String userName, String password, String port) {
+    public UserConnection(String id, String nameConnection, String host, String userName, String password, String port) {
         this.id = id;
         this.nameConnection = nameConnection;
         this.host = host;
@@ -27,11 +27,11 @@ public class UserConnection {
         this.port = port;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

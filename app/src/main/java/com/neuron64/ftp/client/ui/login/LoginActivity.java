@@ -10,8 +10,6 @@ import com.neuron64.ftp.client.App;
 import com.neuron64.ftp.client.R;
 import com.neuron64.ftp.client.ui.base.BaseActivity;
 import com.neuron64.ftp.client.util.ActivityUtils;
-import com.neuron64.ftp.data.repository.RepositoryProvider;
-import com.neuron64.ftp.domain.interactor.GetAllConnection;
 
 /**
  * Created by Neuron on 02.09.2017.

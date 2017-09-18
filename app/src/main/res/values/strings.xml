@@ -4,4 +4,9 @@
     <string name="empty_list_connections">Нет сохраненных соеденений</string>
     <string name="create">Создать</string>
     <string name="error_get_user_connections">Не удалось получить сохраненые соденениея</string>
+    <string name="name_connection">Name Connection</string>
+    <string name="host">Host</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="port">Port</string>
 </resources>

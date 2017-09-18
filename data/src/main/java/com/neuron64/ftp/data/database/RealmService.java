@@ -2,6 +2,7 @@ package com.neuron64.ftp.data.database;
 
 import com.neuron64.ftp.data.model.local.UserConnection;
 
+import java.util.Date;
 import java.util.List;
 
 import io.reactivex.Completable;

@@ -13,4 +13,5 @@ ext {
     apacheCommonsNetVersion = '3.6'
     rxelayVersion = '2.0.0'
     dagger2Version = '2.11'
+    rxbindingDesignVersion = '2.0.0'
 }

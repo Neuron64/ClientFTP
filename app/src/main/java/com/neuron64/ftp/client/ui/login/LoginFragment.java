@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
@@ -42,7 +43,7 @@ public class LoginFragment extends BaseFragment implements LoginContract.View{
     private static final String TAG = "LoginFragment";
 
     @BindView(R.id.rv_main) RecyclerView rvMain;
-    @BindView(R.id.ll_root) LinearLayout llRoot;
+    @BindView(R.id.ll_root) ConstraintLayout llRoot;
     @BindView(R.id.ll_progress_bar) LinearLayout llProgressBar;
     @BindView(R.id.bn_create_connection) Button bnCreateConnection;
     @BindView(R.id.ll_empty_list) LinearLayout llEmptyList;
@@ -64,8 +65,9 @@ public class LoginFragment extends BaseFragment implements LoginContract.View{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+        View view = super.onCreateView(inflater, container, savedInstanceState);
         rvMain.setAdapter(connectionAdapter);
-        return super.onCreateView(inflater, container, savedInstanceState);
+        return view;
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.neuron64.ftp.data.model.local;
 import io.realm.RealmModel;
 import io.realm.annotations.PrimaryKey;
 import io.realm.annotations.RealmClass;
+import io.realm.annotations.Required;
 
 /**
  * Created by Neuron on 03.09.2017.
@@ -12,7 +13,8 @@ import io.realm.annotations.RealmClass;
 public class UserConnection implements RealmModel {
 
     @PrimaryKey
-    private int id;
+    @Required
+    private String id;
 
     private String nameConnection;
 
@@ -28,7 +30,7 @@ public class UserConnection implements RealmModel {
         //Empty for Realm
     }
 
-    public UserConnection(int id, String nameConnection, String host, String userName, String password, String port) {
+    public UserConnection(String id, String nameConnection, String host, String userName, String password, String port) {
         this.id = id;
         this.nameConnection = nameConnection;
         this.host = host;
@@ -37,11 +39,11 @@ public class UserConnection implements RealmModel {
         this.port = port;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
