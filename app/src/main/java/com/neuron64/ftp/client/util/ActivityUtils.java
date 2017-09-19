@@ -17,7 +17,7 @@ public class ActivityUtils {
         checkNotNull(fragmentManager);
         checkNotNull(fragment);
         fragmentManager.beginTransaction()
-                .add(frameId, fragment)
+                .replace(frameId, fragment)
                 .commit();
     }
 

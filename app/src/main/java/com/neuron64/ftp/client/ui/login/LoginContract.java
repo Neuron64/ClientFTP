@@ -5,6 +5,7 @@ import android.support.annotation.StringRes;
 
 import com.neuron64.ftp.client.ui.base.BasePresenter;
 import com.neuron64.ftp.client.ui.base.BaseView;
+import com.neuron64.ftp.client.ui.base.bus.RxBus;
 import com.neuron64.ftp.domain.model.UserConnection;
 
 import java.util.List;
@@ -31,6 +32,8 @@ public interface LoginContract {
     interface Presenter extends BasePresenter<View>{
 
         void createConnection();
+
+        RxBus getRxBus();
 
     }
 }

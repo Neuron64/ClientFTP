@@ -53,6 +53,16 @@ public abstract class UseCase<T, Params> {
         }
     }
 
+    public void execute(Consumer<? super T> onSuccess, Consumer<? super Throwable> onError, Consumer<? super Disposable> accept, Params params){
+        Observable<T> observable= buildUseCase(params);
+        if(observable != null) {
+            observable = observable.subscribeOn(schedulerProvider.io())
+                    .observeOn(schedulerProvider.ui())
+                    .doOnSubscribe(accept);
+            disposables.add(observable.subscribe(onSuccess, onError));
+        }
+    }
+
     public void dispose(){
         if(!disposables.isDisposed()){
             disposables.clear();

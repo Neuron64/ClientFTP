@@ -12,6 +12,7 @@ import com.neuron64.ftp.client.di.module.InteractorModule;
 import com.squareup.picasso.Picasso;
 
 import io.realm.Realm;
+import io.realm.RealmConfiguration;
 
 /**
  * Created by Neuron on 03.09.2017.
@@ -33,6 +34,7 @@ public class App extends Application{
         Picasso.setSingletonInstance(picasso);
 
         Realm.init(this);
+
         initializationAppComponent();
     }
 

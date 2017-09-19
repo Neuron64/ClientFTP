@@ -1,14 +1,21 @@
 package com.neuron64.ftp.client.ui.login;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.neuron64.ftp.client.R;
+import com.neuron64.ftp.client.ui.base.bus.RxBus;
+import com.neuron64.ftp.client.ui.base.bus.event.ButtonEvent;
+import com.neuron64.ftp.client.ui.base.bus.event.ExposeEvent;
+import com.neuron64.ftp.client.util.Preconditions;
 import com.neuron64.ftp.domain.interactor.GetAllConnection;
 import com.neuron64.ftp.domain.model.UserConnection;
 
 import java.util.List;
 
 import javax.inject.Inject;
+
+import io.reactivex.disposables.CompositeDisposable;
 
 import static com.neuron64.ftp.client.util.Preconditions.checkNotNull;
 
@@ -19,15 +26,23 @@ import static com.neuron64.ftp.client.util.Preconditions.checkNotNull;
 
 public class LoginPresenter implements LoginContract.Presenter{
 
+    private static final String TAG = "LoginPresenter";
+
     @NonNull
     private LoginContract.View loginView;
 
     @NonNull
     private GetAllConnection connectionUseCase;
 
+    @NonNull
+    private RxBus eventBus;
+
+    private CompositeDisposable disposable;
+
     @Inject
-    public LoginPresenter(@NonNull GetAllConnection connectionUseCase) {
+    public LoginPresenter(@NonNull GetAllConnection connectionUseCase, RxBus eventBus) {
         this.connectionUseCase = checkNotNull(connectionUseCase);
+        this.eventBus = Preconditions.checkNotNull(eventBus);
     }
 
     @Override
@@ -41,18 +56,30 @@ public class LoginPresenter implements LoginContract.Presenter{
     }
 
     @Override
+    public RxBus getRxBus() {
+        return eventBus;
+    }
+
+    @Override
     public void subscribe() {
+        disposable = new CompositeDisposable();
+        disposable.add(eventBus.asFlowable().subscribe(this::handleEvent));
+
         initData();
     }
 
     @Override
     public void unsubscribe() {
+        disposable.dispose();
         connectionUseCase.dispose();
     }
 
     private void initData(){
-        connectionUseCase.execute(connections -> loginView.showConnection(connections),
-                throwable -> loginView.showSnackBar(R.string.error_get_user_connections),
+        connectionUseCase.execute(this::showConnections,
+                throwable -> {
+                    loginView.showSnackBar(R.string.error_get_user_connections);
+                    Log.e(TAG, "initData: ", throwable);
+                },
                 disposable1 -> loginView.showLoadingIndicator(),
                 () -> loginView.hideLoadingIndicator(),
                 null);
@@ -61,5 +88,11 @@ public class LoginPresenter implements LoginContract.Presenter{
     private void showConnections(List<UserConnection> userConnections){
         if(userConnections.isEmpty()) loginView.showEmptyList();
         else loginView.showConnection(userConnections);
+    }
+
+    private void handleEvent(Object event){
+        if(event instanceof ButtonEvent){
+            eventBus.send(ExposeEvent.exposeCreateConnection(null));
+        }
     }
 }

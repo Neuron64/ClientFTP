@@ -59,7 +59,7 @@ public class LoginFragment extends BaseFragment implements LoginContract.View{
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.connectionAdapter = new ConnectionAdapter(getContext(), eventBus);
+        this.connectionAdapter = new ConnectionAdapter(getContext(), presenter.getRxBus());
     }
 
     @Nullable
@@ -77,7 +77,7 @@ public class LoginFragment extends BaseFragment implements LoginContract.View{
 
     @Inject @Override
     public void attachPresenter(@NonNull LoginContract.Presenter presenter) {
-        this.presenter = presenter;
+        this.presenter = checkNotNull(presenter);
         this.presenter.attachView(this);
     }
 
@@ -98,17 +98,11 @@ public class LoginFragment extends BaseFragment implements LoginContract.View{
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
+    public void onStop() {
+        super.onStop();
         if(presenter != null) {
             presenter.unsubscribe();
         }
-    }
-
-    @Override
-    public void setPresenter(LoginContract.Presenter presenter) {
-        this.presenter = checkNotNull(presenter);
-        Log.d(TAG, "setPresenter: ");
     }
 
     @Override

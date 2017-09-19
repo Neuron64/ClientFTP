@@ -20,6 +20,8 @@ public final class RealmService {
     }
 
     public static void saveConnection(UserConnection userConnection){
-        Realm.getDefaultInstance().insert(userConnection);
+        Realm.getDefaultInstance().executeTransaction(realm -> {
+            realm.insert(userConnection);
+        });
     }
 }

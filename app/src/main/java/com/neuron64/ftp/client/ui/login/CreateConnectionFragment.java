@@ -7,6 +7,7 @@ import android.support.design.widget.TextInputLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.jakewharton.rxbinding2.InitialValueObservable;
 import com.jakewharton.rxbinding2.support.design.widget.RxTextInputLayout;
@@ -17,7 +18,10 @@ import com.neuron64.ftp.client.di.component.DaggerViewComponent;
 import com.neuron64.ftp.client.di.module.PresenterModule;
 import com.neuron64.ftp.client.ui.base.BaseFragment;
 import com.neuron64.ftp.client.util.Preconditions;
+import com.neuron64.ftp.client.util.ViewMessage;
 import com.neuron64.ftp.domain.model.UserConnection;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import io.reactivex.Observable;
@@ -33,41 +37,45 @@ public class CreateConnectionFragment extends BaseFragment implements CreateConn
     @BindView(R.id.text_input_username) TextInputLayout textInputUsername;
     @BindView(R.id.text_input_password) TextInputLayout textInputPassword;
     @BindView(R.id.text_input_port) TextInputLayout textInputPort;
+    @BindView(R.id.ll_root) LinearLayout llRoot;
 
     private CreateConnectionContract.Presenter presenter;
+
+    public static CreateConnectionFragment newInstance(){
+        return new CreateConnectionFragment();
+    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-
-        Observable<Boolean> passwordObs = RxTextView.afterTextChangeEvents(textInputPassword.getEditText())
-                .map(presenter.isPasswordValue());
-        passwordObs.subscribe(presenter.updatePasswordValue());
-
-        Observable<Boolean> usernameObs = RxTextView.afterTextChangeEvents(textInputUsername.getEditText())
-                .map(presenter.isUsernameValue());
-        usernameObs.subscribe(presenter.updateUsernameValue());
-
-        Observable<Boolean> portObs = RxTextView.afterTextChangeEvents(textInputPort.getEditText())
-                .map(presenter.isPortValue());
-        portObs.subscribe(presenter.updatePortValue());
-
-        Observable<Boolean> hostObs = RxTextView.afterTextChangeEvents(textInputHost.getEditText())
-                .map(presenter.isHostValue());
-        hostObs.subscribe(presenter.updateHostValue());
-
-        Observable<Boolean> titleObs = RxTextView.afterTextChangeEvents(textInputTitle.getEditText())
-                .map(presenter.isTitleValue());
-        titleObs.subscribe(presenter.updateTitleValue());
-
-        Observable.combineLatest(passwordObs, usernameObs, portObs, hostObs, titleObs, presenter.isFormValid()).subscribe(this::updateSubmitButtonViewState);
-
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if(presenter != null){
+            presenter.unsubscribe();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(presenter!=null){
+            presenter.subscribe();
+        }
+    }
+
+    @Inject @Override
+    public void attachPresenter(@NonNull CreateConnectionContract.Presenter presenter) {
+        this.presenter = Preconditions.checkNotNull(presenter);
+        presenter.attachView(this);
     }
 
     @Override
@@ -89,23 +97,19 @@ public class CreateConnectionFragment extends BaseFragment implements CreateConn
     }
 
     @Override
-    public void attachPresenter(@NonNull LoginContract.Presenter presenter) {
-
-    }
-
-    @Override
-    public void setPresenter(CreateConnectionContract.Presenter presenter) {
-        this.presenter = Preconditions.checkNotNull(presenter);
-    }
-
-    @Override
     public void fillingFields(UserConnection userConnection) {
 
     }
 
     @Override
     public void pickConnection() {
+        String username = getStringFromInputLayout(textInputUsername);
+        String port = getStringFromInputLayout(textInputPort);
+        String password = getStringFromInputLayout(textInputPassword);
+        String title = getStringFromInputLayout(textInputTitle);
+        String host = getStringFromInputLayout(textInputHost);
 
+        presenter.sendConnection(username, password, host, title, port);
     }
 
     @Override
@@ -116,5 +120,16 @@ public class CreateConnectionFragment extends BaseFragment implements CreateConn
     @Override
     public void updateSubmitButtonViewState(boolean enabled) {
 
+    }
+
+    @Override
+    public void showSnackBar(int message) {
+        ViewMessage.initSnackBarShort(llRoot, message);
+    }
+
+    private String getStringFromInputLayout(TextInputLayout textInputLayout){
+        return textInputLayout.getEditText() != null
+                ? textInputLayout.getEditText().getText().toString()
+                : null;
     }
 }

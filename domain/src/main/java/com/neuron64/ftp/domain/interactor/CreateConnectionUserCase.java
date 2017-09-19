@@ -57,19 +57,19 @@ public class CreateConnectionUserCase extends UseCase<UserConnection, Void>{
 
     private Observable<UserConnection> validate() {
         return Observable.create(subscriber -> {
-            if (username.isEmpty()) {
-                subscriber.onError(new InvalidPortException());
-            } else if (password.isEmpty()) {
-                subscriber.onError(new InvalidLoginUsernameException());
-            } else if (host.isEmpty()) {
-                subscriber.onError(new InvalidLoginUsernameException());
-            } else if (port.isEmpty()) {
-                subscriber.onError(new InvalidLoginUsernameException());
-            } else if (title.isEmpty()) {
-                subscriber.onError(new InvalidLoginUsernameException());
-            } else {
-                subscriber.isDisposed();
-            }
+//            if (username.isEmpty()) {
+//                subscriber.onError(new InvalidPortException());
+//            } else if (password.isEmpty()) {
+//                subscriber.onError(new InvalidLoginUsernameException());
+//            } else if (host.isEmpty()) {
+//                subscriber.onError(new InvalidLoginUsernameException());
+//            } else if (port.isEmpty()) {
+//                subscriber.onError(new InvalidLoginUsernameException());
+//            } else if (title.isEmpty()) {
+//                subscriber.onError(new InvalidLoginUsernameException());
+//            } else {
+                subscriber.onComplete();
+//            }
         });
     }
 
