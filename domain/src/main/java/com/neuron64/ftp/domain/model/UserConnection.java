@@ -1,10 +1,13 @@
 package com.neuron64.ftp.domain.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by Neuron on 03.09.2017.
  */
 
-public class UserConnection {
+public class UserConnection implements Parcelable{
 
     private String id;
 
@@ -76,4 +79,39 @@ public class UserConnection {
     }
 
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.id);
+        dest.writeString(this.nameConnection);
+        dest.writeString(this.host);
+        dest.writeString(this.userName);
+        dest.writeString(this.password);
+        dest.writeString(this.port);
+    }
+
+    protected UserConnection(Parcel in) {
+        this.id = in.readString();
+        this.nameConnection = in.readString();
+        this.host = in.readString();
+        this.userName = in.readString();
+        this.password = in.readString();
+        this.port = in.readString();
+    }
+
+    public static final Creator<UserConnection> CREATOR = new Creator<UserConnection>() {
+        @Override
+        public UserConnection createFromParcel(Parcel source) {
+            return new UserConnection(source);
+        }
+
+        @Override
+        public UserConnection[] newArray(int size) {
+            return new UserConnection[size];
+        }
+    };
 }

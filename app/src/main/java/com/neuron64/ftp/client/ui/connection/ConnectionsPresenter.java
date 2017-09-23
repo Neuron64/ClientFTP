@@ -1,4 +1,4 @@
-package com.neuron64.ftp.client.ui.login;
+package com.neuron64.ftp.client.ui.connection;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -24,12 +24,12 @@ import static com.neuron64.ftp.client.util.Preconditions.checkNotNull;
  */
 
 
-public class LoginPresenter implements LoginContract.Presenter{
+public class ConnectionsPresenter implements ConnectionsContract.Presenter{
 
-    private static final String TAG = "LoginPresenter";
+    private static final String TAG = "ConnectionsPresenter";
 
     @NonNull
-    private LoginContract.View loginView;
+    private ConnectionsContract.View loginView;
 
     @NonNull
     private GetAllConnection connectionUseCase;
@@ -40,13 +40,13 @@ public class LoginPresenter implements LoginContract.Presenter{
     private CompositeDisposable disposable;
 
     @Inject
-    public LoginPresenter(@NonNull GetAllConnection connectionUseCase, RxBus eventBus) {
+    public ConnectionsPresenter(@NonNull GetAllConnection connectionUseCase, RxBus eventBus) {
         this.connectionUseCase = checkNotNull(connectionUseCase);
         this.eventBus = Preconditions.checkNotNull(eventBus);
     }
 
     @Override
-    public void attachView(@NonNull LoginContract.View loginView){
+    public void attachView(@NonNull ConnectionsContract.View loginView){
         this.loginView = checkNotNull(loginView);
     }
 
@@ -86,8 +86,12 @@ public class LoginPresenter implements LoginContract.Presenter{
     }
 
     private void showConnections(List<UserConnection> userConnections){
-        if(userConnections.isEmpty()) loginView.showEmptyList();
-        else loginView.showConnection(userConnections);
+        if(userConnections.isEmpty()) {
+            loginView.showEmptyList();
+        } else {
+            loginView.hideEmptyList();
+            loginView.showConnection(userConnections);
+        }
     }
 
     private void handleEvent(Object event){

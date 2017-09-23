@@ -1,14 +1,13 @@
-package com.neuron64.ftp.client.ui.login;
+package com.neuron64.ftp.client.ui.connection;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.constraint.ConstraintLayout;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,9 +27,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.Unbinder;
 
 import static com.neuron64.ftp.client.util.Preconditions.checkNotNull;
 
@@ -38,9 +35,9 @@ import static com.neuron64.ftp.client.util.Preconditions.checkNotNull;
  * Created by Neuron on 02.09.2017.
  */
 
-public class LoginFragment extends BaseFragment implements LoginContract.View{
+public class ConnectionsFragment extends BaseFragment implements ConnectionsContract.View{
 
-    private static final String TAG = "LoginFragment";
+    private static final String TAG = "ConnectionsFragment";
 
     @BindView(R.id.rv_main) RecyclerView rvMain;
     @BindView(R.id.ll_root) ConstraintLayout llRoot;
@@ -48,24 +45,27 @@ public class LoginFragment extends BaseFragment implements LoginContract.View{
     @BindView(R.id.bn_create_connection) Button bnCreateConnection;
     @BindView(R.id.ll_empty_list) LinearLayout llEmptyList;
 
-    private ConnectionAdapter connectionAdapter;
+    private ConnectionsAdapter connectionAdapter;
 
-    private LoginContract.Presenter presenter;
+    private ConnectionsContract.Presenter presenter;
 
-    public static LoginFragment newInstance(){
-        return new LoginFragment();
+    public static ConnectionsFragment newInstance(){
+        return new ConnectionsFragment();
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.connectionAdapter = new ConnectionAdapter(getContext(), presenter.getRxBus());
+        this.connectionAdapter = new ConnectionsAdapter(getContext(), presenter.getRxBus());
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
+
+        rvMain.setLayoutManager(new LinearLayoutManager(getContext()));
+        rvMain.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         rvMain.setAdapter(connectionAdapter);
         return view;
     }
@@ -76,7 +76,7 @@ public class LoginFragment extends BaseFragment implements LoginContract.View{
     }
 
     @Inject @Override
-    public void attachPresenter(@NonNull LoginContract.Presenter presenter) {
+    public void attachPresenter(@NonNull ConnectionsContract.Presenter presenter) {
         this.presenter = checkNotNull(presenter);
         this.presenter.attachView(this);
     }
@@ -116,6 +116,11 @@ public class LoginFragment extends BaseFragment implements LoginContract.View{
     }
 
     @Override
+    public void hideEmptyList() {
+        llEmptyList.setVisibility(View.GONE);
+    }
+
+    @Override
     public void showLoadingIndicator() {
         llProgressBar.setVisibility(View.VISIBLE);
     }
@@ -128,10 +133,5 @@ public class LoginFragment extends BaseFragment implements LoginContract.View{
     @Override
     public void showSnackBar(@StringRes int id) {
         ViewMessage.initSnackBarShort(llRoot, id);
-    }
-
-    @OnClick(R.id.bn_create_connection)
-    void onClickCreateConnection(){
-        presenter.createConnection();
     }
 }

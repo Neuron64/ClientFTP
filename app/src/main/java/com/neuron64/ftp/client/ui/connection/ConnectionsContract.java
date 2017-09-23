@@ -1,4 +1,4 @@
-package com.neuron64.ftp.client.ui.login;
+package com.neuron64.ftp.client.ui.connection;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
@@ -14,13 +14,15 @@ import java.util.List;
  * Created by Neuron on 02.09.2017.
  */
 
-public interface LoginContract {
+public interface ConnectionsContract {
 
     interface View extends BaseView<Presenter> {
 
         void showConnection(@NonNull List<UserConnection> connections);
 
         void showEmptyList();
+
+        void hideEmptyList();
 
         void showLoadingIndicator();
 

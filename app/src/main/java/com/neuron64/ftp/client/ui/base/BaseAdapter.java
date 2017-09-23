@@ -38,7 +38,7 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseAdapter<T>
     public abstract class GenericViewHolder extends RecyclerView.ViewHolder{
         public GenericViewHolder(View rootView) {
             super(rootView);
-            ButterKnife.bind(rootView);
+            ButterKnife.bind(GenericViewHolder.this, rootView);
         }
 
         public abstract void onBind();

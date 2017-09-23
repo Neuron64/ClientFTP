@@ -2,8 +2,8 @@ package com.neuron64.ftp.client.di.component;
 
 import com.neuron64.ftp.client.di.module.PresenterModule;
 import com.neuron64.ftp.client.di.scope.ViewScope;
-import com.neuron64.ftp.client.ui.login.CreateConnectionFragment;
-import com.neuron64.ftp.client.ui.login.LoginFragment;
+import com.neuron64.ftp.client.ui.connection.CreateConnectionFragment;
+import com.neuron64.ftp.client.ui.connection.ConnectionsFragment;
 
 import dagger.Component;
 
@@ -14,6 +14,6 @@ import dagger.Component;
 @ViewScope
 @Component(dependencies = ApplicationComponent.class, modules = PresenterModule.class)
 public interface ViewComponent {
-    void inject(LoginFragment fragment);
+    void inject(ConnectionsFragment fragment);
     void inject(CreateConnectionFragment fragment);
 }

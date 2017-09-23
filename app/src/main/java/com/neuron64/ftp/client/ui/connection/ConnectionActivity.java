@@ -1,11 +1,10 @@
-package com.neuron64.ftp.client.ui.login;
+package com.neuron64.ftp.client.ui.connection;
 
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
@@ -25,7 +24,7 @@ import butterknife.Unbinder;
  * Created by Neuron on 02.09.2017.
  */
 
-public class LoginActivity extends BaseActivity {
+public class ConnectionActivity extends BaseActivity {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -42,9 +41,9 @@ public class LoginActivity extends BaseActivity {
         setSupportActionBar(toolbar);
         unbinder = ButterKnife.bind(this);
 
-        LoginFragment loginFragment = (LoginFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
+        ConnectionsFragment loginFragment = (ConnectionsFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
         if(loginFragment == null){
-            loginFragment = LoginFragment.newInstance();
+            loginFragment = ConnectionsFragment.newInstance();
             ActivityUtils.addFragmentToActivity(getSupportFragmentManager(), loginFragment, R.id.contentFrame);
         }
     }
@@ -82,7 +81,7 @@ public class LoginActivity extends BaseActivity {
                     break;
                 }
                 case ExposeEvent.SHOW_CONNECTIONS: {
-                    ActivityUtils.addFragmentToActivity(getSupportFragmentManager(), LoginFragment.newInstance(), R.id.contentFrame);
+                    ActivityUtils.addFragmentToActivity(getSupportFragmentManager(), ConnectionsFragment.newInstance(), R.id.contentFrame);
                     break;
                 }
             }

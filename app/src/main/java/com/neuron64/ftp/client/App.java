@@ -35,6 +35,9 @@ public class App extends Application{
 
         Realm.init(this);
 
+        //DropRealm
+//        Realm.deleteRealm(Realm.getDefaultConfiguration());
+
         initializationAppComponent();
     }
 

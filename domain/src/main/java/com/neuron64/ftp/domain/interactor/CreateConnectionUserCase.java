@@ -1,5 +1,6 @@
 package com.neuron64.ftp.domain.interactor;
 
+import com.neuron64.ftp.domain.exception.InvalidHostException;
 import com.neuron64.ftp.domain.exception.InvalidLoginUsernameException;
 import com.neuron64.ftp.domain.exception.InvalidPortException;
 import com.neuron64.ftp.domain.executor.BaseSchedulerProvider;
@@ -57,8 +58,11 @@ public class CreateConnectionUserCase extends UseCase<UserConnection, Void>{
 
     private Observable<UserConnection> validate() {
         return Observable.create(subscriber -> {
-//            if (username.isEmpty()) {
-//                subscriber.onError(new InvalidPortException());
+            if (host.isEmpty()) {
+                subscriber.onError(new InvalidHostException());
+            }else{
+                subscriber.onComplete();
+            }
 //            } else if (password.isEmpty()) {
 //                subscriber.onError(new InvalidLoginUsernameException());
 //            } else if (host.isEmpty()) {
@@ -68,7 +72,6 @@ public class CreateConnectionUserCase extends UseCase<UserConnection, Void>{
 //            } else if (title.isEmpty()) {
 //                subscriber.onError(new InvalidLoginUsernameException());
 //            } else {
-                subscriber.onComplete();
 //            }
         });
     }

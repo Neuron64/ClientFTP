@@ -1,4 +1,4 @@
-package com.neuron64.ftp.client.ui.login;
+package com.neuron64.ftp.client.ui.connection;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -17,9 +17,9 @@ import butterknife.BindView;
  * Created by Neuron on 17.09.2017.
  */
 
-public class ConnectionAdapter extends BaseAdapter<UserConnection> {
+public class ConnectionsAdapter extends BaseAdapter<UserConnection> {
 
-    public ConnectionAdapter(@NonNull Context context, @NonNull RxBus busEvent) {
+    public ConnectionsAdapter(@NonNull Context context, @NonNull RxBus busEvent) {
         super(context, busEvent);
     }
 
@@ -48,9 +48,17 @@ public class ConnectionAdapter extends BaseAdapter<UserConnection> {
         @Override
         public void onBind() {
             UserConnection connection = at(getAdapterPosition());
-            tvName.setText(connection.getNameConnection());
-            tvUserName.setText(connection.getUserName());
-            tvHost.setText(connection.getHost());
+            setTextView(tvName, connection.getNameConnection());
+            setTextView(tvUserName, connection.getUserName());
+            setTextView(tvHost, connection.getHost());
+        }
+    }
+
+    private void setTextView(TextView textView, String text){
+        if(text != null){
+            textView.setText(text);
+        }else{
+            textView.setText(null);
         }
     }
 }
