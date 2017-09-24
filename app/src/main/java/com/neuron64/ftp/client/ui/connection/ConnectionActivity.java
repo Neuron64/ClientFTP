@@ -6,7 +6,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
+import android.support.v4.app.Fragment;
 
 import com.neuron64.ftp.client.App;
 import com.neuron64.ftp.client.R;
@@ -14,6 +16,8 @@ import com.neuron64.ftp.client.ui.base.BaseActivity;
 import com.neuron64.ftp.client.ui.base.bus.event.ButtonEvent;
 import com.neuron64.ftp.client.ui.base.bus.event.ExposeEvent;
 import com.neuron64.ftp.client.util.ActivityUtils;
+import com.neuron64.ftp.client.util.Constans;
+import com.neuron64.ftp.domain.model.UserConnection;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,6 +29,8 @@ import butterknife.Unbinder;
  */
 
 public class ConnectionActivity extends BaseActivity {
+
+    private static final String TAG = "ConnectionActivity";
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -42,10 +48,8 @@ public class ConnectionActivity extends BaseActivity {
 
         setSupportActionBar(toolbar);
 
-        ConnectionsFragment loginFragment = (ConnectionsFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
-        if(loginFragment == null){
-            loginFragment = ConnectionsFragment.newInstance();
-            ActivityUtils.addFragmentToActivity(getSupportFragmentManager(), loginFragment, R.id.contentFrame);
+        if(savedInstanceState == null){
+            ActivityUtils.addFragmentToActivity(getSupportFragmentManager(), ConnectionsFragment.newInstance(), R.id.contentFrame, ConnectionsFragment.TAG);
         }
     }
 
@@ -78,11 +82,22 @@ public class ConnectionActivity extends BaseActivity {
             ExposeEvent exposeEvent = (ExposeEvent) event;
             switch (exposeEvent.code){
                 case ExposeEvent.CREATE_CONNECTION: {
-                    ActivityUtils.addFragmentToActivity(getSupportFragmentManager(), CreateConnectionFragment.newInstance(), R.id.contentFrame);
+                    CreateConnectionFragment fragment;
+                    if(exposeEvent.data != null && exposeEvent.data.containsKey(Constans.EXTRA_USER_CONNECTION)){
+                        UserConnection connection = exposeEvent.data.getParcelable(Constans.EXTRA_USER_CONNECTION);
+                        fragment = CreateConnectionFragment.newInstance(connection);
+                    }else{
+                        fragment = CreateConnectionFragment.newInstance();
+                    }
+
+                    ActivityUtils.addFragmentToActivityWithBackStack(getSupportFragmentManager(), fragment, R.id.contentFrame, null, CreateConnectionFragment.TAG);
                     break;
                 }
                 case ExposeEvent.SHOW_CONNECTIONS: {
-                    ActivityUtils.addFragmentToActivity(getSupportFragmentManager(), ConnectionsFragment.newInstance(), R.id.contentFrame);
+                    Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.contentFrame);
+                    if(fragment instanceof CreateConnectionFragment){
+                        getSupportFragmentManager().popBackStack();
+                    }
                     break;
                 }
             }

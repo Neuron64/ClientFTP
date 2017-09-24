@@ -9,6 +9,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -35,9 +36,9 @@ import static com.neuron64.ftp.client.util.Preconditions.checkNotNull;
  * Created by Neuron on 02.09.2017.
  */
 
-public class ConnectionsFragment extends BaseFragment implements ConnectionsContract.View{
+public class ConnectionsFragment extends BaseFragment implements ConnectionsContract.View, ConnectionsAdapter.OnItemClickListener{
 
-    private static final String TAG = "ConnectionsFragment";
+    public static final String TAG = "ConnectionsFragment";
 
     @BindView(R.id.rv_main) RecyclerView rvMain;
     @BindView(R.id.ll_root) ConstraintLayout llRoot;
@@ -55,7 +56,7 @@ public class ConnectionsFragment extends BaseFragment implements ConnectionsCont
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.connectionAdapter = new ConnectionsAdapter(getContext(), presenter.getRxBus());
+        this.connectionAdapter = new ConnectionsAdapter(getContext(), presenter.getRxBus(), this);
     }
 
     @Nullable
@@ -105,6 +106,11 @@ public class ConnectionsFragment extends BaseFragment implements ConnectionsCont
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
+
+    @Override
     public void showConnection(@NonNull List<UserConnection> connections) {
         connectionAdapter.setItems(connections);
     }
@@ -132,5 +138,20 @@ public class ConnectionsFragment extends BaseFragment implements ConnectionsCont
     @Override
     public void showSnackBar(@StringRes int id) {
         ViewMessage.initSnackBarShort(llRoot, id);
+    }
+
+    @Override
+    public void onDeleteConnection(UserConnection connection, int positionAdapter) {
+        presenter.onDeleteConnection(connection, positionAdapter);
+    }
+
+    @Override
+    public void onChangeConnection(UserConnection connection, int positionAdapter) {
+        presenter.onChangeConnection(connection, positionAdapter);
+    }
+
+    @Override
+    public void onTestConnection(UserConnection connection, int positionAdapter) {
+        presenter.onTestConnection(connection, positionAdapter);
     }
 }

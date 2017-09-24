@@ -1,5 +1,6 @@
 package com.neuron64.ftp.client.ui.connection;
 
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -7,6 +8,7 @@ import com.neuron64.ftp.client.R;
 import com.neuron64.ftp.client.ui.base.bus.RxBus;
 import com.neuron64.ftp.client.ui.base.bus.event.ButtonEvent;
 import com.neuron64.ftp.client.ui.base.bus.event.ExposeEvent;
+import com.neuron64.ftp.client.util.Constans;
 import com.neuron64.ftp.client.util.Preconditions;
 import com.neuron64.ftp.domain.interactor.GetAllConnection;
 import com.neuron64.ftp.domain.model.UserConnection;
@@ -51,13 +53,25 @@ public class ConnectionsPresenter implements ConnectionsContract.Presenter{
     }
 
     @Override
-    public void createConnection() {
-        //TODO: create connection
+    public RxBus getRxBus() {
+        return eventBus;
     }
 
     @Override
-    public RxBus getRxBus() {
-        return eventBus;
+    public void onDeleteConnection(UserConnection connection, int positionAdapter) {
+        //TODO: onDeleteConnection
+    }
+
+    @Override
+    public void onChangeConnection(UserConnection connection, int positionAdapter) {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(Constans.EXTRA_USER_CONNECTION, connection);
+        eventBus.send(ExposeEvent.exposeCreateConnection(bundle));
+    }
+
+    @Override
+    public void onTestConnection(UserConnection connection, int positionAdapter) {
+        //TODO: onTestConnection
     }
 
     @Override

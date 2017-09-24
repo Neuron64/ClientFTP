@@ -17,6 +17,7 @@ import com.neuron64.ftp.client.R;
 import com.neuron64.ftp.client.di.component.DaggerViewComponent;
 import com.neuron64.ftp.client.di.module.PresenterModule;
 import com.neuron64.ftp.client.ui.base.BaseFragment;
+import com.neuron64.ftp.client.util.Constans;
 import com.neuron64.ftp.client.util.Preconditions;
 import com.neuron64.ftp.client.util.ViewMessage;
 import com.neuron64.ftp.domain.model.UserConnection;
@@ -31,7 +32,7 @@ import butterknife.BindView;
 
 public class CreateConnectionFragment extends BaseFragment implements CreateConnectionContract.View{
 
-    private static final String PARAM_CONNECTION = "param_connection";
+    public static final String TAG = "CreateConnectionFragmen";
 
     @BindView(R.id.text_input_title) TextInputLayout textInputTitle;
     @BindView(R.id.text_input_host) TextInputLayout textInputHost;
@@ -49,9 +50,9 @@ public class CreateConnectionFragment extends BaseFragment implements CreateConn
     public static CreateConnectionFragment newInstance(UserConnection userConnection){
         CreateConnectionFragment fragment = new CreateConnectionFragment();
         Bundle bundle = new Bundle();
-        bundle.putParcelable(PARAM_CONNECTION, userConnection);
+        bundle.putParcelable(Constans.EXTRA_USER_CONNECTION, userConnection);
         fragment.setArguments(bundle);
-        return new CreateConnectionFragment();
+        return fragment;
     }
 
     @Nullable
@@ -125,12 +126,12 @@ public class CreateConnectionFragment extends BaseFragment implements CreateConn
 
     @Override
     public void fillingFields(String userName, String password, String host, String title, String port) {
-//        if(title != null) putStringToInputLayout(textInputTitle, title);
-//        else putStringToInputLayout(textInputTitle, getString(R.string.new_connection));
-//        putStringToInputLayout(textInputUsername, userName);
-//        putStringToInputLayout(textInputPort, port);
-//        putStringToInputLayout(textInputPassword, password);
-//        putStringToInputLayout(textInputHost, host);
+        if(title != null) putStringToInputLayout(textInputTitle, title);
+        else putStringToInputLayout(textInputTitle, getString(R.string.new_connection));
+        putStringToInputLayout(textInputUsername, userName);
+        putStringToInputLayout(textInputPort, port);
+        putStringToInputLayout(textInputPassword, password);
+        putStringToInputLayout(textInputHost, host);
     }
 
     @Override
@@ -165,8 +166,8 @@ public class CreateConnectionFragment extends BaseFragment implements CreateConn
 
     @Override
     public UserConnection currentArgConnection() {
-        if(getArguments() != null && getArguments().containsKey(PARAM_CONNECTION)) {
-            return getArguments().getParcelable(PARAM_CONNECTION);
+        if(getArguments() != null && getArguments().containsKey(Constans.EXTRA_USER_CONNECTION)) {
+            return getArguments().getParcelable(Constans.EXTRA_USER_CONNECTION);
         }else{
             return null;
         }

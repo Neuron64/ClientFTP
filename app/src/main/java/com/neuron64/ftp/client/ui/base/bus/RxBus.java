@@ -12,6 +12,11 @@ import io.reactivex.Flowable;
  * Created by Neuron on 17.09.2017.
  */
 
+/**
+ * Используется для обмена:
+ * fragment -> activity
+ * activity -> fragment
+**/
 public class RxBus {
 
     private final Relay<Object> bus = PublishRelay.create().toSerialized();

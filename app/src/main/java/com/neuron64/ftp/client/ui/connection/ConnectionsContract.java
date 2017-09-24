@@ -33,9 +33,12 @@ public interface ConnectionsContract {
 
     interface Presenter extends BasePresenter<View>{
 
-        void createConnection();
-
         RxBus getRxBus();
 
+        void onDeleteConnection(UserConnection connection, int positionAdapter);
+
+        void onChangeConnection(UserConnection connection, int positionAdapter);
+
+        void onTestConnection(UserConnection connection, int positionAdapter);
     }
 }

@@ -65,8 +65,6 @@ public class CreateConnectionPresenter implements CreateConnectionContract.Prese
         UserConnection connection = view.currentArgConnection();
         if(connection != null){
             view.fillingFields(connection.getUserName(), connection.getPassword(), connection.getHost(), connection.getNameConnection(), connection.getPort());
-        }else{
-            view.fillingFields(null, null, null, null, null);
         }
     }
 
