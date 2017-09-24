@@ -42,7 +42,6 @@ public class ConnectionsFragment extends BaseFragment implements ConnectionsCont
     @BindView(R.id.rv_main) RecyclerView rvMain;
     @BindView(R.id.ll_root) ConstraintLayout llRoot;
     @BindView(R.id.ll_progress_bar) LinearLayout llProgressBar;
-    @BindView(R.id.bn_create_connection) Button bnCreateConnection;
     @BindView(R.id.ll_empty_list) LinearLayout llEmptyList;
 
     private ConnectionsAdapter connectionAdapter;
@@ -92,7 +91,7 @@ public class ConnectionsFragment extends BaseFragment implements ConnectionsCont
     @Override
     public void onResume() {
         super.onResume();
-        if(presenter!=null){
+        if(presenter != null){
             presenter.subscribe();
         }
     }

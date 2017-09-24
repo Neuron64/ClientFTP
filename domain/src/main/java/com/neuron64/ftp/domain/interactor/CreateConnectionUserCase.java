@@ -63,16 +63,6 @@ public class CreateConnectionUserCase extends UseCase<UserConnection, Void>{
             }else{
                 subscriber.onComplete();
             }
-//            } else if (password.isEmpty()) {
-//                subscriber.onError(new InvalidLoginUsernameException());
-//            } else if (host.isEmpty()) {
-//                subscriber.onError(new InvalidLoginUsernameException());
-//            } else if (port.isEmpty()) {
-//                subscriber.onError(new InvalidLoginUsernameException());
-//            } else if (title.isEmpty()) {
-//                subscriber.onError(new InvalidLoginUsernameException());
-//            } else {
-//            }
         });
     }
 

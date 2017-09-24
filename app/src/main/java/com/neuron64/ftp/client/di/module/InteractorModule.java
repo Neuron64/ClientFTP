@@ -22,11 +22,6 @@ public class InteractorModule {
         return new GetAllConnection(schedulerProvider, connectionRepository);
     }
 
-//    @Singleton @Provides
-//    SaveConnectionInteractor saveConnectionInteractor(ConnectionRepository connectionRepository){
-//        return new SaveConnectionInteractor(connectionRepository);
-//    }
-
     @Singleton @Provides
     CreateConnectionUserCase saveConnectionInteractor(BaseSchedulerProvider schedulerProvider, ConnectionRepository connectionRepository){
         return new CreateConnectionUserCase(schedulerProvider, connectionRepository);

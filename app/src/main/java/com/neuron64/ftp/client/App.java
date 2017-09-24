@@ -12,7 +12,6 @@ import com.neuron64.ftp.client.di.module.InteractorModule;
 import com.squareup.picasso.Picasso;
 
 import io.realm.Realm;
-import io.realm.RealmConfiguration;
 
 /**
  * Created by Neuron on 03.09.2017.
