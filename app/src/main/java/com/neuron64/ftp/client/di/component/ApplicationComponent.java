@@ -6,6 +6,7 @@ import com.neuron64.ftp.client.di.module.ApplicationModule;
 import com.neuron64.ftp.client.di.module.DataModule;
 import com.neuron64.ftp.client.di.module.InteractorModule;
 import com.neuron64.ftp.client.di.module.MapperModule;
+import com.neuron64.ftp.client.di.module.NetworkModule;
 import com.neuron64.ftp.client.di.module.PresenterModule;
 import com.neuron64.ftp.client.di.module.RealmModule;
 import com.neuron64.ftp.client.ui.base.BaseActivity;
@@ -20,6 +21,7 @@ import com.neuron64.ftp.domain.interactor.CreateConnectionUserCase;
 import com.neuron64.ftp.domain.interactor.GetAllConnection;
 import com.neuron64.ftp.domain.model.UserConnection;
 import com.neuron64.ftp.domain.repository.ConnectionRepository;
+import com.neuron64.ftp.domain.repository.FtpRepository;
 
 import javax.inject.Singleton;
 
@@ -36,7 +38,8 @@ import dagger.Component;
         InteractorModule.class,
         DataModule.class,
         MapperModule.class,
-        RealmModule.class})
+        RealmModule.class,
+        NetworkModule.class})
 public interface ApplicationComponent {
     void inject(BaseFragment fragment);
     void inject(BaseActivity activity);
@@ -44,13 +47,14 @@ public interface ApplicationComponent {
     Context context();
     RxBus rxBus();
     BaseSchedulerProvider scheduler();
-    ConnectionRepository connectionRepository();
 
     //use case
     GetAllConnection getAllConnection();
     CreateConnectionUserCase createConnectionUserCase();
 
     //data
+    ConnectionRepository connectionRepository();
+    FtpRepository ftpRepository();
     Mapper<UserConnection, com.neuron64.ftp.data.model.local.UserConnection> mapper();
     RealmService realmService();
 }

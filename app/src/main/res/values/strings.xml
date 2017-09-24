@@ -1,15 +1,18 @@
 <resources>
     <string name="app_name">ClientFTP</string>
     <string name="action_settings">Settings</string>
-    <string name="empty_list_connections">Нет сохраненных соеденений</string>
+    <string name="empty_list_connections">Нет сохраненных соединений</string>
     <string name="create">Создать</string>
-    <string name="error_get_user_connections">Не удалось получить сохраненые соденениея</string>
+    <string name="error_get_user_connections">Не удалось получить сохраненые соединения</string>
     <string name="name_connection">Name Connection</string>
     <string name="host">Host</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="port">Port</string>
-    <string name="error_save_connections">Не удалось сохранить соденениея</string>
-    <string name="new_connection">Новое соеденение</string>
+    <string name="error_save_connections">Не удалось сохранить соединения</string>
+    <string name="new_connection">Новое соединение</string>
     <string name="error_need_host">Нужно заполнить host</string>
+    <string name="check_connection">Проверить соединение</string>
+    <string name="success">Успешно</string>
+    <string name="error_connection_connect">Ошибка соединения</string>
 </resources>

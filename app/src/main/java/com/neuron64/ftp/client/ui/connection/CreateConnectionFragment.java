@@ -5,6 +5,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -54,12 +57,30 @@ public class CreateConnectionFragment extends BaseFragment implements CreateConn
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_create_connection, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.action_check_connection: {
+                presenter.onClickCheckConnection();
+                return true;
+            }
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -104,23 +125,27 @@ public class CreateConnectionFragment extends BaseFragment implements CreateConn
 
     @Override
     public void fillingFields(String userName, String password, String host, String title, String port) {
-        if(title != null) putStringToInputLayout(textInputTitle, title);
-        else putStringToInputLayout(textInputTitle, getString(R.string.new_connection));
-        putStringToInputLayout(textInputUsername, userName);
-        putStringToInputLayout(textInputPort, port);
-        putStringToInputLayout(textInputPassword, password);
-        putStringToInputLayout(textInputHost, host);
+//        if(title != null) putStringToInputLayout(textInputTitle, title);
+//        else putStringToInputLayout(textInputTitle, getString(R.string.new_connection));
+//        putStringToInputLayout(textInputUsername, userName);
+//        putStringToInputLayout(textInputPort, port);
+//        putStringToInputLayout(textInputPassword, password);
+//        putStringToInputLayout(textInputHost, host);
     }
 
     @Override
-    public void pickConnection() {
+    public void pickConnection(boolean forCheck) {
         String username = getStringFromInputLayout(textInputUsername);
         String port = getStringFromInputLayout(textInputPort);
         String password = getStringFromInputLayout(textInputPassword);
         String title = getStringFromInputLayout(textInputTitle);
         String host = getStringFromInputLayout(textInputHost);
 
-        presenter.sendConnection(username, password, host, title, port);
+        if(forCheck) {
+            presenter.sendConnection(username, password, host, port);
+        }else{
+            presenter.sendConnection(username, password, host, title, port);
+        }
     }
 
     @Override

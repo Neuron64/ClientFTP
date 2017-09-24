@@ -17,5 +17,5 @@ public interface ConnectionRepository {
 
     Single<List<UserConnection>> getAllConnection();
 
-    Single<UserConnection> saveConnection(@NonNull String id, @Nullable String title, @Nullable String host, @Nullable String username, @Nullable String password, @Nullable String port, @Nullable Date date);
+    Single<UserConnection> saveConnection(@NonNull String id, @Nullable String title, @NonNull String host, @Nullable String username, @Nullable String password, @Nullable String port, @Nullable Date date);
 }

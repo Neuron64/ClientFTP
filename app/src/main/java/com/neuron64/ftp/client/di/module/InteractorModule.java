@@ -1,9 +1,11 @@
 package com.neuron64.ftp.client.di.module;
 
 import com.neuron64.ftp.domain.executor.BaseSchedulerProvider;
+import com.neuron64.ftp.domain.interactor.CheckConnectionFtpUseCase;
 import com.neuron64.ftp.domain.interactor.CreateConnectionUserCase;
 import com.neuron64.ftp.domain.repository.ConnectionRepository;
 import com.neuron64.ftp.domain.interactor.GetAllConnection;
+import com.neuron64.ftp.domain.repository.FtpRepository;
 
 import javax.inject.Singleton;
 
@@ -25,5 +27,10 @@ public class InteractorModule {
     @Singleton @Provides
     CreateConnectionUserCase saveConnectionInteractor(BaseSchedulerProvider schedulerProvider, ConnectionRepository connectionRepository){
         return new CreateConnectionUserCase(schedulerProvider, connectionRepository);
+    }
+
+    @Singleton @Provides
+    CheckConnectionFtpUseCase checkConnectionFtp(BaseSchedulerProvider schedulerProvider, FtpRepository ftpRepository){
+        return new CheckConnectionFtpUseCase(schedulerProvider, ftpRepository);
     }
 }

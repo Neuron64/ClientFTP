@@ -14,6 +14,7 @@ import javax.inject.Inject;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
+import io.reactivex.annotations.NonNull;
 import io.reactivex.annotations.Nullable;
 
 import static dagger.internal.Preconditions.checkNotNull;
@@ -25,6 +26,7 @@ import static dagger.internal.Preconditions.checkNotNull;
 
 public class CreateConnectionUserCase extends UseCase<UserConnection, Void>{
 
+    @NonNull
     private ConnectionRepository repository;
 
     private String title;
@@ -65,5 +67,4 @@ public class CreateConnectionUserCase extends UseCase<UserConnection, Void>{
             }
         });
     }
-
 }

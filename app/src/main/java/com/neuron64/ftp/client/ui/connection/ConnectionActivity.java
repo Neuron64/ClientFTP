@@ -38,8 +38,9 @@ public class ConnectionActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
-        setSupportActionBar(toolbar);
         unbinder = ButterKnife.bind(this);
+
+        setSupportActionBar(toolbar);
 
         ConnectionsFragment loginFragment = (ConnectionsFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
         if(loginFragment == null){

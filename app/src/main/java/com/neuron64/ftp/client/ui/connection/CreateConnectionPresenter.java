@@ -8,10 +8,13 @@ import com.neuron64.ftp.client.ui.base.bus.RxBus;
 import com.neuron64.ftp.client.ui.base.bus.event.ButtonEvent;
 import com.neuron64.ftp.client.ui.base.bus.event.ExposeEvent;
 import com.neuron64.ftp.client.util.Preconditions;
+import com.neuron64.ftp.data.exception.ErrorConnectionFtp;
 import com.neuron64.ftp.domain.exception.InvalidHostException;
-import com.neuron64.ftp.domain.exception.InvalidLoginUsernameException;
+import com.neuron64.ftp.domain.interactor.CheckConnectionFtpUseCase;
 import com.neuron64.ftp.domain.interactor.CreateConnectionUserCase;
 import com.neuron64.ftp.domain.model.UserConnection;
+
+import java.io.IOException;
 
 import javax.inject.Inject;
 
@@ -31,13 +34,17 @@ public class CreateConnectionPresenter implements CreateConnectionContract.Prese
     private CreateConnectionUserCase createConnectionUserCase;
 
     @NonNull
+    private CheckConnectionFtpUseCase checkConnectionFtpUseCase;
+
+    @NonNull
     private RxBus eventBus;
 
     private CompositeDisposable disposable;
 
     @Inject
-    public CreateConnectionPresenter(CreateConnectionUserCase createConnectionUserCase, RxBus eventBus){
+    public CreateConnectionPresenter(CreateConnectionUserCase createConnectionUserCase, CheckConnectionFtpUseCase checkConnectionFtpUseCase, RxBus eventBus){
         this.createConnectionUserCase = Preconditions.checkNotNull(createConnectionUserCase);
+        this.checkConnectionFtpUseCase = Preconditions.checkNotNull(checkConnectionFtpUseCase);
         this.eventBus = Preconditions.checkNotNull(eventBus);
     }
 
@@ -70,8 +77,8 @@ public class CreateConnectionPresenter implements CreateConnectionContract.Prese
     }
 
     @Override
-    public void onClickCreate() {
-        view.pickConnection();
+    public void onClickCheckConnection() {
+        view.pickConnection(true);
     }
 
     @Override
@@ -92,9 +99,23 @@ public class CreateConnectionPresenter implements CreateConnectionContract.Prese
                 null);
     }
 
+    @Override
+    public void sendConnection(String userName, String password, String host, String port) {
+        checkConnectionFtpUseCase.init(host, userName, password, port).
+                execute(() -> view.showSnackBar(R.string.success),
+                        throwable -> {
+                            if(throwable instanceof InvalidHostException){
+                                view.showSnackBar(R.string.error_need_host);
+                            }else if(throwable instanceof ErrorConnectionFtp ||
+                                    throwable instanceof IOException){
+                                view.showSnackBar(R.string.error_connection_connect);
+                            }
+                }, null);
+    }
+
     private void handleEvent(Object event){
         if(event instanceof ButtonEvent){
-            view.pickConnection();
+            view.pickConnection(false);
         }
     }
 }

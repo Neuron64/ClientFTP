@@ -17,7 +17,7 @@ public interface CreateConnectionContract {
 
          void fillingFields(String userName, String password, String host, String title, String port);
 
-         void pickConnection();
+         void pickConnection(boolean forCheck);
 
          boolean onValidate();
 
@@ -30,9 +30,11 @@ public interface CreateConnectionContract {
 
     interface Presenter extends BasePresenter<View>{
 
-        void onClickCreate();
+        void onClickCheckConnection();
 
         void sendConnection(String userName, String password, String host, String title, String port);
+
+        void sendConnection(String userName, String password, String host, String port);
 
     }
 }
