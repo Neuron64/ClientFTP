@@ -41,10 +41,15 @@ public class ConnectionDataRepository implements ConnectionRepository {
     }
 
     @Override
-    public Single<UserConnection> saveConnection(String id, String title, String host, String username, String password, String port, Date date) {
+    public Single<UserConnection> saveOrUpdateConnection(String id, String title, String host, String username, String password, String port, Date date) {
         com.neuron64.ftp.data.model.local.UserConnection userConnection = new com.neuron64.ftp.data.model.local.UserConnection(id, title, host, username, password, port);
-        return realmService.saveConnection(userConnection)
+        return realmService.insertOrUpdateConnection(userConnection)
                 .andThen(Single.just(userConnection)
                 .map(connectionMapper::map));
+    }
+
+    @Override
+    public Completable deleteConnection(String id) {
+        return realmService.deleteConnection(id);
     }
 }

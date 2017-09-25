@@ -37,6 +37,10 @@ public class ViewMessage {
         Snackbar.make(view, message, Snackbar.LENGTH_INDEFINITE).show();
     }
 
+    public static void initSnackBarLongAction(View view, @StringRes int message, @StringRes int messageAction, View.OnClickListener onClickListener){
+        Snackbar.make(view, message, Snackbar.LENGTH_LONG).setAction(messageAction, onClickListener).show();
+    }
+
     public static void initToast(Context context, String message, boolean isLong){
         Toast.makeText(context, message, isLong ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT).show();
     }

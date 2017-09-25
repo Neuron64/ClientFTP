@@ -34,6 +34,7 @@ public class CreateConnectionUserCase extends UseCase<UserConnection, Void>{
     private String username;
     private String password;
     private String port;
+    private String id;
 
     @Inject
     public CreateConnectionUserCase(BaseSchedulerProvider schedulerProvider, ConnectionRepository repository) {
@@ -41,12 +42,13 @@ public class CreateConnectionUserCase extends UseCase<UserConnection, Void>{
         this.repository = checkNotNull(repository);
     }
 
-    public CreateConnectionUserCase init(@Nullable String title, @Nullable String host, @Nullable String username, @Nullable String password, @Nullable String port){
+    public CreateConnectionUserCase init(@Nullable String id, @Nullable String title, @Nullable String host, @Nullable String username, @Nullable String password, @Nullable String port){
         this.title = title;
         this.host = host;
         this.username = username;
         this.password = password;
         this.port = port;
+        this.id = id;
 
         return this;
     }
@@ -54,7 +56,8 @@ public class CreateConnectionUserCase extends UseCase<UserConnection, Void>{
     @Override
     public Observable<UserConnection> buildUseCase(Void v) {
         Date nowDate = new Date();
-        Single<UserConnection> single = repository.saveConnection(UtilUUID.generateUUID(), title, host, username, password, port, nowDate);
+        String idConnection = id != null? id : UtilUUID.generateUUID();
+        Single<UserConnection> single = repository.saveOrUpdateConnection(idConnection, title, host, username, password, port, nowDate);
         return Observable.concat(validate(), single.toObservable());
     }
 

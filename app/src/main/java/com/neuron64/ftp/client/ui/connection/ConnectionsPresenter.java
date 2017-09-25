@@ -10,9 +10,15 @@ import com.neuron64.ftp.client.ui.base.bus.event.ButtonEvent;
 import com.neuron64.ftp.client.ui.base.bus.event.ExposeEvent;
 import com.neuron64.ftp.client.util.Constans;
 import com.neuron64.ftp.client.util.Preconditions;
+import com.neuron64.ftp.data.exception.ErrorConnectionFtp;
+import com.neuron64.ftp.domain.exception.InvalidHostException;
+import com.neuron64.ftp.domain.interactor.CheckConnectionFtpUseCase;
+import com.neuron64.ftp.domain.interactor.CreateConnectionUserCase;
+import com.neuron64.ftp.domain.interactor.DeleteConnectionUseCase;
 import com.neuron64.ftp.domain.interactor.GetAllConnection;
 import com.neuron64.ftp.domain.model.UserConnection;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -41,10 +47,22 @@ public class ConnectionsPresenter implements ConnectionsContract.Presenter{
 
     private CompositeDisposable disposable;
 
+    @NonNull
+    private DeleteConnectionUseCase deleteConnectionUseCase;
+
+    @NonNull
+    private CheckConnectionFtpUseCase checkConnectionFtpUseCase;
+
+    @NonNull
+    private CreateConnectionUserCase createConnectionUserCase;
+
     @Inject
-    public ConnectionsPresenter(@NonNull GetAllConnection connectionUseCase, RxBus eventBus) {
+    public ConnectionsPresenter(GetAllConnection connectionUseCase, RxBus eventBus, DeleteConnectionUseCase deleteConnectionUseCase, CheckConnectionFtpUseCase checkConnectionFtpUseCase, CreateConnectionUserCase createConnectionUserCase) {
         this.connectionUseCase = checkNotNull(connectionUseCase);
         this.eventBus = Preconditions.checkNotNull(eventBus);
+        this.deleteConnectionUseCase = Preconditions.checkNotNull(deleteConnectionUseCase);
+        this.checkConnectionFtpUseCase = Preconditions.checkNotNull(checkConnectionFtpUseCase);
+        this.createConnectionUserCase = Preconditions.checkNotNull(createConnectionUserCase);
     }
 
     @Override
@@ -59,7 +77,29 @@ public class ConnectionsPresenter implements ConnectionsContract.Presenter{
 
     @Override
     public void onDeleteConnection(UserConnection connection, int positionAdapter) {
-        //TODO: onDeleteConnection
+        deleteConnectionUseCase.execute(
+                () -> {
+                    UserConnection removedConnection = loginView.removeItemFromAdapter(positionAdapter);
+                    loginView.showSnackBarWithAction(R.string.connection_was_delete, R.string.cancel,
+                            () -> saveConnection(removedConnection));
+                },
+                throwable ->{
+                    loginView.showSnackBar(R.string.error_connection_delete);
+                    Log.e(TAG, "onDeleteConnection: ", throwable);
+                }, connection.getId());
+    }
+
+    private void saveConnection(UserConnection userConnection){
+        createConnectionUserCase.init(userConnection.getId(),
+                userConnection.getNameConnection(),
+                userConnection.getHost(),
+                userConnection.getUserName(),
+                userConnection.getPassword(),
+                userConnection.getPort())
+                .execute(
+                        userConnection1 -> loginView.addConnection(userConnection1, true),
+                        throwable -> loginView.showSnackBar(R.string.error_connection_cancel_delete),
+                        null);
     }
 
     @Override
@@ -71,7 +111,17 @@ public class ConnectionsPresenter implements ConnectionsContract.Presenter{
 
     @Override
     public void onTestConnection(UserConnection connection, int positionAdapter) {
-        //TODO: onTestConnection
+        checkConnectionFtpUseCase.init(connection.getHost(), connection.getUserName(), connection.getPassword(), connection.getPort()).
+                execute(() -> loginView.showSnackBar(R.string.success),
+                        throwable -> {
+                            if(throwable instanceof InvalidHostException){
+                                loginView.showSnackBar(R.string.error_need_host);
+                            }else if(throwable instanceof ErrorConnectionFtp ||
+                                    throwable instanceof IOException){
+                                loginView.showSnackBar(R.string.error_connection_connect);
+                            }
+                            Log.e(TAG, "onTestConnection: ", throwable);
+                        }, null);
     }
 
     @Override
@@ -86,6 +136,8 @@ public class ConnectionsPresenter implements ConnectionsContract.Presenter{
     public void unsubscribe() {
         disposable.dispose();
         connectionUseCase.dispose();
+        checkConnectionFtpUseCase.dispose();
+        deleteConnectionUseCase.dispose();
     }
 
     private void initData(){
@@ -112,5 +164,9 @@ public class ConnectionsPresenter implements ConnectionsContract.Presenter{
         if(event instanceof ButtonEvent){
             eventBus.send(ExposeEvent.exposeCreateConnection(null));
         }
+    }
+
+    public interface OnClickListener{
+        void onClick();
     }
 }

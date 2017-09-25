@@ -15,4 +15,12 @@
     <string name="check_connection">Проверить соединение</string>
     <string name="success">Успешно</string>
     <string name="error_connection_connect">Ошибка соединения</string>
+    <string name="connection_was_delete">Соединение было удалено</string>
+    <string name="error_connection_delete">Ошибка удаления соеденения</string>
+    <string name="error_connection_cancel_delete">Ошибка отмены удаления</string>
+
+    <string name="change">Изменить</string>
+    <string name="delete">Удалить</string>
+    <string name="test">Тестировать</string>
+    <string name="cancel">Отменить</string>
 </resources>

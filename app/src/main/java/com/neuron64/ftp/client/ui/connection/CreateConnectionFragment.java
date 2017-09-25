@@ -95,7 +95,7 @@ public class CreateConnectionFragment extends BaseFragment implements CreateConn
     @Override
     public void onResume() {
         super.onResume();
-        if(presenter!=null){
+        if(presenter != null){
             presenter.subscribe();
         }
     }
@@ -143,7 +143,7 @@ public class CreateConnectionFragment extends BaseFragment implements CreateConn
         String host = getStringFromInputLayout(textInputHost);
 
         if(forCheck) {
-            presenter.sendConnection(username, password, host, port);
+            presenter.checkConnection(username, password, host, port);
         }else{
             presenter.sendConnection(username, password, host, title, port);
         }

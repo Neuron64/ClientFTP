@@ -8,6 +8,7 @@ import com.neuron64.ftp.client.ui.connection.CreateConnectionContract;
 import com.neuron64.ftp.client.ui.connection.CreateConnectionPresenter;
 import com.neuron64.ftp.domain.interactor.CheckConnectionFtpUseCase;
 import com.neuron64.ftp.domain.interactor.CreateConnectionUserCase;
+import com.neuron64.ftp.domain.interactor.DeleteConnectionUseCase;
 import com.neuron64.ftp.domain.interactor.GetAllConnection;
 
 import dagger.Module;
@@ -21,8 +22,8 @@ import dagger.Provides;
 public class PresenterModule {
 
     @ViewScope @Provides
-    ConnectionsContract.Presenter login(GetAllConnection connectionUseCase, RxBus rxBus){
-        return new ConnectionsPresenter(connectionUseCase, rxBus);
+    ConnectionsContract.Presenter login(GetAllConnection connectionUseCase, RxBus eventBus, DeleteConnectionUseCase deleteConnectionUseCase, CheckConnectionFtpUseCase checkConnectionFtpUseCase, CreateConnectionUserCase createConnectionUserCase){
+        return new ConnectionsPresenter(connectionUseCase, eventBus, deleteConnectionUseCase, checkConnectionFtpUseCase, createConnectionUserCase);
     }
 
     @ViewScope @Provides

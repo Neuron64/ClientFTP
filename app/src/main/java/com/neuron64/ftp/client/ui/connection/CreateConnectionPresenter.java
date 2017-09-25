@@ -41,6 +41,8 @@ public class CreateConnectionPresenter implements CreateConnectionContract.Prese
 
     private CompositeDisposable disposable;
 
+    private String idConnection = null;
+
     @Inject
     public CreateConnectionPresenter(CreateConnectionUserCase createConnectionUserCase, CheckConnectionFtpUseCase checkConnectionFtpUseCase, RxBus eventBus){
         this.createConnectionUserCase = Preconditions.checkNotNull(createConnectionUserCase);
@@ -64,6 +66,7 @@ public class CreateConnectionPresenter implements CreateConnectionContract.Prese
     private void initPresenter(){
         UserConnection connection = view.currentArgConnection();
         if(connection != null){
+            idConnection = connection.getId();
             view.fillingFields(connection.getUserName(), connection.getPassword(), connection.getHost(), connection.getNameConnection(), connection.getPort());
         }
     }
@@ -72,6 +75,7 @@ public class CreateConnectionPresenter implements CreateConnectionContract.Prese
     public void unsubscribe() {
         disposable.dispose();
         createConnectionUserCase.dispose();
+        checkConnectionFtpUseCase.dispose();
     }
 
     @Override
@@ -82,7 +86,7 @@ public class CreateConnectionPresenter implements CreateConnectionContract.Prese
     @Override
     public void sendConnection(String userName, String password, String host, String title, String port) {
         view.updateSubmitButtonViewState(false);
-        createConnectionUserCase.init(title, host, userName, password, port).execute(
+        createConnectionUserCase.init(idConnection, title, host, userName, password, port).execute(
                 connections -> eventBus.send(ExposeEvent.exposeShowConnection(null)),
                 throwable -> {
                     if(throwable instanceof InvalidHostException){
@@ -98,7 +102,7 @@ public class CreateConnectionPresenter implements CreateConnectionContract.Prese
     }
 
     @Override
-    public void sendConnection(String userName, String password, String host, String port) {
+    public void checkConnection(String userName, String password, String host, String port) {
         checkConnectionFtpUseCase.init(host, userName, password, port).
                 execute(() -> view.showSnackBar(R.string.success),
                         throwable -> {

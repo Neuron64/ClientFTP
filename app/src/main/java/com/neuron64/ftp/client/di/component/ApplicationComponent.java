@@ -18,6 +18,7 @@ import com.neuron64.ftp.data.mapper.ConnectionMapper;
 import com.neuron64.ftp.data.mapper.Mapper;
 import com.neuron64.ftp.domain.executor.BaseSchedulerProvider;
 import com.neuron64.ftp.domain.interactor.CreateConnectionUserCase;
+import com.neuron64.ftp.domain.interactor.DeleteConnectionUseCase;
 import com.neuron64.ftp.domain.interactor.GetAllConnection;
 import com.neuron64.ftp.domain.model.UserConnection;
 import com.neuron64.ftp.domain.repository.ConnectionRepository;
@@ -51,6 +52,7 @@ public interface ApplicationComponent {
     //use case
     GetAllConnection getAllConnection();
     CreateConnectionUserCase createConnectionUserCase();
+    DeleteConnectionUseCase deleteConnectionUseCase();
 
     //data
     ConnectionRepository connectionRepository();

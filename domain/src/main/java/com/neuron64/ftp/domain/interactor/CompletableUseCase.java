@@ -28,4 +28,10 @@ public abstract class CompletableUseCase<Params> {
     }
 
     public abstract Completable buildCompletable(Params params);
+
+    public void dispose(){
+        if(!disposables.isDisposed()){
+            disposables.clear();
+        }
+    }
 }

@@ -12,6 +12,8 @@ import io.realm.annotations.Required;
 @RealmClass
 public class UserConnection implements RealmModel {
 
+    public static String FIELD_ID = "id";
+
     @PrimaryKey
     @Required
     private String id;

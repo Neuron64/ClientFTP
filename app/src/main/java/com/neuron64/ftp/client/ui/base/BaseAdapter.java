@@ -53,7 +53,7 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseAdapter<T>
         return inflater.inflate(id,container,false);
     }
 
-    protected T at(int index) {
+    public T at(int index) {
         return items.get(index);
     }
 
@@ -62,16 +62,26 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseAdapter<T>
         notifyDataSetChanged();
     }
 
-    protected void addItems(List<T> items){
+    public void addItems(List<T> items){
         int size = getItemCount();
         this.items.addAll(items);
         notifyItemRangeInserted(size, getItemCount());
     }
 
-    protected void addItem(T item){
+    public void addItem(T item){
         int size = getItemCount();
         this.items.add(item);
         notifyItemRangeInserted(size, getItemCount());
     }
 
+    public void addItemToStart(T item){
+        this.items.add(0, item);
+        notifyItemInserted(0);
+    }
+
+    public T removeItem(int position){
+        T object = items.remove(position);
+        notifyItemRemoved(position);
+        return object;
+    }
 }

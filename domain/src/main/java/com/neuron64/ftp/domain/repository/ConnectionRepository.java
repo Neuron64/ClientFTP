@@ -5,6 +5,7 @@ import com.neuron64.ftp.domain.model.UserConnection;
 import java.util.Date;
 import java.util.List;
 
+import io.reactivex.Completable;
 import io.reactivex.Single;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.annotations.Nullable;
@@ -17,5 +18,7 @@ public interface ConnectionRepository {
 
     Single<List<UserConnection>> getAllConnection();
 
-    Single<UserConnection> saveConnection(@NonNull String id, @Nullable String title, @NonNull String host, @Nullable String username, @Nullable String password, @Nullable String port, @Nullable Date date);
+    Single<UserConnection> saveOrUpdateConnection(@NonNull String id, @Nullable String title, @NonNull String host, @Nullable String username, @Nullable String password, @Nullable String port, @Nullable Date date);
+
+    Completable deleteConnection(@NonNull String id);
 }

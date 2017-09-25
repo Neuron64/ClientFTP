@@ -34,7 +34,7 @@ public interface CreateConnectionContract {
 
         void sendConnection(String userName, String password, String host, String title, String port);
 
-        void sendConnection(String userName, String password, String host, String port);
+        void checkConnection(String userName, String password, String host, String port);
 
     }
 }

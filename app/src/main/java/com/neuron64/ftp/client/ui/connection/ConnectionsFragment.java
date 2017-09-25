@@ -111,6 +111,12 @@ public class ConnectionsFragment extends BaseFragment implements ConnectionsCont
     }
 
     @Override
+    public void addConnection(@NonNull UserConnection connections, boolean toStart) {
+        if(toStart) connectionAdapter.addItemToStart(connections);
+        else connectionAdapter.addItem(connections);
+    }
+
+    @Override
     public void showConnection(@NonNull List<UserConnection> connections) {
         connectionAdapter.setItems(connections);
     }
@@ -138,6 +144,16 @@ public class ConnectionsFragment extends BaseFragment implements ConnectionsCont
     @Override
     public void showSnackBar(@StringRes int id) {
         ViewMessage.initSnackBarShort(llRoot, id);
+    }
+
+    @Override
+    public void showSnackBarWithAction(int message, int messageAction, ConnectionsPresenter.OnClickListener onClickListener) {
+        ViewMessage.initSnackBarLongAction(llRoot, message, messageAction, view -> onClickListener.onClick());
+    }
+
+    @Override
+    public UserConnection removeItemFromAdapter(int position) {
+        return connectionAdapter.removeItem(position);
     }
 
     @Override

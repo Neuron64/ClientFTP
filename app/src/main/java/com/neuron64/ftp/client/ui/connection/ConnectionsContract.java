@@ -18,6 +18,8 @@ public interface ConnectionsContract {
 
     interface View extends BaseView<Presenter> {
 
+        void addConnection(@NonNull UserConnection connections, boolean toStart);
+
         void showConnection(@NonNull List<UserConnection> connections);
 
         void showEmptyList();
@@ -29,6 +31,10 @@ public interface ConnectionsContract {
         void hideLoadingIndicator();
 
         void showSnackBar(@StringRes int message);
+
+        void showSnackBarWithAction(@StringRes int message, @StringRes int messageAction, ConnectionsPresenter.OnClickListener onClickListener);
+
+        UserConnection removeItemFromAdapter(int position);
     }
 
     interface Presenter extends BasePresenter<View>{

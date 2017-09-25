@@ -1,5 +1,7 @@
 package com.neuron64.ftp.data.database;
 
+import android.support.annotation.NonNull;
+
 import com.neuron64.ftp.data.model.local.UserConnection;
 
 import java.util.List;
@@ -15,6 +17,7 @@ public interface RealmService {
 
     Single<List<UserConnection>> getAllUserConnection();
 
-    Completable saveConnection(UserConnection userConnection);
+    Completable insertOrUpdateConnection(UserConnection userConnection);
 
+    Completable deleteConnection(@NonNull  String id);
 }
