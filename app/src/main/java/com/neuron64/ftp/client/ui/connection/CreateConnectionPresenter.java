@@ -6,7 +6,7 @@ import android.util.Log;
 import com.neuron64.ftp.client.R;
 import com.neuron64.ftp.client.ui.base.bus.RxBus;
 import com.neuron64.ftp.client.ui.base.bus.event.ButtonEvent;
-import com.neuron64.ftp.client.ui.base.bus.event.ExposeEvent;
+import com.neuron64.ftp.client.ui.base.bus.event.FragmentEvent;
 import com.neuron64.ftp.client.util.Preconditions;
 import com.neuron64.ftp.data.exception.ErrorConnectionFtp;
 import com.neuron64.ftp.domain.exception.InvalidHostException;
@@ -87,7 +87,7 @@ public class CreateConnectionPresenter implements CreateConnectionContract.Prese
     public void sendConnection(String userName, String password, String host, String title, String port) {
         view.updateSubmitButtonViewState(false);
         createConnectionUserCase.init(idConnection, title, host, userName, password, port).execute(
-                connections -> eventBus.send(ExposeEvent.exposeShowConnection(null)),
+                connections -> eventBus.send(FragmentEvent.exposeShowConnection(null)),
                 throwable -> {
                     if(throwable instanceof InvalidHostException){
                         view.showSnackBar(R.string.error_need_host);

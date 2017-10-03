@@ -46,5 +46,7 @@ public interface ConnectionsContract {
         void onChangeConnection(UserConnection connection, int positionAdapter);
 
         void onTestConnection(UserConnection connection, int positionAdapter);
+
+        void clickOnConnection(UserConnection connection);
     }
 }

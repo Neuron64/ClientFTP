@@ -4,8 +4,8 @@ import com.neuron64.ftp.domain.executor.BaseSchedulerProvider;
 import com.neuron64.ftp.domain.interactor.CheckConnectionFtpUseCase;
 import com.neuron64.ftp.domain.interactor.CreateConnectionUserCase;
 import com.neuron64.ftp.domain.interactor.DeleteConnectionUseCase;
-import com.neuron64.ftp.domain.repository.ConnectionRepository;
 import com.neuron64.ftp.domain.interactor.GetAllConnection;
+import com.neuron64.ftp.domain.repository.ConnectionRepository;
 import com.neuron64.ftp.domain.repository.FtpRepository;
 
 import javax.inject.Singleton;

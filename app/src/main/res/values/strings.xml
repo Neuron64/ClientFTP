@@ -14,6 +14,7 @@
     <string name="error_need_host">Нужно заполнить host</string>
     <string name="check_connection">Проверить соединение</string>
     <string name="success">Успешно</string>
+    <string name="error">Ошибка</string>
     <string name="error_connection_connect">Ошибка соединения</string>
     <string name="connection_was_delete">Соединение было удалено</string>
     <string name="error_connection_delete">Ошибка удаления соеденения</string>

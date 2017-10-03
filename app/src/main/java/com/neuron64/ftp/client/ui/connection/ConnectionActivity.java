@@ -5,16 +5,17 @@ import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.MenuItem;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 
 import com.neuron64.ftp.client.App;
 import com.neuron64.ftp.client.R;
 import com.neuron64.ftp.client.ui.base.BaseActivity;
+import com.neuron64.ftp.client.ui.base.Navigator;
 import com.neuron64.ftp.client.ui.base.bus.event.ButtonEvent;
-import com.neuron64.ftp.client.ui.base.bus.event.ExposeEvent;
+import com.neuron64.ftp.client.ui.base.bus.event.FragmentEvent;
+import com.neuron64.ftp.client.ui.base.bus.event.NavigateEvent;
 import com.neuron64.ftp.client.util.ActivityUtils;
 import com.neuron64.ftp.client.util.Constans;
 import com.neuron64.ftp.domain.model.UserConnection;
@@ -78,10 +79,10 @@ public class ConnectionActivity extends BaseActivity {
 
     @Override
     public void handleEvent(@NonNull Object event) {
-        if(event instanceof ExposeEvent){
-            ExposeEvent exposeEvent = (ExposeEvent) event;
+        if(event instanceof FragmentEvent){
+            FragmentEvent exposeEvent = (FragmentEvent) event;
             switch (exposeEvent.code){
-                case ExposeEvent.CREATE_CONNECTION: {
+                case FragmentEvent.CREATE_CONNECTION: {
                     CreateConnectionFragment fragment;
                     if(exposeEvent.data != null && exposeEvent.data.containsKey(Constans.EXTRA_USER_CONNECTION)){
                         UserConnection connection = exposeEvent.data.getParcelable(Constans.EXTRA_USER_CONNECTION);
@@ -93,7 +94,7 @@ public class ConnectionActivity extends BaseActivity {
                     ActivityUtils.addFragmentToActivityWithBackStack(getSupportFragmentManager(), fragment, R.id.contentFrame, null, CreateConnectionFragment.TAG);
                     break;
                 }
-                case ExposeEvent.SHOW_CONNECTIONS: {
+                case FragmentEvent.SHOW_CONNECTIONS: {
                     Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.contentFrame);
                     if(fragment instanceof CreateConnectionFragment){
                         getSupportFragmentManager().popBackStack();
@@ -101,6 +102,11 @@ public class ConnectionActivity extends BaseActivity {
                     break;
                 }
             }
+        }else if(event instanceof NavigateEvent){
+            NavigateEvent navigateEvent = (NavigateEvent) event;
+
+            Navigator navigator = new Navigator();
+            navigator.navigate(this, navigateEvent);
         }
     }
 

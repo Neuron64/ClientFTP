@@ -1,13 +1,13 @@
 package com.neuron64.ftp.client.ui.connection;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.neuron64.ftp.client.R;
 import com.neuron64.ftp.client.ui.base.bus.RxBus;
 import com.neuron64.ftp.client.ui.base.bus.event.ButtonEvent;
-import com.neuron64.ftp.client.ui.base.bus.event.ExposeEvent;
+import com.neuron64.ftp.client.ui.base.bus.event.FragmentEvent;
+import com.neuron64.ftp.client.ui.base.bus.event.NavigateEvent;
 import com.neuron64.ftp.client.util.Constans;
 import com.neuron64.ftp.client.util.Preconditions;
 import com.neuron64.ftp.data.exception.ErrorConnectionFtp;
@@ -23,6 +23,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.CompositeDisposable;
 
 import static com.neuron64.ftp.client.util.Preconditions.checkNotNull;
@@ -106,7 +107,7 @@ public class ConnectionsPresenter implements ConnectionsContract.Presenter{
     public void onChangeConnection(UserConnection connection, int positionAdapter) {
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constans.EXTRA_USER_CONNECTION, connection);
-        eventBus.send(ExposeEvent.exposeCreateConnection(bundle));
+        eventBus.send(FragmentEvent.exposeCreateConnection(bundle));
     }
 
     @Override
@@ -122,6 +123,13 @@ public class ConnectionsPresenter implements ConnectionsContract.Presenter{
                             }
                             Log.e(TAG, "onTestConnection: ", throwable);
                         }, null);
+    }
+
+    @Override
+    public void clickOnConnection(UserConnection userConnection) {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(Constans.EXTRA_USER_CONNECTION, userConnection);
+        eventBus.send(NavigateEvent.navigateOpenDirectory(bundle));
     }
 
     @Override
@@ -162,7 +170,7 @@ public class ConnectionsPresenter implements ConnectionsContract.Presenter{
 
     private void handleEvent(Object event){
         if(event instanceof ButtonEvent){
-            eventBus.send(ExposeEvent.exposeCreateConnection(null));
+            eventBus.send(FragmentEvent.exposeCreateConnection(null));
         }
     }
 

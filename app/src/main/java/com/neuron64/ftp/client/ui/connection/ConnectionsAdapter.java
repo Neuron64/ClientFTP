@@ -3,12 +3,9 @@ package com.neuron64.ftp.client.ui.connection;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.PopupMenu;
-import android.view.ContextMenu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -17,8 +14,6 @@ import com.neuron64.ftp.client.ui.base.BaseAdapter;
 import com.neuron64.ftp.client.ui.base.bus.RxBus;
 import com.neuron64.ftp.client.util.Preconditions;
 import com.neuron64.ftp.domain.model.UserConnection;
-
-import java.sql.Connection;
 
 import butterknife.BindView;
 import butterknife.OnClick;

@@ -23,6 +23,9 @@ public abstract class BaseFragment extends Fragment {
 
     private Unbinder unbinder;
 
+    @Inject
+    protected RxBus rxBus;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

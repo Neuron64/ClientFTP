@@ -9,10 +9,8 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.neuron64.ftp.client.App;
@@ -20,6 +18,7 @@ import com.neuron64.ftp.client.R;
 import com.neuron64.ftp.client.di.component.DaggerViewComponent;
 import com.neuron64.ftp.client.di.module.PresenterModule;
 import com.neuron64.ftp.client.ui.base.BaseFragment;
+import com.neuron64.ftp.client.ui.base.RecyclerItemClickListener;
 import com.neuron64.ftp.client.util.ViewMessage;
 import com.neuron64.ftp.domain.model.UserConnection;
 
@@ -28,7 +27,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 
 import static com.neuron64.ftp.client.util.Preconditions.checkNotNull;
 
@@ -36,7 +34,7 @@ import static com.neuron64.ftp.client.util.Preconditions.checkNotNull;
  * Created by Neuron on 02.09.2017.
  */
 
-public class ConnectionsFragment extends BaseFragment implements ConnectionsContract.View, ConnectionsAdapter.OnItemClickListener{
+public class ConnectionsFragment extends BaseFragment implements ConnectionsContract.View, ConnectionsAdapter.OnItemClickListener, RecyclerItemClickListener.OnItemClickListener {
 
     public static final String TAG = "ConnectionsFragment";
 
@@ -67,6 +65,7 @@ public class ConnectionsFragment extends BaseFragment implements ConnectionsCont
         rvMain.setLayoutManager(new LinearLayoutManager(getContext()));
         rvMain.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         rvMain.setAdapter(connectionAdapter);
+        rvMain.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), rvMain, this));
         return view;
     }
 
@@ -86,7 +85,8 @@ public class ConnectionsFragment extends BaseFragment implements ConnectionsCont
         DaggerViewComponent.builder()
                 .applicationComponent(App.getAppInstance().getAppComponent())
                 .presenterModule(new PresenterModule())
-                .build().inject(this);
+                .build()
+                .inject(this);
     }
 
     @Override
@@ -169,5 +169,17 @@ public class ConnectionsFragment extends BaseFragment implements ConnectionsCont
     @Override
     public void onTestConnection(UserConnection connection, int positionAdapter) {
         presenter.onTestConnection(connection, positionAdapter);
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+        UserConnection connection = connectionAdapter.at(position);
+        presenter.clickOnConnection(connection);
+    }
+
+    @Override
+    public void onLongItemClick(View view, int position) {
+        UserConnection connection = connectionAdapter.at(position);
+        presenter.clickOnConnection(connection);
     }
 }

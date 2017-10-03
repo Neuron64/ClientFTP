@@ -6,6 +6,8 @@ import com.neuron64.ftp.client.ui.connection.ConnectionsContract;
 import com.neuron64.ftp.client.ui.connection.ConnectionsPresenter;
 import com.neuron64.ftp.client.ui.connection.CreateConnectionContract;
 import com.neuron64.ftp.client.ui.connection.CreateConnectionPresenter;
+import com.neuron64.ftp.client.ui.directory.DirectoryContact;
+import com.neuron64.ftp.client.ui.directory.DirectoryPresenter;
 import com.neuron64.ftp.domain.interactor.CheckConnectionFtpUseCase;
 import com.neuron64.ftp.domain.interactor.CreateConnectionUserCase;
 import com.neuron64.ftp.domain.interactor.DeleteConnectionUseCase;
@@ -29,5 +31,9 @@ public class PresenterModule {
     @ViewScope @Provides
     CreateConnectionContract.Presenter createConnection(CreateConnectionUserCase createConnectionUserCase, CheckConnectionFtpUseCase checkConnectionFtpUseCase, RxBus rxBus){
         return new CreateConnectionPresenter(createConnectionUserCase, checkConnectionFtpUseCase, rxBus);
+    }
+
+    DirectoryContact.Presenter showDirectory(RxBus rxBus){
+        return new DirectoryPresenter(rxBus);
     }
 }
