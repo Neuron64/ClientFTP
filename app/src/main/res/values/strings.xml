@@ -23,4 +23,7 @@
     <string name="delete">Удалить</string>
     <string name="test">Тестировать</string>
     <string name="cancel">Отменить</string>
+
+
+    <string name="internal_storage">Internal Storage</string>
 </resources>
