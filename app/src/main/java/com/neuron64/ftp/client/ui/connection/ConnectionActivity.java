@@ -1,14 +1,23 @@
 package com.neuron64.ftp.client.ui.connection;
 
+import android.Manifest;
+import android.content.ContentProviderClient;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.CursorWrapper;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.os.RemoteException;
 import android.provider.DocumentsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
@@ -20,6 +29,7 @@ import com.neuron64.ftp.client.demo.DocumentsProvider;
 import com.neuron64.ftp.client.demo.DocumentsProviderRegistry;
 import com.neuron64.ftp.client.demo.FileSystemProvider;
 import com.neuron64.ftp.client.demo.Root;
+import com.neuron64.ftp.client.demo.docprovider.ExternalStorageProvider;
 import com.neuron64.ftp.client.ui.base.BaseActivity;
 import com.neuron64.ftp.client.ui.base.bus.event.ButtonEvent;
 import com.neuron64.ftp.client.ui.base.bus.event.ExposeEvent;
@@ -53,6 +63,7 @@ public class ConnectionActivity extends BaseActivity {
 
     private static final String FILTER = "application/pdf";
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,27 +76,52 @@ public class ConnectionActivity extends BaseActivity {
             ActivityUtils.addFragmentToActivity(getSupportFragmentManager(), ConnectionsFragment.newInstance(), R.id.contentFrame, ConnectionsFragment.TAG);
         }
 
-        FileSystemProvider.register(this);
+//        getContentResolver().query(ExternalStorageProvider.AUTHORITY, null, )
+//
+//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+//            String[] PERMISSIONS = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.MANAGE_DOCUMENTS,
+//                    Manifest.permission.READ_EXTERNAL_STORAGE};
+//            ActivityCompat.requestPermissions(this, PERMISSIONS, 1);
+//        }else{
+//        }
 
+        ContentProviderClient mExternalStorageClient =
+                getContentResolver().acquireContentProviderClient(ExternalStorageProvider.AUTHORITY);
 
-
-        List<Root> rootList = DocumentsProviderRegistry.get().getAllRoots();
-
-        for (Root root : rootList) {
-            DocumentsProvider documentsProvider = DocumentsProviderRegistry.get().getProvider(root.getDocumentsProvider().getId());
-            try {
-                 Cursor cursor = documentsProvider.queryChildDocuments(root.getDocumentId(), null, DocumentsContract.Document.COLUMN_DISPLAY_NAME, null);
-                int name = cursor.getColumnIndex(DocumentsContract.Document.COLUMN_DISPLAY_NAME);
-                cursor.moveToFirst();
-                DocumentCursor documentCursor = new DocumentCursor(cursor);
-                String nameColumn = documentCursor.getName();
-                Log.d(TAG, "onCreate: " + cursor.toString());
-                Log.d(TAG, "onCreate: " + nameColumn);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
+        Uri contentsUri = DocumentsContract.buildChildDocumentsUri(ExternalStorageProvider.AUTHORITY, "emulated:");
+        try {
+            Cursor cursor = getContentResolver().query(contentsUri, null, null, null);
+            Cursor cursor1 = mExternalStorageClient.query(contentsUri, null, null, null);
+            if(cursor != null && cursor.moveToFirst()){
+                while (cursor.moveToNext()) {
+                    String title = cursor.getString(cursor.getColumnIndex(DocumentsContract.Document.COLUMN_DISPLAY_NAME));
+                    Log.d(TAG, "onCreate: " + title);
+                }
             }
-
+        } catch (RemoteException e) {
+            e.printStackTrace();
         }
+//        FileSystemProvider.register(this);
+
+
+
+//        List<Root> rootList = DocumentsProviderRegistry.get().getAllRoots();
+//
+//        for (Root root : rootList) {
+//            DocumentsProvider documentsProvider = DocumentsProviderRegistry.get().getProvider(root.getDocumentsProvider().getId());
+//            try {
+//                 Cursor cursor = documentsProvider.queryChildDocuments(root.getDocumentId(), null, DocumentsContract.Document.COLUMN_DISPLAY_NAME, null);
+//                int name = cursor.getColumnIndex(DocumentsContract.Document.COLUMN_DISPLAY_NAME);
+//                cursor.moveToFirst();
+//                DocumentCursor documentCursor = new DocumentCursor(cursor);
+//                String nameColumn = documentCursor.getName();
+//                Log.d(TAG, "onCreate: " + cursor.toString());
+//                Log.d(TAG, "onCreate: " + nameColumn);
+//            } catch (FileNotFoundException e) {
+//                e.printStackTrace();
+//            }
+//
+//        }
 
     }
 
