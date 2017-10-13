@@ -36,16 +36,15 @@ public class ExternalStorageProvider extends StorageProvider {
             Root.COLUMN_DOCUMENT_ID, Root.COLUMN_AVAILABLE_BYTES,
     };
 
-    public static final String[] DEFAULT_DOCUMENT_PROJECTION = {
-            Root.COLUMN_ROOT_ID, Root.COLUMN_FLAGS, Root.COLUMN_ICON, Root.COLUMN_TITLE,
-            Root.COLUMN_DOCUMENT_ID, Root.COLUMN_AVAILABLE_BYTES,
+    private static final String[] DEFAULT_DOCUMENT_PROJECTION = new String[] {
+            Document.COLUMN_DOCUMENT_ID, Document.COLUMN_MIME_TYPE, Document.COLUMN_DISPLAY_NAME,
+            Document.COLUMN_LAST_MODIFIED, Document.COLUMN_FLAGS, Document.COLUMN_SIZE, Document.COLUMN_SUMMARY,
     };
 
     private ArrayMap<String, VolumeInfo> roots = new ArrayMap<>();
 
     @Override
     public boolean onCreate() {
-        Log.d(TAG, "onCreate: ");
         updateRoots();
         return true;
     }
@@ -60,8 +59,8 @@ public class ExternalStorageProvider extends StorageProvider {
         List<StorageVolume> storageVolumes = storageManager.getStorageVolumes();
 
         StorageVolumeUtils storageUtils = new StorageVolumeUtils();
-        for (StorageVolume storageVolume : storageVolumes) {
 
+        for (StorageVolume storageVolume : storageVolumes) {
             VolumeInfo volumeInfo = storageUtils.parseStorageVolume(storageVolume);
             roots.put(volumeInfo.getId(), volumeInfo);
         }
@@ -69,11 +68,9 @@ public class ExternalStorageProvider extends StorageProvider {
 
     @Override
     public Cursor queryRoots(String[] projection) throws FileNotFoundException {
-        Log.d(TAG, "queryRoots: ");
         final MatrixCursor result = new MatrixCursor(resolveRootProjection(projection));
         for (VolumeInfo volumeInfo : roots.values()) {
             final MatrixCursor.RowBuilder row = result.newRow();
-
             row.add(Root.COLUMN_ROOT_ID, volumeInfo.getId());
             row.add(Root.COLUMN_TITLE, volumeInfo.getDescription());
             row.add(Root.COLUMN_DOCUMENT_ID, volumeInfo.getPath().getAbsolutePath());
@@ -91,11 +88,8 @@ public class ExternalStorageProvider extends StorageProvider {
 
     @Override
     public Cursor queryChildDocuments(String parentDocumentId, String[] projection, String sortOrder) throws FileNotFoundException {
-        Log.d(TAG, "queryChildDocuments: ");
-
         final File parent = getFileForDocId(parentDocumentId);
-        final MatrixCursor result = new DirectoryCursor(
-                resolveDocumentProjection(projection), parentDocumentId, parent);
+        final MatrixCursor result = new MatrixCursor(resolveDocumentProjection(projection));
 
         for (File file : parent.listFiles()) {
             includeFile(result, null, file);
@@ -103,30 +97,7 @@ public class ExternalStorageProvider extends StorageProvider {
         return result;
     }
 
-    private class DirectoryCursor extends MatrixCursor {
-        private final File mFile;
-
-        public DirectoryCursor(String[] columnNames, String docId, File file) {
-            super(columnNames);
-
-            final Uri notifyUri = DocumentsContract.buildChildDocumentsUri(AUTHORITY, docId);
-            setNotificationUri(getContext().getContentResolver(), notifyUri);
-
-            mFile = file;
-        }
-
-        @Override
-        public void close() {
-            super.close();
-        }
-    }
-
-
     private File getFileForDocId(String docId) throws FileNotFoundException {
-        return getFileForDocId(docId, false);
-    }
-
-    private File getFileForDocId(String docId, boolean visible) throws FileNotFoundException {
         final int splitIndex = docId.indexOf(':', 1);
         final String tag = docId.substring(0, splitIndex);
         final String path = docId.substring(splitIndex + 1);
@@ -219,28 +190,15 @@ public class ExternalStorageProvider extends StorageProvider {
         } else {
             file = getFileForDocId(docId);
         }
-//
-//        DocumentFile documentFile = getDocumentFile(docId, file);
 
-            int flags = 0;
+        int flags = 0;
 
-            final MatrixCursor.RowBuilder row = result.newRow();
-            row.add(Document.COLUMN_DOCUMENT_ID, docId);
-            String fileName = file == null || file.getName().isEmpty()? "fileName" : file.getName();
-            row.add(Document.COLUMN_DISPLAY_NAME, fileName);
-            row.add(Document.COLUMN_SIZE, file.length());
-            row.add(Document.COLUMN_MIME_TYPE, null);
-
-//        row.add(Document.COLUMN_PATH, file.getAbsolutePath());
-            row.add(Document.COLUMN_FLAGS, flags);
-//        if(file.isDirectory() && null != file.list()){
-//            row.add(Document.COLUMN_SUMMARY, FileUtils.formatFileCount(file.list().length));
-//        }
-
-            // Only publish dates reasonably after epoch
-            long lastModified = file.lastModified();
-            if (lastModified > 31536000000L) {
-                row.add(Document.COLUMN_LAST_MODIFIED, lastModified);
-            }
-        }
+        final MatrixCursor.RowBuilder row = result.newRow();
+        row.add(Document.COLUMN_DOCUMENT_ID, docId);
+        row.add(Document.COLUMN_DISPLAY_NAME, file.getName());
+        row.add(Document.COLUMN_SIZE, file.length());
+        row.add(Document.COLUMN_MIME_TYPE, null);
+        row.add(Document.COLUMN_FLAGS, flags);
+        row.add(Document.COLUMN_LAST_MODIFIED, file.lastModified());
+    }
 }
