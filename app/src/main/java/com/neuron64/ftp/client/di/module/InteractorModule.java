@@ -4,7 +4,7 @@ import com.neuron64.ftp.domain.executor.BaseSchedulerProvider;
 import com.neuron64.ftp.domain.interactor.CheckConnectionFtpUseCase;
 import com.neuron64.ftp.domain.interactor.CreateConnectionUserCase;
 import com.neuron64.ftp.domain.interactor.DeleteConnectionUseCase;
-import com.neuron64.ftp.domain.interactor.GetAllConnection;
+import com.neuron64.ftp.domain.interactor.GetAllConnectionUseCase;
 import com.neuron64.ftp.domain.repository.ConnectionRepository;
 import com.neuron64.ftp.domain.repository.FtpRepository;
 
@@ -21,8 +21,8 @@ import dagger.Provides;
 public class InteractorModule {
 
     @Singleton @Provides
-    GetAllConnection getAllConnection(BaseSchedulerProvider schedulerProvider, ConnectionRepository connectionRepository){
-        return new GetAllConnection(schedulerProvider, connectionRepository);
+    GetAllConnectionUseCase getAllConnection(BaseSchedulerProvider schedulerProvider, ConnectionRepository connectionRepository){
+        return new GetAllConnectionUseCase(schedulerProvider, connectionRepository);
     }
 
     @Singleton @Provides

@@ -15,7 +15,7 @@ import com.neuron64.ftp.domain.exception.InvalidHostException;
 import com.neuron64.ftp.domain.interactor.CheckConnectionFtpUseCase;
 import com.neuron64.ftp.domain.interactor.CreateConnectionUserCase;
 import com.neuron64.ftp.domain.interactor.DeleteConnectionUseCase;
-import com.neuron64.ftp.domain.interactor.GetAllConnection;
+import com.neuron64.ftp.domain.interactor.GetAllConnectionUseCase;
 import com.neuron64.ftp.domain.model.UserConnection;
 
 import java.io.IOException;
@@ -41,7 +41,7 @@ public class ConnectionsPresenter implements ConnectionsContract.Presenter{
     private ConnectionsContract.View loginView;
 
     @NonNull
-    private GetAllConnection connectionUseCase;
+    private GetAllConnectionUseCase connectionUseCase;
 
     @NonNull
     private RxBus eventBus;
@@ -58,7 +58,7 @@ public class ConnectionsPresenter implements ConnectionsContract.Presenter{
     private CreateConnectionUserCase createConnectionUserCase;
 
     @Inject
-    public ConnectionsPresenter(GetAllConnection connectionUseCase, RxBus eventBus, DeleteConnectionUseCase deleteConnectionUseCase, CheckConnectionFtpUseCase checkConnectionFtpUseCase, CreateConnectionUserCase createConnectionUserCase) {
+    public ConnectionsPresenter(GetAllConnectionUseCase connectionUseCase, RxBus eventBus, DeleteConnectionUseCase deleteConnectionUseCase, CheckConnectionFtpUseCase checkConnectionFtpUseCase, CreateConnectionUserCase createConnectionUserCase) {
         this.connectionUseCase = checkNotNull(connectionUseCase);
         this.eventBus = Preconditions.checkNotNull(eventBus);
         this.deleteConnectionUseCase = Preconditions.checkNotNull(deleteConnectionUseCase);

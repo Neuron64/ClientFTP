@@ -1,4 +1,4 @@
-package com.neuron64.ftp.client.demo.docprovider;
+package com.neuron64.ftp.data.content_provider;
 
 
 import android.provider.DocumentsProvider;

@@ -11,7 +11,8 @@ import com.neuron64.ftp.client.ui.directory.DirectoryPresenter;
 import com.neuron64.ftp.domain.interactor.CheckConnectionFtpUseCase;
 import com.neuron64.ftp.domain.interactor.CreateConnectionUserCase;
 import com.neuron64.ftp.domain.interactor.DeleteConnectionUseCase;
-import com.neuron64.ftp.domain.interactor.GetAllConnection;
+import com.neuron64.ftp.domain.interactor.GetAllConnectionUseCase;
+import com.neuron64.ftp.domain.interactor.GetDirectoriesUseCase;
 
 import dagger.Module;
 import dagger.Provides;
@@ -24,7 +25,7 @@ import dagger.Provides;
 public class PresenterModule {
 
     @ViewScope @Provides
-    ConnectionsContract.Presenter login(GetAllConnection connectionUseCase, RxBus eventBus, DeleteConnectionUseCase deleteConnectionUseCase, CheckConnectionFtpUseCase checkConnectionFtpUseCase, CreateConnectionUserCase createConnectionUserCase){
+    ConnectionsContract.Presenter login(GetAllConnectionUseCase connectionUseCase, RxBus eventBus, DeleteConnectionUseCase deleteConnectionUseCase, CheckConnectionFtpUseCase checkConnectionFtpUseCase, CreateConnectionUserCase createConnectionUserCase){
         return new ConnectionsPresenter(connectionUseCase, eventBus, deleteConnectionUseCase, checkConnectionFtpUseCase, createConnectionUserCase);
     }
 
@@ -33,7 +34,8 @@ public class PresenterModule {
         return new CreateConnectionPresenter(createConnectionUserCase, checkConnectionFtpUseCase, rxBus);
     }
 
-    DirectoryContact.Presenter showDirectory(RxBus rxBus){
-        return new DirectoryPresenter(rxBus);
+    @ViewScope @Provides
+    DirectoryContact.Presenter showDirectory(RxBus rxBus, GetDirectoriesUseCase getDirectoriesUseCase){
+        return new DirectoryPresenter(rxBus, getDirectoriesUseCase);
     }
 }

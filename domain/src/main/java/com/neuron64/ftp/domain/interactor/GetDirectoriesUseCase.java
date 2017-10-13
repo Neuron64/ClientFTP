@@ -15,12 +15,12 @@ import io.reactivex.annotations.Nullable;
  * Created by yks-11 on 10/13/17.
  */
 
-public class GetDirectoryesUseCase extends SingleUseCase<List<FileSystemDirectory>, String>{
+public class GetDirectoriesUseCase extends SingleUseCase<List<FileSystemDirectory>, String>{
 
     private FileSystemRepository fileSystemRepository;
 
     @Inject
-    public GetDirectoryesUseCase(BaseSchedulerProvider schedulerProvider, FileSystemRepository fileSystemRepository) {
+    public GetDirectoriesUseCase(BaseSchedulerProvider schedulerProvider, FileSystemRepository fileSystemRepository) {
         super(schedulerProvider);
         this.fileSystemRepository = fileSystemRepository;
     }

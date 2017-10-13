@@ -1,21 +1,16 @@
-package com.neuron64.ftp.client.demo.docprovider;
+package com.neuron64.ftp.data.content_provider;
 
 import android.content.Context;
 import android.database.Cursor;
 import android.database.MatrixCursor;
-import android.net.Uri;
 import android.os.CancellationSignal;
 import android.os.ParcelFileDescriptor;
 import android.os.storage.StorageManager;
 import android.os.storage.StorageVolume;
-import android.provider.DocumentsContract;
 import android.provider.DocumentsContract.*;
 import android.provider.DocumentsContract.Root;
-import android.text.TextUtils;
 import android.util.ArrayMap;
 import android.util.Log;
-
-import com.neuron64.ftp.client.BuildConfig;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -29,7 +24,7 @@ public class ExternalStorageProvider extends StorageProvider {
 
     private static final String TAG = "ExternalStorageProvider";
 
-    public static String AUTHORITY = BuildConfig.APPLICATION_ID + ".externalstorage.documents";
+    public static String AUTHORITY = ApplicationInfo.APPLICATION_ID + ".externalstorage.documents";
 
     public static final String[] DEFAULT_ROOT_PROJECTION = {
             Root.COLUMN_ROOT_ID, Root.COLUMN_FLAGS, Root.COLUMN_ICON, Root.COLUMN_TITLE,
@@ -71,10 +66,12 @@ public class ExternalStorageProvider extends StorageProvider {
         final MatrixCursor result = new MatrixCursor(resolveRootProjection(projection));
         for (VolumeInfo volumeInfo : roots.values()) {
             final MatrixCursor.RowBuilder row = result.newRow();
+
             row.add(Root.COLUMN_ROOT_ID, volumeInfo.getId());
             row.add(Root.COLUMN_TITLE, volumeInfo.getDescription());
-            row.add(Root.COLUMN_DOCUMENT_ID, volumeInfo.getPath().getAbsolutePath());
+            row.add(Root.COLUMN_DOCUMENT_ID, volumeInfo.getId());
             row.add(Root.COLUMN_AVAILABLE_BYTES, volumeInfo.getPath().getFreeSpace());
+            row.add(Root.COLUMN_MIME_TYPES, volumeInfo.getPath().getFreeSpace());
         }
 
         return result;
