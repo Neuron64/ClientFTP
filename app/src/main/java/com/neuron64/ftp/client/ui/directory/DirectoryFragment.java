@@ -14,6 +14,8 @@ import com.neuron64.ftp.client.di.module.PresenterModule;
 import com.neuron64.ftp.client.ui.base.BaseFragment;
 import com.neuron64.ftp.client.util.Preconditions;
 
+import javax.inject.Inject;
+
 /**
  * Created by Neuron on 01.10.2017.
  */
@@ -43,7 +45,7 @@ public class DirectoryFragment extends BaseFragment implements DirectoryContact.
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
-    @Override
+    @Inject @Override
     public void attachPresenter(@NonNull DirectoryContact.Presenter presenter) {
         this.presenter = Preconditions.checkNotNull(presenter);
         this.presenter.attachView(this);

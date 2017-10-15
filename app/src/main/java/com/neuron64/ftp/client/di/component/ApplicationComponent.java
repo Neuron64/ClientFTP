@@ -17,9 +17,11 @@ import com.neuron64.ftp.data.mapper.Mapper;
 import com.neuron64.ftp.domain.executor.BaseSchedulerProvider;
 import com.neuron64.ftp.domain.interactor.CreateConnectionUserCase;
 import com.neuron64.ftp.domain.interactor.DeleteConnectionUseCase;
-import com.neuron64.ftp.domain.interactor.GetAllConnection;
+import com.neuron64.ftp.domain.interactor.GetAllConnectionUseCase;
+import com.neuron64.ftp.domain.interactor.GetDirectoriesUseCase;
 import com.neuron64.ftp.domain.model.UserConnection;
 import com.neuron64.ftp.domain.repository.ConnectionRepository;
+import com.neuron64.ftp.domain.repository.FileSystemRepository;
 import com.neuron64.ftp.domain.repository.FtpRepository;
 
 import javax.inject.Singleton;
@@ -48,11 +50,13 @@ public interface ApplicationComponent {
     BaseSchedulerProvider scheduler();
 
     //use case
-    GetAllConnection getAllConnection();
+    GetAllConnectionUseCase getAllConnection();
     CreateConnectionUserCase createConnectionUserCase();
     DeleteConnectionUseCase deleteConnectionUseCase();
+    GetDirectoriesUseCase getDirectoriesUseCase();
 
     //data
+    FileSystemRepository fileSystemRepository();
     ConnectionRepository connectionRepository();
     FtpRepository ftpRepository();
     Mapper<UserConnection, com.neuron64.ftp.data.model.local.UserConnection> mapper();

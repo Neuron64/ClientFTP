@@ -15,12 +15,12 @@ import io.reactivex.schedulers.Schedulers;
  * Created by Neuron on 03.09.2017.
  */
 
-public class GetAllConnection extends SingleUseCase<List<UserConnection>, Void>{
+public class GetAllConnectionUseCase extends SingleUseCase<List<UserConnection>, Void>{
 
     private ConnectionRepository connectionRepository;
 
     @Inject
-    public GetAllConnection(BaseSchedulerProvider schedulerProvider, ConnectionRepository connectionRepository) {
+    public GetAllConnectionUseCase(BaseSchedulerProvider schedulerProvider, ConnectionRepository connectionRepository) {
         super(schedulerProvider);
         this.connectionRepository = connectionRepository;
     }

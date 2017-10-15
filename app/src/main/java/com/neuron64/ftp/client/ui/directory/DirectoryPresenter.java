@@ -1,20 +1,11 @@
 package com.neuron64.ftp.client.ui.directory;
 
-import android.content.ContentResolver;
-import android.content.Context;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.ProviderInfo;
-import android.net.Uri;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.v4.content.CursorLoader;
 import android.util.Log;
 
 import com.neuron64.ftp.client.ui.base.bus.RxBus;
 import com.neuron64.ftp.client.util.Preconditions;
-
-import java.util.List;
+import com.neuron64.ftp.domain.interactor.GetDirectoriesUseCase;
 
 import io.reactivex.disposables.CompositeDisposable;
 
@@ -24,15 +15,20 @@ import io.reactivex.disposables.CompositeDisposable;
 
 public class DirectoryPresenter implements DirectoryContact.Presenter {
 
+    private static final String TAG = "DirectoryPresenter";
+
     private DirectoryContact.View view;
 
     private CompositeDisposable disposable;
 
+    private GetDirectoriesUseCase getDirectoriesUseCase;
+
     @NonNull
     private RxBus rxBus;
 
-    public DirectoryPresenter(@NonNull RxBus rxBus){
+    public DirectoryPresenter(@NonNull RxBus rxBus, @NonNull GetDirectoriesUseCase getDirectoriesUseCase){
         this.rxBus = Preconditions.checkNotNull(rxBus);
+        this.getDirectoriesUseCase = Preconditions.checkNotNull(getDirectoriesUseCase);
     }
 
     @Override
@@ -43,6 +39,15 @@ public class DirectoryPresenter implements DirectoryContact.Presenter {
     @Override
     public void subscribe() {
         disposable = new CompositeDisposable();
+        getDirectoriesUseCase.execute(fileSystemDirectories -> {
+            Log.d(TAG, "subscribe: " + fileSystemDirectories.toString());
+        }, throwable -> {
+            Log.e(TAG, "subscribe: throwable", throwable);
+        }, accept -> {
+            Log.d(TAG, "subscribe: accept");
+        }, () -> {
+            Log.d(TAG, "subscribe: run ");
+        }, null);
     }
 
     @Override

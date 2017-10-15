@@ -3,8 +3,11 @@
     package="com.neuron64.ftp.client">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.MANAGE_DOCUMENTS" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <permission android:name="android.permission.MANAGE_DOCUMENTS" android:protectionLevel="signature" />
 
     <application
         android:name=".App"
@@ -15,14 +18,26 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".ui.connection.ConnectionActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.directory.DirectoryActivity" />
+        <activity android:name=".ui.directory.DirectoryActivity"/>
+
+        <provider
+            android:name="com.neuron64.ftp.data.content_provider.ExternalStorageProvider"
+            android:authorities="com.neuron64.ftp.client.externalstorage.documents"
+            android:exported="true"
+            android:grantUriPermissions="true"
+            android:permission="android.permission.MANAGE_DOCUMENTS">
+            <intent-filter>
+                <action android:name="dev.dworks.apps.anexplorer.action.DOCUMENTS_PROVIDER" />
+            </intent-filter>
+        </provider>
     </application>
 
 </manifest>
