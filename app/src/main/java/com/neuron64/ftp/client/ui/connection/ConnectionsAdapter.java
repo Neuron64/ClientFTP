@@ -28,6 +28,7 @@ public class ConnectionsAdapter extends BaseAdapter<UserConnection> {
         void onDeleteConnection(UserConnection connection, int positionAdapter);
         void onChangeConnection(UserConnection connection, int positionAdapter);
         void onTestConnection(UserConnection connection, int positionAdapter);
+        void onClickElement(UserConnection connection, int positionAdapter);
     }
 
     @NonNull
@@ -79,22 +80,31 @@ public class ConnectionsAdapter extends BaseAdapter<UserConnection> {
             popup.show();
         }
 
+        @OnClick(R.id.root_view)
+        public void onClickElement(View view){
+            int position = getAdapterPosition();
+            UserConnection connection = at(position);
+            onItemClickListener.onClickElement(connection, position);
+        }
+
         @Override
         public boolean onMenuItemClick(MenuItem item) {
-            UserConnection connection = at(getAdapterPosition());
+            int position = getAdapterPosition();
+
+            UserConnection connection = at(position);
 
             switch (item.getItemId()){
                 case R.id.action_change:{
-                    onItemClickListener.onChangeConnection(connection, getAdapterPosition());
-                    break;
+                    onItemClickListener.onChangeConnection(connection, position);
+                    return true;
                 }
                 case R.id.action_delete:{
-                    onItemClickListener.onDeleteConnection(connection, getAdapterPosition());
-                    break;
+                    onItemClickListener.onDeleteConnection(connection, position);
+                    return true;
                 }
                 case R.id.action_test:{
-                    onItemClickListener.onTestConnection(connection, getAdapterPosition());
-                    break;
+                    onItemClickListener.onTestConnection(connection, position);
+                    return true;
                 }
             }
             return false;
