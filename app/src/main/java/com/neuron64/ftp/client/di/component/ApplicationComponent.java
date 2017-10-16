@@ -49,16 +49,9 @@ public interface ApplicationComponent {
     RxBus rxBus();
     BaseSchedulerProvider scheduler();
 
-    //use case
-    GetAllConnectionUseCase getAllConnection();
-    CreateConnectionUserCase createConnectionUserCase();
-    DeleteConnectionUseCase deleteConnectionUseCase();
-    GetDirectoriesUseCase getDirectoriesUseCase();
-
     //data
-    FileSystemRepository fileSystemRepository();
     ConnectionRepository connectionRepository();
     FtpRepository ftpRepository();
-    Mapper<UserConnection, com.neuron64.ftp.data.model.local.UserConnection> mapper();
-    RealmService realmService();
+//    Mapper<UserConnection, com.neuron64.ftp.data.model.local.UserConnection> mapper();
+//    RealmService realmService();
 }

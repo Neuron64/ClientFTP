@@ -16,7 +16,8 @@ import dagger.Provides;
 @Module
 public class MapperModule {
 
-    @Singleton @Provides Mapper<UserConnection, com.neuron64.ftp.data.model.local.UserConnection> connectionMapper(){
+    @Singleton @Provides
+    Mapper<UserConnection, com.neuron64.ftp.data.model.local.UserConnection> connectionMapper(){
         return new ConnectionMapper();
     }
 }

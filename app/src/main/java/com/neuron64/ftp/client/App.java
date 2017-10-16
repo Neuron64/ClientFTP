@@ -42,7 +42,8 @@ public class App extends Application{
 
     public void initializationAppComponent(){
         if(applicationComponent == null){
-            applicationComponent = DaggerApplicationComponent.builder()
+            applicationComponent = DaggerApplicationComponent
+                    .builder()
                     .applicationModule(new ApplicationModule(this))
                     .dataModule(new DataModule())
                     .interactorModule(new InteractorModule())

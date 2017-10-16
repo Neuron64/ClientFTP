@@ -2,6 +2,7 @@ package com.neuron64.ftp.client.di.module;
 
 import android.content.Context;
 
+import com.neuron64.ftp.client.di.scope.DirectoryScope;
 import com.neuron64.ftp.data.database.RealmService;
 import com.neuron64.ftp.data.mapper.Mapper;
 import com.neuron64.ftp.data.repository.ConnectionDataRepository;
@@ -27,7 +28,7 @@ public class DataModule {
         return new ConnectionDataRepository(connectionMapper, realmService);
     }
 
-    @Singleton @Provides
+    @DirectoryScope @Provides
     FileSystemRepository fileSystemRepository(Context context){
         return new FileSystemDataRepository(context);
     }
