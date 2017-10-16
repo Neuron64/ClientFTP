@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 
 import com.neuron64.ftp.client.App;
 import com.neuron64.ftp.client.R;
+import com.neuron64.ftp.client.di.component.DaggerApplicationComponent;
 import com.neuron64.ftp.client.di.component.DaggerDirectoryComponent;
 import com.neuron64.ftp.client.di.component.DaggerViewComponent;
 import com.neuron64.ftp.client.di.module.PresenterModule;

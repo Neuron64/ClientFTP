@@ -55,12 +55,6 @@ public class ConnectionActivity extends BaseActivity {
         if(savedInstanceState == null){
             ActivityUtils.addFragmentToActivity(getSupportFragmentManager(), ConnectionsFragment.newInstance(), R.id.contentFrame, ConnectionsFragment.TAG);
         }
-
-//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-//            String[] PERMISSIONS = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.MANAGE_DOCUMENTS,
-//                    Manifest.permission.READ_EXTERNAL_STORAGE};
-//            ActivityCompat.requestPermissions(this, PERMISSIONS, 1);
-//        }
     }
 
     @OnClick(R.id.fab)

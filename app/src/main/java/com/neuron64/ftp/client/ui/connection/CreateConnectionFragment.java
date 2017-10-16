@@ -58,8 +58,9 @@ public class CreateConnectionFragment extends BaseFragment implements CreateConn
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+        View view = super.onCreateView(inflater, container, savedInstanceState);
         setHasOptionsMenu(true);
-        return super.onCreateView(inflater, container, savedInstanceState);
+        return view;
     }
 
     @Override
