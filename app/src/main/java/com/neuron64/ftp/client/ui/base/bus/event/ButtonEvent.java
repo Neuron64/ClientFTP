@@ -21,7 +21,8 @@ public class ButtonEvent {
     }
 
     public enum TypeButtonEvent{
-        FLOATING_BN
+        FLOATING_BN,
+        ON_BACK_PRESSED
     }
 
 }

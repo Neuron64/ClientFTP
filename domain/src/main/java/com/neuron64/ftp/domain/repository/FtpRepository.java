@@ -8,8 +8,8 @@ import io.reactivex.annotations.Nullable;
  * Created by Neuron on 24.09.2017.
  */
 
-public interface FtpRepository {
+public interface FtpRepository extends FileSystemRepository{
 
-    Completable checkConnection(@NonNull String host, @Nullable String username, @Nullable String password, @Nullable Integer port);
+    Completable testConnection(@NonNull String host, @Nullable String username, @Nullable String password, @Nullable Integer port);
 
 }

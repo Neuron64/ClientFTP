@@ -45,6 +45,6 @@ public class InteractorModule {
 
     @DirectoryScope @Provides
     GetDirectoriesUseCase getDirectoriesUseCase(BaseSchedulerProvider schedulerProvider, FileSystemRepository fileSystemRepository){
-        return new GetDirectoriesUseCase(schedulerProvider, fileSystemRepository);
+        return new GetDirectoriesUseCase(fileSystemRepository, schedulerProvider);
     }
 }

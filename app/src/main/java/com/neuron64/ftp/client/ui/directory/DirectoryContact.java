@@ -27,6 +27,9 @@ public interface DirectoryContact {
 
         void hideLoadingIndicator();
 
+        void finishActivity();
+
+        void clearRecyclerView();
     }
 
     interface Presenter extends BasePresenter<View>{
@@ -35,6 +38,7 @@ public interface DirectoryContact {
 
         void clickFile(FileSystemDirectory file);
 
+        void clickHome();
     }
 
 }
