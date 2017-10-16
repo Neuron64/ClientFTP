@@ -4,8 +4,11 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.neuron64.ftp.client.ui.base.bus.RxBus;
+import com.neuron64.ftp.client.ui.base.bus.event.ButtonEvent;
+import com.neuron64.ftp.client.ui.base.bus.event.FragmentEvent;
 import com.neuron64.ftp.client.util.Preconditions;
 import com.neuron64.ftp.domain.interactor.GetDirectoriesUseCase;
+import com.neuron64.ftp.domain.model.FileSystemDirectory;
 
 import io.reactivex.disposables.CompositeDisposable;
 
@@ -24,10 +27,10 @@ public class DirectoryPresenter implements DirectoryContact.Presenter {
     private GetDirectoriesUseCase getDirectoriesUseCase;
 
     @NonNull
-    private RxBus rxBus;
+    private RxBus eventBus;
 
     public DirectoryPresenter(@NonNull RxBus rxBus, @NonNull GetDirectoriesUseCase getDirectoriesUseCase){
-        this.rxBus = Preconditions.checkNotNull(rxBus);
+        this.eventBus = Preconditions.checkNotNull(rxBus);
         this.getDirectoriesUseCase = Preconditions.checkNotNull(getDirectoriesUseCase);
     }
 
@@ -39,15 +42,22 @@ public class DirectoryPresenter implements DirectoryContact.Presenter {
     @Override
     public void subscribe() {
         disposable = new CompositeDisposable();
-        getDirectoriesUseCase.execute(fileSystemDirectories -> {
-            Log.d(TAG, "subscribe: " + fileSystemDirectories.toString());
-        }, throwable -> {
-            Log.e(TAG, "subscribe: throwable", throwable);
-        }, accept -> {
-            Log.d(TAG, "subscribe: accept");
-        }, () -> {
-            Log.d(TAG, "subscribe: run ");
-        }, null);
+        disposable.add(eventBus.asFlowable().subscribe(this::handleEvent));
+
+        initData();
+    }
+
+    private void initData(){
+        goToFile(null);
+    }
+
+    public void goToFile(String directory){
+        getDirectoriesUseCase.execute(fileSystemDirectories -> view.showFiles(fileSystemDirectories),
+                throwable -> {
+                    Log.e(TAG, "subscribe: throwable", throwable);
+                    view.showEmptyList();
+                    view.showError();
+                }, accept -> view.showLoadingIndicator(), () -> view.hideLoadingIndicator(), directory);
     }
 
     @Override
@@ -55,4 +65,17 @@ public class DirectoryPresenter implements DirectoryContact.Presenter {
         disposable.dispose();
     }
 
+    @Override
+    public RxBus getEventBus() {
+        return eventBus;
+    }
+
+    @Override
+    public void clickFile(FileSystemDirectory file) {
+        goToFile(file.getDocumentId());
+    }
+
+    private void handleEvent(Object event){
+        //Empty
+    }
 }

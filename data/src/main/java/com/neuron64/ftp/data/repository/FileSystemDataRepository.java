@@ -28,16 +28,20 @@ public class FileSystemDataRepository implements FileSystemRepository{
 
     private Context context;
 
+    private String nowDirectory;
+
     @Inject
     public FileSystemDataRepository(Context context){
         this.context = context;
+        this.nowDirectory = "emulated:";
     }
 
     @Override
     public Single<List<FileSystemDirectory>> getExternalStorageFiles(String directoryId) {
         return Single.fromCallable(() -> {
             List<FileSystemDirectory> fileSystemDirectories = new ArrayList<>();
-            String rootDirectory = directoryId == null ? "emulated:" : directoryId;
+            String rootDirectory = directoryId == null ? nowDirectory : directoryId;
+            nowDirectory = rootDirectory;
 
             Uri contentsUri = DocumentsContract.buildChildDocumentsUri(ExternalStorageProvider.AUTHORITY, rootDirectory);
             Cursor cursor = context.getContentResolver().query(contentsUri, null, null, null);
