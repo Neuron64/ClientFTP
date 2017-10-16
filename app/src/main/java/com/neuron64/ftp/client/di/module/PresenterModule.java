@@ -1,5 +1,6 @@
 package com.neuron64.ftp.client.di.module;
 
+import com.neuron64.ftp.client.di.scope.DirectoryScope;
 import com.neuron64.ftp.client.di.scope.ViewScope;
 import com.neuron64.ftp.client.ui.base.bus.RxBus;
 import com.neuron64.ftp.client.ui.connection.ConnectionsContract;
@@ -34,7 +35,7 @@ public class PresenterModule {
         return new CreateConnectionPresenter(createConnectionUserCase, checkConnectionFtpUseCase, rxBus);
     }
 
-    @ViewScope @Provides
+    @DirectoryScope @Provides
     DirectoryContact.Presenter showDirectory(RxBus rxBus, GetDirectoriesUseCase getDirectoriesUseCase){
         return new DirectoryPresenter(rxBus, getDirectoriesUseCase);
     }

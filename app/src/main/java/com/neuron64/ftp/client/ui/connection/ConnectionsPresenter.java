@@ -115,13 +115,13 @@ public class ConnectionsPresenter implements ConnectionsContract.Presenter{
         checkConnectionFtpUseCase.init(connection.getHost(), connection.getUserName(), connection.getPassword(), connection.getPort()).
                 execute(() -> loginView.showSnackBar(R.string.success),
                         throwable -> {
+                            Log.e(TAG, "onTestConnection: ", throwable);
                             if(throwable instanceof InvalidHostException){
                                 loginView.showSnackBar(R.string.error_need_host);
                             }else if(throwable instanceof ErrorConnectionFtp ||
                                     throwable instanceof IOException){
                                 loginView.showSnackBar(R.string.error_connection_connect);
                             }
-                            Log.e(TAG, "onTestConnection: ", throwable);
                         }, null);
     }
 
