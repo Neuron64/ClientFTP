@@ -43,7 +43,6 @@ public class ConnectionActivity extends BaseActivity {
 
     private Unbinder unbinder;
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

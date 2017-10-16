@@ -43,7 +43,7 @@ public class CheckConnectionFtpUseCase extends CompletableUseCase<Void>{
     @Override
     public Completable buildCompletable(Void aVoid) {
         Integer myPort = port.isEmpty() ? null : Integer.parseInt(port);
-        return validate().andThen(repository.checkConnection(host, username, password, myPort));
+        return validate().andThen(repository.testConnection(host, username, password, myPort));
     }
 
     private Completable validate() {

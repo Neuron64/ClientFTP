@@ -84,4 +84,9 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseAdapter<T>
         notifyItemRemoved(position);
         return object;
     }
+
+    public void clearItems(){
+        items.clear();
+        notifyDataSetChanged();
+    }
 }

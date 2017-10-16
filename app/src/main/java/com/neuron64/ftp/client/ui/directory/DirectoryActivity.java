@@ -7,15 +7,21 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 
 import com.neuron64.ftp.client.App;
 import com.neuron64.ftp.client.R;
 import com.neuron64.ftp.client.ui.base.BaseActivity;
+import com.neuron64.ftp.client.ui.base.bus.event.ButtonEvent;
 import com.neuron64.ftp.client.util.ActivityUtils;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+
+import static com.neuron64.ftp.client.ui.base.bus.event.ButtonEvent.buttonEvent;
 
 /**
  * Created by Neuron on 01.10.2017.
@@ -35,6 +41,8 @@ public class DirectoryActivity extends BaseActivity{
         unbinder = ButterKnife.bind(this);
 
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             String[] PERMISSIONS = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.MANAGE_DOCUMENTS,
@@ -47,6 +55,21 @@ public class DirectoryActivity extends BaseActivity{
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        eventBus.send(buttonEvent(ButtonEvent.TypeButtonEvent.ON_BACK_PRESSED));
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:{
+                onBackPressed();
+                return true;
+            }
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     protected void onDestroy() {

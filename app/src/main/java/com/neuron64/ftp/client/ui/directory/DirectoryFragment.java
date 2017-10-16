@@ -4,20 +4,20 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.neuron64.ftp.client.App;
 import com.neuron64.ftp.client.R;
-import com.neuron64.ftp.client.di.component.DaggerApplicationComponent;
 import com.neuron64.ftp.client.di.component.DaggerDirectoryComponent;
-import com.neuron64.ftp.client.di.component.DaggerViewComponent;
 import com.neuron64.ftp.client.di.module.PresenterModule;
 import com.neuron64.ftp.client.ui.base.BaseFragment;
 import com.neuron64.ftp.client.ui.base.RecyclerItemClickListener;
@@ -50,7 +50,6 @@ public class DirectoryFragment extends BaseFragment implements DirectoryContact.
 
     public static DirectoryFragment newInstance() {
         Bundle args = new Bundle();
-
         DirectoryFragment fragment = new DirectoryFragment();
         fragment.setArguments(args);
         return fragment;
@@ -67,12 +66,30 @@ public class DirectoryFragment extends BaseFragment implements DirectoryContact.
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
 
+        setHasOptionsMenu(true);
+
         rvContent.setLayoutManager(new LinearLayoutManager(getContext()));
         rvContent.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         rvContent.setAdapter(directoryAdapter);
         rvContent.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), rvContent, this));
 
         return view;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:{
+                presenter.clickHome();
+                return true;
+            }
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Inject @Override
@@ -139,6 +156,16 @@ public class DirectoryFragment extends BaseFragment implements DirectoryContact.
     @Override
     public void hideLoadingIndicator() {
         llProgressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void finishActivity() {
+        getActivity().finish();
+    }
+
+    @Override
+    public void clearRecyclerView() {
+        directoryAdapter.clearItems();
     }
 
     @Override
