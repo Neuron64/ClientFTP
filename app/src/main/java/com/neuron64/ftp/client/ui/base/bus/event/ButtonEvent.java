@@ -8,16 +8,27 @@ public class ButtonEvent {
 
     private TypeButtonEvent typeButtonEvent;
 
-    private ButtonEvent(TypeButtonEvent typeButtonEvent){
+    private String nameClass;
+
+    private ButtonEvent(TypeButtonEvent typeButtonEvent, String nameClass){
         this.typeButtonEvent = typeButtonEvent;
+        this.nameClass = nameClass;
     }
 
     public static ButtonEvent buttonEvent(TypeButtonEvent typeButtonEvent){
-        return new ButtonEvent(typeButtonEvent);
+        return new ButtonEvent(typeButtonEvent, null);
+    }
+
+    public static ButtonEvent buttonEvent(TypeButtonEvent typeButtonEvent, String nameClass){
+        return new ButtonEvent(typeButtonEvent, nameClass);
     }
 
     public TypeButtonEvent getTypeButtonEvent() {
         return typeButtonEvent;
+    }
+
+    public String getNameClass() {
+        return nameClass;
     }
 
     public enum TypeButtonEvent{

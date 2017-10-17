@@ -9,9 +9,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import io.reactivex.Single;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.annotations.Nullable;
-import io.reactivex.functions.Consumer;
 
 /**
  * Created by yks-11 on 10/13/17.

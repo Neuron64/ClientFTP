@@ -13,12 +13,15 @@ import com.neuron64.ftp.client.di.module.RealmModule;
 import com.neuron64.ftp.client.ui.base.BaseActivity;
 import com.neuron64.ftp.client.ui.base.BaseFragment;
 import com.neuron64.ftp.client.ui.base.bus.RxBus;
+import com.neuron64.ftp.data.mapper.Mapper;
 import com.neuron64.ftp.data.network.FtpClientManager;
-import com.neuron64.ftp.data.network.IFtpClientManager;
 import com.neuron64.ftp.domain.executor.BaseSchedulerProvider;
+import com.neuron64.ftp.domain.model.FileSystemDirectory;
+import com.neuron64.ftp.domain.model.UserConnection;
 import com.neuron64.ftp.domain.repository.ConnectionRepository;
 import com.neuron64.ftp.domain.repository.FtpRepository;
 
+import org.apache.commons.net.ftp.FTPFile;
 
 import javax.inject.Singleton;
 
@@ -50,6 +53,7 @@ public interface ApplicationComponent {
     //data
     ConnectionRepository connectionRepository();
     FtpRepository ftpRepository();
-//    Mapper<UserConnection, com.neuron64.ftp.data.model.local.UserConnection> mapper();
+    Mapper<UserConnection, com.neuron64.ftp.data.model.local.UserConnection> mapper();
+    Mapper<FileSystemDirectory, FTPFile> mapperFtp();
 //    RealmService realmService();
 }

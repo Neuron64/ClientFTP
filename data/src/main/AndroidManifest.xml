@@ -1,2 +1,2 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="client.ftp.neuron64.com.data" />
+<manifest
+    package="client.ftp.neuron64.com.data"/>

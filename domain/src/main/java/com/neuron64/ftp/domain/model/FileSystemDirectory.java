@@ -1,7 +1,5 @@
 package com.neuron64.ftp.domain.model;
 
-import com.neuron64.ftp.domain.repository.FileSystemRepository;
-
 /**
  * Created by yks-11 on 10/13/17.
  */

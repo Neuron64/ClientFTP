@@ -24,7 +24,7 @@ public abstract class CompletableUseCase<Params> {
         buildCompletable(params)
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
-                .subscribe(onComplete,onError);
+                .subscribe(onComplete, onError);
     }
 
     public abstract Completable buildCompletable(Params params);

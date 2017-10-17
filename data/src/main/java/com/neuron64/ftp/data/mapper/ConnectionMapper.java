@@ -3,10 +3,7 @@ package com.neuron64.ftp.data.mapper;
 
 import com.neuron64.ftp.domain.model.UserConnection;
 
-import javax.inject.Inject;
 import javax.inject.Singleton;
-
-import io.reactivex.functions.Function;
 
 
 /**

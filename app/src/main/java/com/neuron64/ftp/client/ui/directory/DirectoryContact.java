@@ -8,12 +8,12 @@ import com.neuron64.ftp.domain.model.FileSystemDirectory;
 import java.util.List;
 
 /**
- * Created by Neuron on 01.10.2017.
+ * Created by yks-11 on 10/17/17.
  */
 
-public interface DirectoryContact {
+public interface DirectoryContact{
 
-    interface View extends BaseView<Presenter>{
+    interface BaseDirectoryView<P extends BaseDirectoryPresenter<?>> extends BaseView<P> {
 
         void showFiles(List<FileSystemDirectory> files);
 
@@ -32,7 +32,7 @@ public interface DirectoryContact {
         void clearRecyclerView();
     }
 
-    interface Presenter extends BasePresenter<View>{
+    interface BaseDirectoryPresenter<V extends BaseView> extends BasePresenter<V> {
 
         RxBus getEventBus();
 
@@ -40,5 +40,4 @@ public interface DirectoryContact {
 
         void clickHome();
     }
-
 }

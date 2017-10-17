@@ -1,15 +1,11 @@
 package com.neuron64.ftp.data.network;
 
-import android.util.Log;
-
 import com.neuron64.ftp.data.exception.ErrorConnectionFtp;
 
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
 
 import java.io.IOException;
-import java.net.SocketException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 

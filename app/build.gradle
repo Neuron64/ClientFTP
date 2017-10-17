@@ -37,6 +37,7 @@ dependencies {
 
     implementation "com.jakewharton.rxbinding2:rxbinding-design:$rxbindingDesignVersion"
     implementation "com.google.dagger:dagger:$dagger2Version"
+    implementation "commons-net:commons-net:$apacheCommonsNetVersion"
     annotationProcessor "com.google.dagger:dagger-compiler:$dagger2Version"
     implementation "com.jakewharton.rxrelay2:rxrelay:$rxelayVersion"
     implementation "com.jakewharton.picasso:picasso2-okhttp3-downloader:$okhttp3DownloaderVersion"

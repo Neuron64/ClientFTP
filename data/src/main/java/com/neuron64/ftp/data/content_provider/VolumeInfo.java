@@ -1,7 +1,5 @@
 package com.neuron64.ftp.data.content_provider;
 
-import android.os.UserHandle;
-
 import java.io.File;
 
 /**

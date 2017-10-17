@@ -1,43 +1,45 @@
 package com.neuron64.ftp.client.ui.directory;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.neuron64.ftp.client.ui.base.bus.RxBus;
 import com.neuron64.ftp.client.ui.base.bus.event.ButtonEvent;
 import com.neuron64.ftp.client.util.Preconditions;
-import com.neuron64.ftp.data.exception.ErrorThisIsRootDirectory;
-import com.neuron64.ftp.domain.interactor.GetDirectoriesUseCase;
 import com.neuron64.ftp.domain.model.FileSystemDirectory;
 
 import io.reactivex.disposables.CompositeDisposable;
 
 /**
- * Created by Neuron on 01.10.2017.
+ * Created by yks-11 on 10/17/17.
  */
 
-public class DirectoryPresenter implements DirectoryContact.Presenter {
+public abstract class DirectoryPresenter<V extends DirectoryContact.BaseDirectoryView> implements DirectoryContact.BaseDirectoryPresenter<V>{
 
-    private static final String TAG = "DirectoryPresenter";
+    private static final String TAG = "DirectoryFileSystemPresenter";
 
-    private DirectoryContact.View view;
+    protected abstract void getRootDirectory();
 
-    private CompositeDisposable disposable;
+    protected abstract void getNextDirectory(String directory);
 
-    private GetDirectoriesUseCase getDirectoriesUseCase;
+    protected abstract void getPreviousDirectory();
+
+    protected abstract String getSimpleNameClass();
+
+    protected V view;
+
+    protected CompositeDisposable disposable;
 
     @NonNull
-    private RxBus eventBus;
+    protected RxBus eventBus;
 
-    private int lvlFolder;
+    protected int lvlFolder;
 
-    public DirectoryPresenter(@NonNull RxBus rxBus, @NonNull GetDirectoriesUseCase getDirectoriesUseCase){
+    public DirectoryPresenter(@NonNull RxBus rxBus){
         this.eventBus = Preconditions.checkNotNull(rxBus);
-        this.getDirectoriesUseCase = Preconditions.checkNotNull(getDirectoriesUseCase);
     }
 
     @Override
-    public void attachView(@NonNull DirectoryContact.View view) {
+    public void attachView(@NonNull V view) {
         this.view = Preconditions.checkNotNull(view);
     }
 
@@ -57,7 +59,6 @@ public class DirectoryPresenter implements DirectoryContact.Presenter {
     @Override
     public void unsubscribe() {
         disposable.dispose();
-        getDirectoriesUseCase.dispose();
     }
 
     @Override @NonNull
@@ -80,7 +81,9 @@ public class DirectoryPresenter implements DirectoryContact.Presenter {
             ButtonEvent buttonEvent = (ButtonEvent) event;
             switch (buttonEvent.getTypeButtonEvent()){
                 case ON_BACK_PRESSED:{
-                    goToPreviousIfNotRoot();
+                    if(buttonEvent.getNameClass() != null && getSimpleNameClass().equals(buttonEvent.getNameClass())) {
+                        goToPreviousIfNotRoot();
+                    }
                     break;
                 }
             }
@@ -93,55 +96,5 @@ public class DirectoryPresenter implements DirectoryContact.Presenter {
         }else{
             view.finishActivity();
         }
-    }
-
-    private void getRootDirectory(){
-        getDirectoriesUseCase.executeRootDirectory(fileSystemDirectories -> {
-                    lvlFolder = 0;
-                    view.showFiles(fileSystemDirectories);
-                },
-                throwable -> {
-                    Log.e(TAG, "subscribe getRootDirectory: throwable", throwable);
-                    view.clearRecyclerView();
-                    view.showEmptyList();
-                    view.showError();
-                },
-                disposable1 -> view.showLoadingIndicator(),
-                () -> view.hideLoadingIndicator());
-    }
-
-    private void getNextDirectory(String directory){
-        getDirectoriesUseCase.executeNextDirectory(fileSystemDirectories -> {
-                    lvlFolder++;
-                    view.showFiles(fileSystemDirectories);
-                },
-                throwable -> {
-                    Log.e(TAG, "subscribe getNextDirectory: throwable", throwable);
-                    view.clearRecyclerView();
-                    view.showEmptyList();
-                    view.showError();
-                },
-                disposable1 -> view.showLoadingIndicator(),
-                () -> view.hideLoadingIndicator(),
-                directory);
-    }
-
-    private void getPreviousDirectory(){
-        getDirectoriesUseCase.executePreviousDirectory(fileSystemDirectories -> {
-                    lvlFolder--;
-                    view.showFiles(fileSystemDirectories);
-                },
-                throwable -> {
-                    if(throwable instanceof ErrorThisIsRootDirectory){
-                        view.finishActivity();
-                    }else{
-                        Log.e(TAG, "subscribe getPreviousDirectory: throwable", throwable);
-                        view.clearRecyclerView();
-                        view.showEmptyList();
-                        view.showError();
-                    }
-                },
-                disposable1 -> view.showLoadingIndicator(),
-                () -> view.hideLoadingIndicator());
     }
 }

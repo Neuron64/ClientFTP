@@ -2,7 +2,6 @@ package com.neuron64.ftp.data.network;
 
 import com.neuron64.ftp.data.exception.ErrorConnectionFtp;
 
-import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
 
 import java.io.IOException;
