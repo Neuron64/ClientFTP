@@ -8,58 +8,43 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.neuron64.ftp.client.App;
 import com.neuron64.ftp.client.R;
-import com.neuron64.ftp.client.di.component.DaggerDirectoryComponent;
-import com.neuron64.ftp.client.di.module.PresenterModule;
+import com.neuron64.ftp.client.ui.base.BaseAdapter;
 import com.neuron64.ftp.client.ui.base.BaseFragment;
 import com.neuron64.ftp.client.ui.base.RecyclerItemClickListener;
-import com.neuron64.ftp.client.util.Preconditions;
 import com.neuron64.ftp.client.util.ViewMessage;
 import com.neuron64.ftp.domain.model.FileSystemDirectory;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
 import butterknife.BindView;
 
 /**
- * Created by Neuron on 01.10.2017.
+ * Created by yks-11 on 10/17/17.
  */
 
-public class DirectoryFragment extends BaseFragment implements DirectoryContact.View, RecyclerItemClickListener.OnItemClickListener{
+public abstract class DirectoryFragment<A extends BaseAdapter<FileSystemDirectory>,
+        P extends DirectoryContact.BaseDirectoryPresenter<?>> extends BaseFragment
+        implements DirectoryContact.BaseDirectoryView<P>,
+        RecyclerItemClickListener.OnItemClickListener{
 
-    public static final String TAG = "DirectoryFragment";
+    @Override
+    public abstract void initializeDependencies();
 
-    private DirectoryContact.Presenter presenter;
+    public abstract void attachPresenter(@NonNull P presenter);
 
-    private DirectoryAdapter directoryAdapter;
+    protected P presenter;
+
+    protected A directoryAdapter;
 
     @BindView(R.id.rv_content) RecyclerView rvContent;
     @BindView(R.id.cl_root) ConstraintLayout clRoot;
     @BindView(R.id.ll_progress_bar) LinearLayout llProgressBar;
     @BindView(R.id.ll_empty_list) LinearLayout llEmptyList;
-
-    public static DirectoryFragment newInstance() {
-        Bundle args = new Bundle();
-        DirectoryFragment fragment = new DirectoryFragment();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        this.directoryAdapter = new DirectoryAdapter(getContext(), presenter.getEventBus());
-    }
 
     @Nullable
     @Override
@@ -74,28 +59,6 @@ public class DirectoryFragment extends BaseFragment implements DirectoryContact.
         rvContent.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), rvContent, this));
 
         return view;
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case android.R.id.home:{
-                presenter.clickHome();
-                return true;
-            }
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Inject @Override
-    public void attachPresenter(@NonNull DirectoryContact.Presenter presenter) {
-        this.presenter = Preconditions.checkNotNull(presenter);
-        this.presenter.attachView(this);
     }
 
     @Override
@@ -117,15 +80,6 @@ public class DirectoryFragment extends BaseFragment implements DirectoryContact.
         if(presenter != null){
             presenter.unsubscribe();
         }
-    }
-
-    @Override
-    public void initializeDependencies() {
-        DaggerDirectoryComponent.builder()
-                .applicationComponent(App.getAppInstance().getAppComponent())
-                .presenterModule(new PresenterModule())
-                .build()
-                .inject(this);
     }
 
     @Override

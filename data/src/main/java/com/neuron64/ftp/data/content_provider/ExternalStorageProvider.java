@@ -7,7 +7,7 @@ import android.os.CancellationSignal;
 import android.os.ParcelFileDescriptor;
 import android.os.storage.StorageManager;
 import android.os.storage.StorageVolume;
-import android.provider.DocumentsContract.*;
+import android.provider.DocumentsContract.Document;
 import android.provider.DocumentsContract.Root;
 import android.util.ArrayMap;
 import android.util.Log;

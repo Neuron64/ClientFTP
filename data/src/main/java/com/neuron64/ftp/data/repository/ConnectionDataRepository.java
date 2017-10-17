@@ -1,14 +1,12 @@
 package com.neuron64.ftp.data.repository;
 
+import com.neuron64.ftp.data.database.RealmService;
+import com.neuron64.ftp.data.mapper.Mapper;
+import com.neuron64.ftp.domain.model.UserConnection;
+import com.neuron64.ftp.domain.repository.ConnectionRepository;
+
 import java.util.Date;
 import java.util.List;
-
-import com.neuron64.ftp.data.database.IRealmService;
-import com.neuron64.ftp.data.database.RealmService;
-import com.neuron64.ftp.data.mapper.ConnectionMapper;
-import com.neuron64.ftp.data.mapper.Mapper;
-import com.neuron64.ftp.domain.repository.ConnectionRepository;
-import com.neuron64.ftp.domain.model.UserConnection;
 
 import javax.inject.Inject;
 

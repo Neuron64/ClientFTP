@@ -1,14 +1,15 @@
 package com.neuron64.ftp.client.di.module;
 
 import com.neuron64.ftp.client.di.scope.DirectoryScope;
+import com.neuron64.ftp.data.repository.FileSystemDataRepository;
 import com.neuron64.ftp.domain.executor.BaseSchedulerProvider;
 import com.neuron64.ftp.domain.interactor.CheckConnectionFtpUseCase;
 import com.neuron64.ftp.domain.interactor.CreateConnectionUserCase;
 import com.neuron64.ftp.domain.interactor.DeleteConnectionUseCase;
 import com.neuron64.ftp.domain.interactor.GetAllConnectionUseCase;
 import com.neuron64.ftp.domain.interactor.GetDirectoriesUseCase;
+import com.neuron64.ftp.domain.interactor.GetFtpDirectoriesUseCase;
 import com.neuron64.ftp.domain.repository.ConnectionRepository;
-import com.neuron64.ftp.domain.repository.FileSystemRepository;
 import com.neuron64.ftp.domain.repository.FtpRepository;
 
 import javax.inject.Singleton;
@@ -44,7 +45,12 @@ public class InteractorModule {
     }
 
     @DirectoryScope @Provides
-    GetDirectoriesUseCase getDirectoriesUseCase(BaseSchedulerProvider schedulerProvider, FileSystemRepository fileSystemRepository){
+    GetDirectoriesUseCase getDirectoriesUseCase(BaseSchedulerProvider schedulerProvider, FileSystemDataRepository fileSystemRepository){
         return new GetDirectoriesUseCase(fileSystemRepository, schedulerProvider);
+    }
+
+    @DirectoryScope @Provides
+    GetFtpDirectoriesUseCase getFtpDirectoriesUseCase(BaseSchedulerProvider schedulerProvider, FtpRepository ftpRepository){
+        return new GetFtpDirectoriesUseCase(ftpRepository, schedulerProvider);
     }
 }

@@ -1,4 +1,4 @@
-package com.neuron64.ftp.client.ui.directory;
+package com.neuron64.ftp.client.ui.directory.file_system;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -10,7 +10,6 @@ import com.neuron64.ftp.client.R;
 import com.neuron64.ftp.client.ui.base.BaseAdapter;
 import com.neuron64.ftp.client.ui.base.bus.RxBus;
 import com.neuron64.ftp.domain.model.FileSystemDirectory;
-import com.neuron64.ftp.domain.repository.FileSystemRepository;
 
 import butterknife.BindView;
 
@@ -18,9 +17,9 @@ import butterknife.BindView;
  * Created by Neuron on 01.10.2017.
  */
 
-public class DirectoryAdapter extends BaseAdapter<FileSystemDirectory>{
+public class DirectoryFileSystemAdapter extends BaseAdapter<FileSystemDirectory>{
 
-    public DirectoryAdapter(@NonNull Context context, @NonNull RxBus busEvent) {
+    public DirectoryFileSystemAdapter(@NonNull Context context, @NonNull RxBus busEvent) {
         super(context, busEvent);
     }
 

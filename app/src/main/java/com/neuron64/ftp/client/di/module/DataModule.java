@@ -5,16 +5,11 @@ import android.content.Context;
 import com.neuron64.ftp.client.di.scope.DirectoryScope;
 import com.neuron64.ftp.data.database.RealmService;
 import com.neuron64.ftp.data.mapper.Mapper;
-import com.neuron64.ftp.data.network.FtpClientManager;
 import com.neuron64.ftp.data.repository.ConnectionDataRepository;
 import com.neuron64.ftp.data.repository.FileSystemDataRepository;
-import com.neuron64.ftp.data.repository.FtpDataRepository;
-import com.neuron64.ftp.data.repository.FtpFileSystemDataRepository;
 import com.neuron64.ftp.domain.model.UserConnection;
 import com.neuron64.ftp.domain.repository.ConnectionRepository;
 import com.neuron64.ftp.domain.repository.FileSystemRepository;
-import com.neuron64.ftp.domain.repository.FtpRepository;
-
 
 import javax.inject.Singleton;
 

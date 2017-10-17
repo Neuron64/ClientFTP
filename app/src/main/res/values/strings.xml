@@ -25,6 +25,8 @@
     <string name="test">Тестировать</string>
     <string name="cancel">Отменить</string>
 
+    <string name="ftp">FTP</string>
+    <string name="file_system">Файловая система</string>
 
     <string name="internal_storage">Internal Storage</string>
 </resources>

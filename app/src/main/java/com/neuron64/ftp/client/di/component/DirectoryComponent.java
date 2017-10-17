@@ -4,7 +4,8 @@ import com.neuron64.ftp.client.di.module.DataModule;
 import com.neuron64.ftp.client.di.module.InteractorModule;
 import com.neuron64.ftp.client.di.module.PresenterModule;
 import com.neuron64.ftp.client.di.scope.DirectoryScope;
-import com.neuron64.ftp.client.ui.directory.DirectoryFragment;
+import com.neuron64.ftp.client.ui.directory.file_system.DirectoryFileSystemFragment;
+import com.neuron64.ftp.client.ui.directory.ftp.DirectoryFtpFragment;
 
 import dagger.Component;
 
@@ -13,9 +14,14 @@ import dagger.Component;
  */
 
 @DirectoryScope
-@Component(dependencies = ApplicationComponent.class, modules = {PresenterModule.class, InteractorModule.class, DataModule.class})
+@Component(dependencies = ApplicationComponent.class,
+        modules = {PresenterModule.class,
+                InteractorModule.class,
+                DataModule.class,})
 public interface DirectoryComponent {
 
-    void inject(DirectoryFragment fragment);
+    void inject(DirectoryFileSystemFragment fragment);
+
+    void inject(DirectoryFtpFragment fragment);
 
 }
