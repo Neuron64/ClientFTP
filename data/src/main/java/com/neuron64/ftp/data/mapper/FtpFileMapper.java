@@ -13,7 +13,7 @@ public class FtpFileMapper extends Mapper<FileSystemDirectory, FTPFile>{
 
     @Override
     public FileSystemDirectory map(FTPFile ftpFile) {
-        return new FileSystemDirectory(ftpFile.getName(), ftpFile.getName(), String.valueOf(ftpFile.getSize()), String.valueOf(ftpFile.getType()));
+        return new FileSystemDirectory(ftpFile.getName(), ftpFile.getName(), String.valueOf(ftpFile.getSize()), String.valueOf(ftpFile.getType()), ftpFile.isDirectory());
     }
 
     @Override

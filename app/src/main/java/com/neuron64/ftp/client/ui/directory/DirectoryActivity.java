@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.neuron64.ftp.client.App;
@@ -129,15 +130,10 @@ public class DirectoryActivity extends BaseActivity{
 
         private UserConnection userConnection;
 
-//        private DirectoryFragment directorySystem;
-//        private DirectoryFragment directoryFtp;
-
         public PagerContentAdapter(FragmentManager fm, UserConnection userConnection) {
             super(fm);
             titles = new int[]{R.string.ftp, R.string.file_system};
             this.userConnection = userConnection;
-//            directoryFtp = DirectoryFtpFragment.newInstance(userConnection);
-//            directorySystem = DirectoryFileSystemFragment.newInstance();
         }
 
         @Override
@@ -145,6 +141,7 @@ public class DirectoryActivity extends BaseActivity{
             if(position == 0){
                 return DirectoryFtpFragment.newInstance(userConnection);
             }else{
+
                 return DirectoryFileSystemFragment.newInstance();
             }
         }

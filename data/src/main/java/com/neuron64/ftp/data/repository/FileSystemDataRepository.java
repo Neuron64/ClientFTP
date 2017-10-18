@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.DocumentsContract;
 
+import com.neuron64.ftp.data.content_provider.CustomDocumentColumn;
 import com.neuron64.ftp.data.content_provider.ExternalStorageProvider;
 import com.neuron64.ftp.data.exception.ErrorThisIsRootDirectory;
 import com.neuron64.ftp.domain.model.FileSystemDirectory;
@@ -76,11 +77,12 @@ public class FileSystemDataRepository implements FileSystemRepository{
 
         if(cursor != null && cursor.moveToFirst()){
             while (cursor.moveToNext()) {
-                String title = cursor.getString(cursor.getColumnIndex(DocumentsContract.Document.COLUMN_DISPLAY_NAME));
-                String documentId = cursor.getString(cursor.getColumnIndex(DocumentsContract.Document.COLUMN_DOCUMENT_ID));
-                String mimeTypes = cursor.getString(cursor.getColumnIndex(DocumentsContract.Document.COLUMN_MIME_TYPE));
-                String avalibleBytes = cursor.getString(cursor.getColumnIndex(DocumentsContract.Document.COLUMN_SIZE));
-                fileSystemDirectories.add(new FileSystemDirectory(title, documentId, avalibleBytes, mimeTypes));
+                String title = cursor.getString(cursor.getColumnIndex(CustomDocumentColumn.COLUMN_DISPLAY_NAME));
+                String documentId = cursor.getString(cursor.getColumnIndex(CustomDocumentColumn.COLUMN_DOCUMENT_ID));
+                String mimeTypes = cursor.getString(cursor.getColumnIndex(CustomDocumentColumn.COLUMN_MIME_TYPE));
+                String avalibleBytes = cursor.getString(cursor.getColumnIndex(CustomDocumentColumn.COLUMN_SIZE));
+                boolean isDirectory = cursor.getInt(cursor.getColumnIndex(CustomDocumentColumn.COLUMN_IS_DIRECTORY)) > 0;
+                fileSystemDirectories.add(new FileSystemDirectory(title, documentId, avalibleBytes, mimeTypes, isDirectory));
             }
         }
         return fileSystemDirectories;

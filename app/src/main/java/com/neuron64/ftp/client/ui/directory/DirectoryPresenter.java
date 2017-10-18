@@ -1,10 +1,13 @@
 package com.neuron64.ftp.client.ui.directory;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.neuron64.ftp.client.ui.base.bus.RxBus;
 import com.neuron64.ftp.client.ui.base.bus.event.ButtonEvent;
 import com.neuron64.ftp.client.util.Preconditions;
+import com.neuron64.ftp.data.exception.ErrorThisIsRootDirectory;
+import com.neuron64.ftp.domain.interactor.DirectoryUseCase;
 import com.neuron64.ftp.domain.model.FileSystemDirectory;
 
 import io.reactivex.disposables.CompositeDisposable;
@@ -17,12 +20,6 @@ public abstract class DirectoryPresenter<V extends DirectoryContact.BaseDirector
 
     private static final String TAG = "DirectoryFileSystemPresenter";
 
-    protected abstract void getRootDirectory();
-
-    protected abstract void getNextDirectory(String directory);
-
-    protected abstract void getPreviousDirectory();
-
     protected abstract String getSimpleNameClass();
 
     protected V view;
@@ -32,11 +29,15 @@ public abstract class DirectoryPresenter<V extends DirectoryContact.BaseDirector
     @NonNull
     protected RxBus eventBus;
 
+    @NonNull
+    protected DirectoryUseCase<String> directoryUseCase;
+
     protected int lvlFolder;
 
-    public DirectoryPresenter(@NonNull RxBus rxBus){
+    public DirectoryPresenter(@NonNull RxBus rxBus, @NonNull DirectoryUseCase<String> directoryUseCase){
         this.eventBus = Preconditions.checkNotNull(rxBus);
         this.lvlFolder = 0;
+        this.directoryUseCase = directoryUseCase;
     }
 
     @Override
@@ -59,6 +60,7 @@ public abstract class DirectoryPresenter<V extends DirectoryContact.BaseDirector
     @Override
     public void unsubscribe() {
         disposable.dispose();
+        directoryUseCase.dispose();
     }
 
     @Override @NonNull
@@ -96,5 +98,54 @@ public abstract class DirectoryPresenter<V extends DirectoryContact.BaseDirector
         }else{
             view.finishActivity();
         }
+    }
+
+    protected void getRootDirectory() {
+        directoryUseCase.executeRootDirectory(fileSystemDirectories -> {
+                    view.showFiles(fileSystemDirectories);
+                },
+                throwable -> {
+                    Log.e(TAG, "subscribe getRootDirectory: throwable", throwable);
+                    view.clearRecyclerView();
+                    view.showEmptyList();
+                    view.showError();
+                },
+                disposable1 -> view.showLoadingIndicator(),
+                () -> view.hideLoadingIndicator());
+    }
+
+    protected void getNextDirectory(String directory) {
+        directoryUseCase.executeNextDirectory(fileSystemDirectories -> {
+                    lvlFolder++;
+                    view.showFiles(fileSystemDirectories);
+                },
+                throwable -> {
+                    Log.e(TAG, "subscribe getNextDirectory: throwable", throwable);
+                    view.clearRecyclerView();
+                    view.showEmptyList();
+                    view.showError();
+                },
+                disposable1 -> view.showLoadingIndicator(),
+                () -> view.hideLoadingIndicator(),
+                directory);
+    }
+
+    protected void getPreviousDirectory() {
+        directoryUseCase.executePreviousDirectory(fileSystemDirectories -> {
+                    lvlFolder--;
+                    view.showFiles(fileSystemDirectories);
+                },
+                throwable -> {
+                    if(throwable instanceof ErrorThisIsRootDirectory){
+                        view.finishActivity();
+                    }else{
+                        Log.e(TAG, "subscribe getPreviousDirectory: throwable", throwable);
+                        view.clearRecyclerView();
+                        view.showEmptyList();
+                        view.showError();
+                    }
+                },
+                disposable1 -> view.showLoadingIndicator(),
+                () -> view.hideLoadingIndicator());
     }
 }

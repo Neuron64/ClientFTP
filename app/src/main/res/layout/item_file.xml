@@ -6,8 +6,15 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal">
     <TextView
+        android:layout_weight="1"
         android:id="@+id/tv_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:text="Title File"/>
+    <TextView
+        android:layout_weight="1"
+        android:id="@+id/tv_is_directory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="is Directory - false"/>
 </LinearLayout>
