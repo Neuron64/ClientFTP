@@ -60,17 +60,20 @@ public class FtpDataRepository implements FtpRepository{
 
     @Override
     public Single<List<FileSystemDirectory>> getExternalStorageFiles() {
-        return Single.fromCallable(() -> ftpClientManager.getListFolder(connectionConfig.getFullPath())).to(funToFileSystemDto);
+        return Single.fromCallable(() ->
+                ftpClientManager.getListFolder(connectionConfig.getFullPath())).to(funToFileSystemDto);
     }
 
     @Override
     public Single<List<FileSystemDirectory>> getNextFiles(String pathName) {
-        return Single.fromCallable(() -> ftpClientManager.getListFolder(connectionConfig.addDirectory(pathName).getFullPath())).to(funToFileSystemDto);
+        return Single.fromCallable(() ->
+                ftpClientManager.getListFolder(connectionConfig.addDirectory(pathName).getFullPath())).to(funToFileSystemDto);
     }
 
     @Override
     public Single<List<FileSystemDirectory>> getPreviousFiles() {
-        return Single.fromCallable(() -> ftpClientManager.getListFolder(connectionConfig.backDirectory().getFullPath())).to(funToFileSystemDto);
+        return Single.fromCallable(() ->
+                ftpClientManager.getListFolder(connectionConfig.backDirectory().getFullPath())).to(funToFileSystemDto);
     }
 
     private final Function<Single<List<FTPFile>>, Single<List<FileSystemDirectory>>> funToFileSystemDto =

@@ -38,6 +38,9 @@ public class DirectoryFtpAdapter extends BaseAdapter<FileSystemDirectory> {
         @BindView(R.id.tv_title)
         TextView tvTitle;
 
+        @BindView(R.id.tv_is_directory)
+        TextView tvIsDirectory;
+
         public FileHolder(View rootView) {
             super(rootView);
         }
@@ -46,6 +49,8 @@ public class DirectoryFtpAdapter extends BaseAdapter<FileSystemDirectory> {
         public void onBind() {
             FileSystemDirectory fileSystemDirectory = at(getAdapterPosition());
             tvTitle.setText(fileSystemDirectory.getTitle());
+            String isDirectory = fileSystemDirectory.isDirectory() ? "Директория": "Неа";
+            tvIsDirectory.setText(isDirectory);
         }
     }
 }
