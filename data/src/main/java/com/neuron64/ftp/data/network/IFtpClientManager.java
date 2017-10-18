@@ -46,8 +46,8 @@ public class IFtpClientManager implements FtpClientManager{
     }
 
     @Override
-    public List<FTPFile> getListRootFolder() throws IOException {
-        return Arrays.asList(ftpClient.listFiles());
+    public void disconnect() throws IOException {
+        ftpClient.disconnect();
     }
 
     @Override

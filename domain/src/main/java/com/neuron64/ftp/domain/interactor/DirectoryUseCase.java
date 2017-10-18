@@ -26,6 +26,7 @@ public abstract class DirectoryUseCase<Params> {
     public DirectoryUseCase(FileSystemRepository fileSystemRepository, BaseSchedulerProvider schedulerProvider){
         this.fileSystemRepository = fileSystemRepository;
         this.schedulerProvider = schedulerProvider;
+
         this.disposables = new CompositeDisposable();
     }
 
@@ -79,8 +80,8 @@ public abstract class DirectoryUseCase<Params> {
     }
 
     public void dispose(){
-        if(disposables != null) {
-            disposables.dispose();
+        if(!disposables.isDisposed()){
+            disposables.clear();
         }
     }
 }

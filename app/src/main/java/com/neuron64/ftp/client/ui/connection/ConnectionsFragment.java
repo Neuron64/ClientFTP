@@ -34,7 +34,7 @@ import static com.neuron64.ftp.client.util.Preconditions.checkNotNull;
  * Created by Neuron on 02.09.2017.
  */
 
-public class ConnectionsFragment extends BaseFragment implements ConnectionsContract.View, ConnectionsAdapter.OnItemClickListener, RecyclerItemClickListener.OnItemClickListener {
+public class ConnectionsFragment extends BaseFragment implements ConnectionsContract.View, ConnectionsAdapter.OnItemClickListener{
 
     public static final String TAG = "ConnectionsFragment";
 
@@ -65,7 +65,6 @@ public class ConnectionsFragment extends BaseFragment implements ConnectionsCont
         rvMain.setLayoutManager(new LinearLayoutManager(getContext()));
         rvMain.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         rvMain.setAdapter(connectionAdapter);
-        rvMain.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), rvMain, this));
 
         return view;
     }
@@ -173,14 +172,7 @@ public class ConnectionsFragment extends BaseFragment implements ConnectionsCont
     }
 
     @Override
-    public void onItemClick(View view, int position) {
-        UserConnection connection = connectionAdapter.at(position);
-        presenter.clickOnConnection(connection);
-    }
-
-    @Override
-    public void onLongItemClick(View view, int position) {
-        UserConnection connection = connectionAdapter.at(position);
+    public void onClickConnection(UserConnection connection, int positionAdapter) {
         presenter.clickOnConnection(connection);
     }
 }

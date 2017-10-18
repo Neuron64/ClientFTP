@@ -7,8 +7,13 @@ import com.neuron64.ftp.client.ui.base.bus.RxBus;
 import com.neuron64.ftp.client.ui.directory.DirectoryPresenter;
 import com.neuron64.ftp.client.util.Preconditions;
 import com.neuron64.ftp.data.exception.ErrorThisIsRootDirectory;
+import com.neuron64.ftp.domain.interactor.FtpConnectionUseCase;
 import com.neuron64.ftp.domain.interactor.GetFtpDirectoriesUseCase;
 import com.neuron64.ftp.domain.model.UserConnection;
+
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Action;
+
 
 /**
  * Created by yks-11 on 10/17/17.
@@ -19,24 +24,37 @@ public class DirectoryFtpSystemPresenter extends DirectoryPresenter<DirectoryFtp
     private static final String TAG = "DirectoryFtpSystemPrese";
 
     private GetFtpDirectoriesUseCase getFtpDirectoriesUseCase;
+    private FtpConnectionUseCase ftpConnectionUseCase;
 
-    public DirectoryFtpSystemPresenter(@NonNull RxBus rxBus,@NonNull GetFtpDirectoriesUseCase getFtpDirectoriesUseCase) {
+    public DirectoryFtpSystemPresenter(@NonNull RxBus rxBus,
+                                       @NonNull GetFtpDirectoriesUseCase getFtpDirectoriesUseCase,
+                                       @NonNull FtpConnectionUseCase ftpConnectionUseCase) {
         super(rxBus);
         this.getFtpDirectoriesUseCase = Preconditions.checkNotNull(getFtpDirectoriesUseCase);
+        this.ftpConnectionUseCase = Preconditions.checkNotNull(ftpConnectionUseCase);
     }
 
     @Override
     public void subscribe() {
         UserConnection userConnection = view.getExtraUserConnection();
-        getFtpDirectoriesUseCase.initConfig(userConnection).subscribe(super::subscribe);
+        ftpConnectionUseCase.connectExecute(super::subscribe, throwable -> {
+            //TODO:Check throwable in connectExecute
+            Log.e(TAG, "subscribe: ", throwable);
+        }, userConnection);
+    }
 
-//        super.subscribe();
+    @Override
+    public void unsubscribe() {
+        super.unsubscribe();
+        getFtpDirectoriesUseCase.dispose();
+        ftpConnectionUseCase.dispose();
+//        ftpConnectionUseCase.disconnectExecute(() -> {/*Empty*/},
+//                throwable -> Log.e(TAG, "unsubscribe: ", throwable));
     }
 
     @Override
     protected void getRootDirectory() {
         getFtpDirectoriesUseCase.executeRootDirectory(fileSystemDirectories -> {
-                    lvlFolder = 0;
                     view.showFiles(fileSystemDirectories);
                 },
                 throwable -> {

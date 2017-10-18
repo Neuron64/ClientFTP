@@ -28,6 +28,7 @@ public class ConnectionsAdapter extends BaseAdapter<UserConnection> {
         void onDeleteConnection(UserConnection connection, int positionAdapter);
         void onChangeConnection(UserConnection connection, int positionAdapter);
         void onTestConnection(UserConnection connection, int positionAdapter);
+        void onClickConnection(UserConnection connection, int positionAdapter);
     }
 
     @NonNull
@@ -68,6 +69,12 @@ public class ConnectionsAdapter extends BaseAdapter<UserConnection> {
             setTextView(tvName, connection.getNameConnection());
             setTextView(tvUserName, connection.getUserName());
             setTextView(tvHost, connection.getHost());
+        }
+
+        @OnClick(R.id.root_view)
+        public void onClickRootView(View view){
+            UserConnection connection = at(getAdapterPosition());
+            onItemClickListener.onClickConnection(connection, getAdapterPosition());
         }
 
         @OnClick(R.id.ib_menu_pop)

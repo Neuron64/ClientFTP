@@ -30,21 +30,19 @@ public class FileSystemDataRepository implements FileSystemRepository{
 
     private List<String> previousFolder;
 
-    private final String rootDirectory;
 
     @Inject
     public FileSystemDataRepository(Context context){
         this.context = context;
         previousFolder = new ArrayList<>();
-        rootDirectory = "emulated:";
+        previousFolder.add("emulated:");
     }
 
     @Override
     public Single<List<FileSystemDirectory>> getExternalStorageFiles() {
        return Single.fromCallable(() -> {
-            previousFolder.add(rootDirectory);
-            Uri contentsUri = DocumentsContract.buildChildDocumentsUri(ExternalStorageProvider.AUTHORITY, rootDirectory);
-            return getDirectoryFiles(contentsUri);
+           Uri contentsUri = DocumentsContract.buildChildDocumentsUri(ExternalStorageProvider.AUTHORITY, previousFolder.get(previousFolder.size() - 1));
+           return getDirectoryFiles(contentsUri);
         });
     }
 

@@ -1,14 +1,13 @@
 package com.neuron64.ftp.data.repository;
 
+import com.neuron64.ftp.data.ftp.ConnectionConfig;
 import com.neuron64.ftp.data.mapper.Mapper;
 import com.neuron64.ftp.data.network.FtpClientManager;
 import com.neuron64.ftp.domain.model.FileSystemDirectory;
-import com.neuron64.ftp.domain.model.UserConnection;
 import com.neuron64.ftp.domain.repository.FtpRepository;
 
 import org.apache.commons.net.ftp.FTPFile;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -29,15 +28,13 @@ public class FtpDataRepository implements FtpRepository{
     private FtpClientManager ftpClientManager;
     private Mapper<FileSystemDirectory, FTPFile> ftpFileMapper;
 
-    private List<String> previousDirectory;
-
-    private UserConnection connectionInfo;
+    private ConnectionConfig connectionConfig;
 
     @Inject
     public FtpDataRepository(@NonNull FtpClientManager ftpClientManager, @NonNull Mapper<FileSystemDirectory, FTPFile> ftpFileMapper){
         this.ftpClientManager = ftpClientManager;
         this.ftpFileMapper = ftpFileMapper;
-        this.previousDirectory = new ArrayList<>();
+        this.connectionConfig = new ConnectionConfig();
     }
 
     @Override
@@ -46,41 +43,38 @@ public class FtpDataRepository implements FtpRepository{
     }
 
     @Override
-    public Completable connect(UserConnection config) {
-        connectionInfo = config;
+    public Completable connect(String id, String nameConnection, String host, String userName, String password, String port) {
+        this.connectionConfig.initConfig(id, nameConnection, host, userName, password, port);
 
         return Completable.fromAction(() ->
-                ftpClientManager.connect(config.getHost(),
-                        config.getUserName(),
-                        config.getPassword(),
-                        Integer.parseInt(config.getPort())));
+                ftpClientManager.connect(connectionConfig.getHost(),
+                        connectionConfig.getUserName(),
+                        connectionConfig.getPassword(),
+                        Integer.parseInt(connectionConfig.getPort())));
     }
 
     @Override
-    public void disconnect() {
-        //TODO: disconnect
+    public Completable disconnect() {
+        return Completable.fromAction(() -> ftpClientManager.disconnect());
     }
 
     @Override
     public Single<List<FileSystemDirectory>> getExternalStorageFiles() {
-        previousDirectory.add("");
-        return Single.fromCallable(() -> ftpClientManager.getListRootFolder()).to(funToFileSystemDto);
+        return Single.fromCallable(() -> ftpClientManager.getListFolder(connectionConfig.getFullPath())).to(funToFileSystemDto);
     }
 
     @Override
     public Single<List<FileSystemDirectory>> getNextFiles(String pathName) {
-        //TODO:Need full path
-        previousDirectory.add(pathName + "/");
-        return Single.fromCallable(() -> ftpClientManager.getListFolder(pathName)).to(funToFileSystemDto);
+        return Single.fromCallable(() -> ftpClientManager.getListFolder(connectionConfig.addDirectory(pathName).getFullPath())).to(funToFileSystemDto);
     }
 
     @Override
     public Single<List<FileSystemDirectory>> getPreviousFiles() {
-        String previous = previousDirectory.remove(previousDirectory.size() - 1);
-        return Single.fromCallable(() -> ftpClientManager.getListFolder(previous)).to(funToFileSystemDto);
+        return Single.fromCallable(() -> ftpClientManager.getListFolder(connectionConfig.backDirectory().getFullPath())).to(funToFileSystemDto);
     }
 
-    private final Function<Single<List<FTPFile>>, Single<List<FileSystemDirectory>>> funToFileSystemDto = new Function<Single<List<FTPFile>>, Single<List<FileSystemDirectory>>>() {
+    private final Function<Single<List<FTPFile>>, Single<List<FileSystemDirectory>>> funToFileSystemDto =
+            new Function<Single<List<FTPFile>>, Single<List<FileSystemDirectory>>>() {
         @Override
         public Single<List<FileSystemDirectory>> apply(Single<List<FTPFile>> listSingle) throws Exception {
             return listSingle.toObservable()

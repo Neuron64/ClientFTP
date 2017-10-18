@@ -14,6 +14,7 @@ import com.neuron64.ftp.client.ui.directory.ftp.DirectoryFtpSystemPresenter;
 import com.neuron64.ftp.domain.interactor.CheckConnectionFtpUseCase;
 import com.neuron64.ftp.domain.interactor.CreateConnectionUserCase;
 import com.neuron64.ftp.domain.interactor.DeleteConnectionUseCase;
+import com.neuron64.ftp.domain.interactor.FtpConnectionUseCase;
 import com.neuron64.ftp.domain.interactor.GetAllConnectionUseCase;
 import com.neuron64.ftp.domain.interactor.GetDirectoriesUseCase;
 import com.neuron64.ftp.domain.interactor.GetFtpDirectoriesUseCase;
@@ -44,7 +45,7 @@ public class PresenterModule {
     }
 
     @DirectoryScope @Provides
-    DirectoryFtpContact.Presenter directoriesFtp(RxBus rxBus, GetFtpDirectoriesUseCase getDirectoriesUseCase){
-        return new DirectoryFtpSystemPresenter(rxBus, getDirectoriesUseCase);
+    DirectoryFtpContact.Presenter directoriesFtp(RxBus rxBus, GetFtpDirectoriesUseCase getDirectoriesUseCase, FtpConnectionUseCase ftpConnectionUseCase){
+        return new DirectoryFtpSystemPresenter(rxBus, getDirectoriesUseCase, ftpConnectionUseCase);
     }
 }
