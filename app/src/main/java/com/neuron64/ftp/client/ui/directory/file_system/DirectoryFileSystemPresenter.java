@@ -38,7 +38,6 @@ public class DirectoryFileSystemPresenter extends DirectoryPresenter<DirectoryFi
     @Override
     protected void getRootDirectory(){
         getDirectoriesUseCase.executeRootDirectory(fileSystemDirectories -> {
-                    lvlFolder = 0;
                     view.showFiles(fileSystemDirectories);
                 },
                 throwable -> {

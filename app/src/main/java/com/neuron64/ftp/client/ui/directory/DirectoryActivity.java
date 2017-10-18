@@ -62,9 +62,7 @@ public class DirectoryActivity extends BaseActivity{
             ActivityCompat.requestPermissions(this, PERMISSIONS, 1);
         }
 
-        if(savedInstanceState == null){
-            updateUI();
-        }
+        updateUI();
     }
 
 
@@ -129,24 +127,25 @@ public class DirectoryActivity extends BaseActivity{
 
         private final int[] titles;
 
-        private DirectoryFragment directorySystem;
-        private DirectoryFragment directoryFtp;
-        private int nowPosition;
+        private UserConnection userConnection;
+
+//        private DirectoryFragment directorySystem;
+//        private DirectoryFragment directoryFtp;
 
         public PagerContentAdapter(FragmentManager fm, UserConnection userConnection) {
             super(fm);
             titles = new int[]{R.string.ftp, R.string.file_system};
-            directoryFtp = DirectoryFtpFragment.newInstance(userConnection);
-            directorySystem = DirectoryFileSystemFragment.newInstance();
+            this.userConnection = userConnection;
+//            directoryFtp = DirectoryFtpFragment.newInstance(userConnection);
+//            directorySystem = DirectoryFileSystemFragment.newInstance();
         }
 
         @Override
         public Fragment getItem(int position) {
-            nowPosition = position;
             if(position == 0){
-                return directoryFtp;
+                return DirectoryFtpFragment.newInstance(userConnection);
             }else{
-                return directorySystem;
+                return DirectoryFileSystemFragment.newInstance();
             }
         }
 
@@ -156,7 +155,7 @@ public class DirectoryActivity extends BaseActivity{
         }
 
         public String getNowClass(){
-            if(nowPosition == 0){
+            if(viewPager.getCurrentItem() == 0){
                 return DirectoryFtpSystemPresenter.class.getSimpleName();
             }else{
                 return DirectoryFileSystemPresenter.class.getSimpleName();

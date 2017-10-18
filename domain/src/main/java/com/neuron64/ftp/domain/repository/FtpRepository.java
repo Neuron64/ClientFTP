@@ -14,7 +14,7 @@ public interface FtpRepository extends FileSystemRepository{
 
     Completable testConnection(@NonNull String host, @Nullable String username, @Nullable String password, @Nullable Integer port);
 
-    Completable connect(UserConnection connectionInfo);
+    Completable connect(String id, String nameConnection, String host, String userName, String password, String port);
 
-    void disconnect();
+    Completable disconnect();
 }

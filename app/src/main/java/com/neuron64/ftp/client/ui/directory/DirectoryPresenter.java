@@ -36,6 +36,7 @@ public abstract class DirectoryPresenter<V extends DirectoryContact.BaseDirector
 
     public DirectoryPresenter(@NonNull RxBus rxBus){
         this.eventBus = Preconditions.checkNotNull(rxBus);
+        this.lvlFolder = 0;
     }
 
     @Override
@@ -52,7 +53,6 @@ public abstract class DirectoryPresenter<V extends DirectoryContact.BaseDirector
     }
 
     private void initData(){
-        lvlFolder = 0;
         getRootDirectory();
     }
 

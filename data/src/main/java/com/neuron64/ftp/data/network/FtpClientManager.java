@@ -20,7 +20,7 @@ public interface FtpClientManager {
 
     void connect(@NonNull String host, @Nullable String username, @Nullable String password, @Nullable Integer port) throws IOException, ErrorConnectionFtp;
 
-    List<FTPFile> getListRootFolder() throws IOException;
+    void disconnect() throws IOException;
 
     List<FTPFile> getListFolder(String pathName) throws IOException;
 
