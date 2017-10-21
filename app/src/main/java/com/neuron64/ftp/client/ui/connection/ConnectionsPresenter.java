@@ -46,8 +46,6 @@ public class ConnectionsPresenter implements ConnectionsContract.Presenter{
     @NonNull
     private RxBus eventBus;
 
-    private CompositeDisposable disposable;
-
     @NonNull
     private DeleteConnectionUseCase deleteConnectionUseCase;
 
@@ -56,6 +54,8 @@ public class ConnectionsPresenter implements ConnectionsContract.Presenter{
 
     @NonNull
     private CreateConnectionUserCase createConnectionUserCase;
+
+    private CompositeDisposable disposable;
 
     @Inject
     public ConnectionsPresenter(GetAllConnectionUseCase connectionUseCase, RxBus eventBus, DeleteConnectionUseCase deleteConnectionUseCase, CheckConnectionFtpUseCase checkConnectionFtpUseCase, CreateConnectionUserCase createConnectionUserCase) {
@@ -91,16 +91,17 @@ public class ConnectionsPresenter implements ConnectionsContract.Presenter{
     }
 
     private void saveConnection(UserConnection userConnection){
-        createConnectionUserCase.init(userConnection.getId(),
+        CreateConnectionUserCase.ConnectionParams params = new CreateConnectionUserCase.ConnectionParams(userConnection.getId(),
                 userConnection.getNameConnection(),
                 userConnection.getHost(),
                 userConnection.getUserName(),
                 userConnection.getPassword(),
-                userConnection.getPort())
-                .execute(
+                userConnection.getPort());
+
+        createConnectionUserCase.execute(
                         userConnection1 -> loginView.addConnection(userConnection1, true),
                         throwable -> loginView.showSnackBar(R.string.error_connection_cancel_delete),
-                        null);
+                        params);
     }
 
     @Override
@@ -112,8 +113,13 @@ public class ConnectionsPresenter implements ConnectionsContract.Presenter{
 
     @Override
     public void onTestConnection(UserConnection connection, int positionAdapter) {
-        checkConnectionFtpUseCase.init(connection.getHost(), connection.getUserName(), connection.getPassword(), connection.getPort()).
-                execute(() -> loginView.showSnackBar(R.string.success),
+        CheckConnectionFtpUseCase.ConnectionParams params =
+                new CheckConnectionFtpUseCase.ConnectionParams(connection.getHost(),
+                        connection.getUserName(),
+                        connection.getPassword(),
+                        connection.getPort());
+
+        checkConnectionFtpUseCase.execute(() -> loginView.showSnackBar(R.string.success),
                         throwable -> {
                             Log.e(TAG, "onTestConnection: ", throwable);
                             if(throwable instanceof InvalidHostException){
@@ -122,7 +128,7 @@ public class ConnectionsPresenter implements ConnectionsContract.Presenter{
                                     throwable instanceof IOException){
                                 loginView.showSnackBar(R.string.error_connection_connect);
                             }
-                        }, null);
+                        }, params);
     }
 
     @Override

@@ -23,14 +23,14 @@ public class ConnectionConfig {
 
     private String password;
 
-    private String port;
+    private Integer port;
 
     public ConnectionConfig() {
         this.directoryIer = new ArrayList<>();
         directoryIer.add("");
     }
 
-    public ConnectionConfig initConfig(String id, String nameConnection, String host, String userName, String password, String port){
+    public ConnectionConfig initConfig(String id, String nameConnection, String host, String userName, String password, Integer port){
         this.id = id;
         this.nameConnection = nameConnection;
         this.host = host;
@@ -55,7 +55,14 @@ public class ConnectionConfig {
         return this;
     }
 
+    /**
+     * Root directory have empty path - "",
+     * another's directories path - "first/second/"...
+    **/
     public String getFullPath(){
+        if(directoryIer.size() == 1)
+            return directoryIer.get(0);
+
         StringBuilder stringBuilder = new StringBuilder();
         for (String directory : directoryIer) {
             stringBuilder.append(directory).append("/");
@@ -83,7 +90,7 @@ public class ConnectionConfig {
         return password;
     }
 
-    public String getPort() {
+    public Integer getPort() {
         return port;
     }
 }

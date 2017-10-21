@@ -84,9 +84,17 @@ public class CreateConnectionPresenter implements CreateConnectionContract.Prese
     }
 
     @Override
-    public void sendConnection(String userName, String password, String host, String title, String port) {
+    public void sendConnection(String userName, String password, String host, String title, Integer port) {
         view.updateSubmitButtonViewState(false);
-        createConnectionUserCase.init(idConnection, title, host, userName, password, port).execute(
+
+        CreateConnectionUserCase.ConnectionParams params = new CreateConnectionUserCase.ConnectionParams(idConnection,
+                title,
+                host,
+                userName,
+                password,
+                port);
+
+        createConnectionUserCase.execute(
                 connections -> eventBus.send(FragmentEvent.exposeShowConnection(null)),
                 throwable -> {
                     if(throwable instanceof InvalidHostException){
@@ -98,13 +106,15 @@ public class CreateConnectionPresenter implements CreateConnectionContract.Prese
                     Log.e(TAG, "sendConnection: ", throwable);
                 },
                 disposable1 -> view.updateSubmitButtonViewState(false),
-                null);
+                params);
     }
 
     @Override
-    public void checkConnection(String userName, String password, String host, String port) {
-        checkConnectionFtpUseCase.init(host, userName, password, port).
-                execute(() -> view.showSnackBar(R.string.success),
+    public void checkConnection(String userName, String password, String host, Integer port) {
+        CheckConnectionFtpUseCase.ConnectionParams params =
+                new CheckConnectionFtpUseCase.ConnectionParams(host, userName, password, port);
+
+        checkConnectionFtpUseCase.execute(() -> view.showSnackBar(R.string.success),
                         throwable -> {
                             if(throwable instanceof InvalidHostException){
                                 view.showSnackBar(R.string.error_need_host);
@@ -112,7 +122,7 @@ public class CreateConnectionPresenter implements CreateConnectionContract.Prese
                                     throwable instanceof IOException){
                                 view.showSnackBar(R.string.error_connection_connect);
                             }
-                }, null);
+                }, params);
     }
 
     private void handleEvent(Object event){

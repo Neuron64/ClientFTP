@@ -26,13 +26,13 @@ public class UserConnection implements RealmModel {
 
     private String password;
 
-    private String port;
+    private Integer port;
 
     public UserConnection() {
         //Empty for Realm
     }
 
-    public UserConnection(String id, String nameConnection, String host, String userName, String password, String port) {
+    public UserConnection(String id, String nameConnection, String host, String userName, String password, Integer port) {
         this.id = id;
         this.nameConnection = nameConnection;
         this.host = host;
@@ -81,11 +81,11 @@ public class UserConnection implements RealmModel {
         this.password = password;
     }
 
-    public String getPort() {
+    public Integer getPort() {
         return port;
     }
 
-    public void setPort(String port) {
+    public void setPort(Integer port) {
         this.port = port;
     }
 }

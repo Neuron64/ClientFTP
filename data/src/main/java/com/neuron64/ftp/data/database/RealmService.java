@@ -7,7 +7,6 @@ import com.neuron64.ftp.data.model.local.UserConnection;
 import java.util.List;
 
 import io.reactivex.Completable;
-import io.reactivex.Single;
 
 /**
  * Created by Neuron on 24.09.2017.
@@ -15,9 +14,9 @@ import io.reactivex.Single;
 
 public interface RealmService {
 
-    Single<List<UserConnection>> getAllUserConnection();
+    List<UserConnection> getAllUserConnection();
 
-    Completable insertOrUpdateConnection(UserConnection userConnection);
+    void insertOrUpdateConnection(UserConnection userConnection);
 
-    Completable deleteConnection(@NonNull  String id);
+    void deleteConnection(@NonNull  String id);
 }

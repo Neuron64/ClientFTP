@@ -15,7 +15,7 @@ public interface CreateConnectionContract {
 
     interface View extends BaseView<Presenter>{
 
-         void fillingFields(String userName, String password, String host, String title, String port);
+         void fillingFields(String userName, String password, String host, String title, Integer port);
 
          void pickConnection(boolean forCheck);
 
@@ -32,9 +32,9 @@ public interface CreateConnectionContract {
 
         void onClickCheckConnection();
 
-        void sendConnection(String userName, String password, String host, String title, String port);
+        void sendConnection(String userName, String password, String host, String title, Integer port);
 
-        void checkConnection(String userName, String password, String host, String port);
+        void checkConnection(String userName, String password, String host, Integer port);
 
     }
 }

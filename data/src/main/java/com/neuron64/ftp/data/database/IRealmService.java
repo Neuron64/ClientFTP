@@ -9,7 +9,6 @@ import java.util.List;
 import javax.inject.Singleton;
 
 import io.reactivex.Completable;
-import io.reactivex.Single;
 import io.realm.Realm;
 
 /**
@@ -19,19 +18,27 @@ import io.realm.Realm;
 @Singleton
 public final class IRealmService implements RealmService{
 
-    public final Single<List<UserConnection>> getAllUserConnection(){
-        return Single.fromCallable(() -> Realm.getDefaultInstance().where(UserConnection.class).findAll());
+    public List<UserConnection> getAllUserConnection(){
+        try (Realm realm = getRealm()) {
+            return realm.copyFromRealm(realm.where(UserConnection.class).findAll());
+        }
     }
 
-    public final Completable insertOrUpdateConnection(UserConnection userConnection){
-        return Completable.fromAction(() -> Realm.getDefaultInstance()
-                .executeTransaction(realm1 -> realm1.insertOrUpdate(userConnection)));
+    public void insertOrUpdateConnection(UserConnection userConnection){
+        try (Realm realm = getRealm()) {
+            realm.executeTransaction(realm1 -> realm1.insertOrUpdate(userConnection));
+        }
     }
 
     @Override
-    public Completable deleteConnection(@NonNull String id) {
-        return Completable.fromAction(() -> Realm.getDefaultInstance()
-                .executeTransaction(realm -> realm.where(UserConnection.class)
-                        .equalTo(UserConnection.FIELD_ID, id).findAll().deleteAllFromRealm()));
+    public void deleteConnection(@NonNull String id) {
+        try (Realm realm = getRealm()) {
+            realm.executeTransaction(realm1 -> realm1.where(UserConnection.class)
+                    .equalTo(UserConnection.FIELD_ID, id).findAll().deleteAllFromRealm());
+        }
+    }
+
+    private Realm getRealm(){
+        return Realm.getDefaultInstance();
     }
 }

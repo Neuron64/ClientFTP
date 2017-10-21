@@ -15,7 +15,7 @@ public abstract class CompletableUseCase<Params> {
     protected CompositeDisposable disposables;
 
     public CompletableUseCase(@NonNull BaseSchedulerProvider schedulerProvider){
-        this.schedulerProvider=schedulerProvider;
+        this.schedulerProvider = schedulerProvider;
         this.disposables = new CompositeDisposable();
     }
 
@@ -25,6 +25,18 @@ public abstract class CompletableUseCase<Params> {
         Disposable disposable = buildCompletable(params)
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
+                .subscribe(onComplete,onError);
+        disposables.add(disposable);
+    }
+
+    public void execute(@NonNull Action onComplete,
+                        @NonNull Consumer<? super Throwable> onError,
+                        @NonNull Consumer<? super Disposable> accept,
+                        Params params){
+        Disposable disposable = buildCompletable(params)
+                .subscribeOn(schedulerProvider.io())
+                .observeOn(schedulerProvider.ui())
+                .doOnSubscribe(accept)
                 .subscribe(onComplete,onError);
         disposables.add(disposable);
     }
