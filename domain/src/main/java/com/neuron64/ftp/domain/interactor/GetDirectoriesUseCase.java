@@ -9,24 +9,30 @@ import java.util.List;
 import javax.inject.Inject;
 
 import io.reactivex.Single;
-import io.reactivex.annotations.Nullable;
 
 /**
  * Created by yks-11 on 10/13/17.
  */
 
-public class GetDirectoriesUseCase extends SingleUseCase<List<FileSystemDirectory>, String>{
-
-    private FileSystemRepository fileSystemRepository;
+public class GetDirectoriesUseCase extends DirectoryUseCase<String>{
 
     @Inject
-    public GetDirectoriesUseCase(BaseSchedulerProvider schedulerProvider, FileSystemRepository fileSystemRepository) {
-        super(schedulerProvider);
-        this.fileSystemRepository = fileSystemRepository;
+    public GetDirectoriesUseCase(FileSystemRepository fileSystemRepository, BaseSchedulerProvider schedulerProvider) {
+        super(fileSystemRepository, schedulerProvider);
     }
 
     @Override
-    public Single<List<FileSystemDirectory>> buildUseCase(@Nullable String directoryId) {
-        return fileSystemRepository.getExternalStorageFiles(directoryId);
+    public Single<List<FileSystemDirectory>> getRootDirectory() {
+        return fileSystemRepository.getExternalStorageFiles();
+    }
+
+    @Override
+    public Single<List<FileSystemDirectory>> getPreviousDirectory() {
+        return fileSystemRepository.getPreviousFiles();
+    }
+
+    @Override
+    public Single<List<FileSystemDirectory>> getNextDirectory(String documentId) {
+        return fileSystemRepository.getNextFiles(documentId);
     }
 }

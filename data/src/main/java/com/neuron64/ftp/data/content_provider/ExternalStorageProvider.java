@@ -7,7 +7,7 @@ import android.os.CancellationSignal;
 import android.os.ParcelFileDescriptor;
 import android.os.storage.StorageManager;
 import android.os.storage.StorageVolume;
-import android.provider.DocumentsContract.*;
+import android.provider.DocumentsContract.Document;
 import android.provider.DocumentsContract.Root;
 import android.util.ArrayMap;
 import android.util.Log;
@@ -32,8 +32,9 @@ public class ExternalStorageProvider extends StorageProvider {
     };
 
     private static final String[] DEFAULT_DOCUMENT_PROJECTION = new String[] {
-            Document.COLUMN_DOCUMENT_ID, Document.COLUMN_MIME_TYPE, Document.COLUMN_DISPLAY_NAME,
-            Document.COLUMN_LAST_MODIFIED, Document.COLUMN_FLAGS, Document.COLUMN_SIZE, Document.COLUMN_SUMMARY,
+            CustomDocumentColumn.COLUMN_DOCUMENT_ID, CustomDocumentColumn.COLUMN_MIME_TYPE, CustomDocumentColumn.COLUMN_DISPLAY_NAME,
+            CustomDocumentColumn.COLUMN_LAST_MODIFIED, CustomDocumentColumn.COLUMN_FLAGS, CustomDocumentColumn.COLUMN_SIZE, CustomDocumentColumn.COLUMN_SUMMARY,
+            CustomDocumentColumn.COLUMN_IS_DIRECTORY,
     };
 
     private ArrayMap<String, VolumeInfo> roots = new ArrayMap<>();
@@ -191,11 +192,12 @@ public class ExternalStorageProvider extends StorageProvider {
         int flags = 0;
 
         final MatrixCursor.RowBuilder row = result.newRow();
-        row.add(Document.COLUMN_DOCUMENT_ID, docId);
-        row.add(Document.COLUMN_DISPLAY_NAME, file.getName());
-        row.add(Document.COLUMN_SIZE, file.length());
-        row.add(Document.COLUMN_MIME_TYPE, null);
-        row.add(Document.COLUMN_FLAGS, flags);
-        row.add(Document.COLUMN_LAST_MODIFIED, file.lastModified());
+        row.add(CustomDocumentColumn.COLUMN_DOCUMENT_ID, docId);
+        row.add(CustomDocumentColumn.COLUMN_DISPLAY_NAME, file.getName());
+        row.add(CustomDocumentColumn.COLUMN_SIZE, file.length());
+        row.add(CustomDocumentColumn.COLUMN_MIME_TYPE, null);
+        row.add(CustomDocumentColumn.COLUMN_FLAGS, flags);
+        row.add(CustomDocumentColumn.COLUMN_LAST_MODIFIED, file.lastModified());
+        row.add(CustomDocumentColumn.COLUMN_IS_DIRECTORY, file.isDirectory() ? 1 : 0);
     }
 }

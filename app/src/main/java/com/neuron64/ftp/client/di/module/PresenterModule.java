@@ -1,18 +1,23 @@
 package com.neuron64.ftp.client.di.module;
 
+import com.neuron64.ftp.client.di.scope.DirectoryScope;
 import com.neuron64.ftp.client.di.scope.ViewScope;
 import com.neuron64.ftp.client.ui.base.bus.RxBus;
 import com.neuron64.ftp.client.ui.connection.ConnectionsContract;
 import com.neuron64.ftp.client.ui.connection.ConnectionsPresenter;
 import com.neuron64.ftp.client.ui.connection.CreateConnectionContract;
 import com.neuron64.ftp.client.ui.connection.CreateConnectionPresenter;
-import com.neuron64.ftp.client.ui.directory.DirectoryContact;
-import com.neuron64.ftp.client.ui.directory.DirectoryPresenter;
+import com.neuron64.ftp.client.ui.directory.file_system.DirectoryFileSystemContact;
+import com.neuron64.ftp.client.ui.directory.file_system.DirectoryFileSystemPresenter;
+import com.neuron64.ftp.client.ui.directory.ftp.DirectoryFtpContact;
+import com.neuron64.ftp.client.ui.directory.ftp.DirectoryFtpSystemPresenter;
 import com.neuron64.ftp.domain.interactor.CheckConnectionFtpUseCase;
 import com.neuron64.ftp.domain.interactor.CreateConnectionUserCase;
 import com.neuron64.ftp.domain.interactor.DeleteConnectionUseCase;
+import com.neuron64.ftp.domain.interactor.FtpConnectionUseCase;
 import com.neuron64.ftp.domain.interactor.GetAllConnectionUseCase;
 import com.neuron64.ftp.domain.interactor.GetDirectoriesUseCase;
+import com.neuron64.ftp.domain.interactor.GetFtpDirectoriesUseCase;
 
 import dagger.Module;
 import dagger.Provides;
@@ -34,8 +39,13 @@ public class PresenterModule {
         return new CreateConnectionPresenter(createConnectionUserCase, checkConnectionFtpUseCase, rxBus);
     }
 
-    @ViewScope @Provides
-    DirectoryContact.Presenter showDirectory(RxBus rxBus, GetDirectoriesUseCase getDirectoriesUseCase){
-        return new DirectoryPresenter(rxBus, getDirectoriesUseCase);
+    @DirectoryScope @Provides
+    DirectoryFileSystemContact.Presenter directoriesFileSystem(RxBus rxBus, GetDirectoriesUseCase getDirectoriesUseCase){
+        return new DirectoryFileSystemPresenter(rxBus, getDirectoriesUseCase);
+    }
+
+    @DirectoryScope @Provides
+    DirectoryFtpContact.Presenter directoriesFtp(RxBus rxBus, GetFtpDirectoriesUseCase getDirectoriesUseCase, FtpConnectionUseCase ftpConnectionUseCase){
+        return new DirectoryFtpSystemPresenter(rxBus, getDirectoriesUseCase, ftpConnectionUseCase);
     }
 }

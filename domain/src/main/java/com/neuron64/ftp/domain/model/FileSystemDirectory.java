@@ -1,7 +1,5 @@
 package com.neuron64.ftp.domain.model;
 
-import com.neuron64.ftp.domain.repository.FileSystemRepository;
-
 /**
  * Created by yks-11 on 10/13/17.
  */
@@ -12,12 +10,22 @@ public class FileSystemDirectory {
     private String documentId;
     private String availableBytes;
     private String type;
+    private boolean isDirectory;
 
-    public FileSystemDirectory(String title, String documentId, String availableBytes, String type) {
+    public FileSystemDirectory(String title, String documentId, String availableBytes, String type, boolean isDirectory) {
         this.title = title;
         this.documentId = documentId;
         this.availableBytes = availableBytes;
         this.type = type;
+        this.isDirectory = isDirectory;
+    }
+
+    public boolean isDirectory() {
+        return isDirectory;
+    }
+
+    public void setDirectory(boolean directory) {
+        isDirectory = directory;
     }
 
     public String getTitle() {

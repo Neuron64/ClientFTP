@@ -13,6 +13,10 @@ import io.reactivex.annotations.Nullable;
 
 public interface FileSystemRepository {
 
-    Single<List<FileSystemDirectory>> getExternalStorageFiles(@Nullable String directoryId);
+    Single<List<FileSystemDirectory>> getExternalStorageFiles();
+
+    Single<List<FileSystemDirectory>> getNextFiles(@Nullable String directoryId);
+
+    Single<List<FileSystemDirectory>> getPreviousFiles();
 
 }

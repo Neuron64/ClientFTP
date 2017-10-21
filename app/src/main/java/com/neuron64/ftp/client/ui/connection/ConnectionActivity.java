@@ -1,11 +1,9 @@
 package com.neuron64.ftp.client.ui.connection;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
@@ -43,7 +41,6 @@ public class ConnectionActivity extends BaseActivity {
 
     private Unbinder unbinder;
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,12 +52,6 @@ public class ConnectionActivity extends BaseActivity {
         if(savedInstanceState == null){
             ActivityUtils.addFragmentToActivity(getSupportFragmentManager(), ConnectionsFragment.newInstance(), R.id.contentFrame, ConnectionsFragment.TAG);
         }
-
-//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-//            String[] PERMISSIONS = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.MANAGE_DOCUMENTS,
-//                    Manifest.permission.READ_EXTERNAL_STORAGE};
-//            ActivityCompat.requestPermissions(this, PERMISSIONS, 1);
-//        }
     }
 
     @OnClick(R.id.fab)

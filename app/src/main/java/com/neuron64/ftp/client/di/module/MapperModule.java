@@ -1,8 +1,12 @@
 package com.neuron64.ftp.client.di.module;
 
 import com.neuron64.ftp.data.mapper.ConnectionMapper;
+import com.neuron64.ftp.data.mapper.FtpFileMapper;
 import com.neuron64.ftp.data.mapper.Mapper;
+import com.neuron64.ftp.domain.model.FileSystemDirectory;
 import com.neuron64.ftp.domain.model.UserConnection;
+
+import org.apache.commons.net.ftp.FTPFile;
 
 import javax.inject.Singleton;
 
@@ -16,7 +20,13 @@ import dagger.Provides;
 @Module
 public class MapperModule {
 
-    @Singleton @Provides Mapper<UserConnection, com.neuron64.ftp.data.model.local.UserConnection> connectionMapper(){
+    @Singleton @Provides
+    Mapper<UserConnection, com.neuron64.ftp.data.model.local.UserConnection> connectionMapper(){
         return new ConnectionMapper();
+    }
+
+    @Singleton @Provides
+    Mapper<FileSystemDirectory, FTPFile> ftpFileMapper(){
+        return new FtpFileMapper();
     }
 }

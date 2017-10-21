@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.neuron64.ftp.client.di.module.ApplicationModule;
 import com.neuron64.ftp.client.di.module.DataModule;
+import com.neuron64.ftp.client.di.module.FtpModule;
 import com.neuron64.ftp.client.di.module.InteractorModule;
 import com.neuron64.ftp.client.di.module.MapperModule;
 import com.neuron64.ftp.client.di.module.NetworkModule;
@@ -12,17 +13,15 @@ import com.neuron64.ftp.client.di.module.RealmModule;
 import com.neuron64.ftp.client.ui.base.BaseActivity;
 import com.neuron64.ftp.client.ui.base.BaseFragment;
 import com.neuron64.ftp.client.ui.base.bus.RxBus;
-import com.neuron64.ftp.data.database.RealmService;
 import com.neuron64.ftp.data.mapper.Mapper;
+import com.neuron64.ftp.data.network.FtpClientManager;
 import com.neuron64.ftp.domain.executor.BaseSchedulerProvider;
-import com.neuron64.ftp.domain.interactor.CreateConnectionUserCase;
-import com.neuron64.ftp.domain.interactor.DeleteConnectionUseCase;
-import com.neuron64.ftp.domain.interactor.GetAllConnectionUseCase;
-import com.neuron64.ftp.domain.interactor.GetDirectoriesUseCase;
+import com.neuron64.ftp.domain.model.FileSystemDirectory;
 import com.neuron64.ftp.domain.model.UserConnection;
 import com.neuron64.ftp.domain.repository.ConnectionRepository;
-import com.neuron64.ftp.domain.repository.FileSystemRepository;
 import com.neuron64.ftp.domain.repository.FtpRepository;
+
+import org.apache.commons.net.ftp.FTPFile;
 
 import javax.inject.Singleton;
 
@@ -40,7 +39,8 @@ import dagger.Component;
         DataModule.class,
         MapperModule.class,
         RealmModule.class,
-        NetworkModule.class})
+        NetworkModule.class,
+        FtpModule.class})
 public interface ApplicationComponent {
     void inject(BaseFragment fragment);
     void inject(BaseActivity activity);
@@ -48,17 +48,12 @@ public interface ApplicationComponent {
     Context context();
     RxBus rxBus();
     BaseSchedulerProvider scheduler();
-
-    //use case
-    GetAllConnectionUseCase getAllConnection();
-    CreateConnectionUserCase createConnectionUserCase();
-    DeleteConnectionUseCase deleteConnectionUseCase();
-    GetDirectoriesUseCase getDirectoriesUseCase();
+    FtpClientManager ftpClientManager();
 
     //data
-    FileSystemRepository fileSystemRepository();
     ConnectionRepository connectionRepository();
     FtpRepository ftpRepository();
     Mapper<UserConnection, com.neuron64.ftp.data.model.local.UserConnection> mapper();
-    RealmService realmService();
+    Mapper<FileSystemDirectory, FTPFile> mapperFtp();
+//    RealmService realmService();
 }

@@ -39,7 +39,7 @@ public class ConnectionsFragment extends BaseFragment implements ConnectionsCont
     public static final String TAG = "ConnectionsFragment";
 
     @BindView(R.id.rv_main) RecyclerView rvMain;
-    @BindView(R.id.ll_root) ConstraintLayout llRoot;
+    @BindView(R.id.cl_root) ConstraintLayout clRoot;
     @BindView(R.id.ll_progress_bar) LinearLayout llProgressBar;
     @BindView(R.id.ll_empty_list) LinearLayout llEmptyList;
 
@@ -65,6 +65,7 @@ public class ConnectionsFragment extends BaseFragment implements ConnectionsCont
         rvMain.setLayoutManager(new LinearLayoutManager(getContext()));
         rvMain.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         rvMain.setAdapter(connectionAdapter);
+
         return view;
     }
 
@@ -142,12 +143,12 @@ public class ConnectionsFragment extends BaseFragment implements ConnectionsCont
 
     @Override
     public void showSnackBar(@StringRes int id) {
-        ViewMessage.initSnackBarShort(llRoot, id);
+        ViewMessage.initSnackBarShort(clRoot, id);
     }
 
     @Override
     public void showSnackBarWithAction(int message, int messageAction, ConnectionsPresenter.OnClickListener onClickListener) {
-        ViewMessage.initSnackBarLongAction(llRoot, message, messageAction, view -> onClickListener.onClick());
+        ViewMessage.initSnackBarLongAction(clRoot, message, messageAction, view -> onClickListener.onClick());
     }
 
     @Override
