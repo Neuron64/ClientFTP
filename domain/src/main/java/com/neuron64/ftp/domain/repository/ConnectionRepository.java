@@ -18,7 +18,7 @@ public interface ConnectionRepository {
 
     Single<List<UserConnection>> getAllConnection();
 
-    Single<UserConnection> saveOrUpdateConnection(@NonNull String id, @Nullable String title, @NonNull String host, @Nullable String username, @Nullable String password, @Nullable String port, @Nullable Date date);
+    Single<UserConnection> saveOrUpdateConnection(@NonNull String id, @Nullable String title, @NonNull String host, @Nullable String username, @Nullable String password, @Nullable Integer port, @Nullable Date date);
 
     Completable deleteConnection(@NonNull String id);
 }

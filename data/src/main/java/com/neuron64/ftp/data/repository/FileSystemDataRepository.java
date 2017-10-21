@@ -73,7 +73,7 @@ public class FileSystemDataRepository implements FileSystemRepository{
 
     private List<FileSystemDirectory> getDirectoryFiles(Uri contentsUri){
         List<FileSystemDirectory> fileSystemDirectories = new ArrayList<>();
-        Cursor cursor = context.getContentResolver().query(contentsUri, null, null, null);
+        Cursor cursor = context.getContentResolver().query(contentsUri, null, null, null, null);
 
         if(cursor != null && cursor.moveToFirst()){
             while (cursor.moveToNext()) {

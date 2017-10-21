@@ -126,11 +126,11 @@ public class CreateConnectionFragment extends BaseFragment implements CreateConn
     }
 
     @Override
-    public void fillingFields(String userName, String password, String host, String title, String port) {
+    public void fillingFields(String userName, String password, String host, String title, Integer port) {
         if(title != null) putStringToInputLayout(textInputTitle, title);
         else putStringToInputLayout(textInputTitle, getString(R.string.new_connection));
         putStringToInputLayout(textInputUsername, userName);
-        putStringToInputLayout(textInputPort, port);
+        putIntegerToInputLayout(textInputPort, port);
         putStringToInputLayout(textInputPassword, password);
         putStringToInputLayout(textInputHost, host);
     }
@@ -138,7 +138,7 @@ public class CreateConnectionFragment extends BaseFragment implements CreateConn
     @Override
     public void pickConnection(boolean forCheck) {
         String username = getStringFromInputLayout(textInputUsername);
-        String port = getStringFromInputLayout(textInputPort);
+        Integer port = getIntegerFromInputLayout(textInputPort);
         String password = getStringFromInputLayout(textInputPassword);
         String title = getStringFromInputLayout(textInputTitle);
         String host = getStringFromInputLayout(textInputHost);
@@ -180,9 +180,21 @@ public class CreateConnectionFragment extends BaseFragment implements CreateConn
                 : null;
     }
 
+    private Integer getIntegerFromInputLayout(TextInputLayout textInputLayout){
+        return textInputLayout.getEditText() != null
+                ? Integer.valueOf(textInputLayout.getEditText().getText().toString())
+                : null;
+    }
+
     private void putStringToInputLayout(TextInputLayout textInputLayout, String value){
         if(textInputLayout.getEditText() != null) {
             textInputLayout.getEditText().setText(value);
+        }
+    }
+
+    private void putIntegerToInputLayout(TextInputLayout textInputLayout, Integer value){
+        if(textInputLayout.getEditText() != null) {
+            textInputLayout.getEditText().setText(String.valueOf(value));
         }
     }
 }

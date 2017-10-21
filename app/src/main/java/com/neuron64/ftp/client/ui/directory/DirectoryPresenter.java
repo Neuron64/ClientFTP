@@ -110,7 +110,7 @@ public abstract class DirectoryPresenter<V extends DirectoryContact.BaseDirector
                     view.showEmptyList();
                     view.showError();
                 },
-                disposable1 -> view.showLoadingIndicator(),
+                disposable1 -> { /*Empty*/},
                 () -> view.hideLoadingIndicator());
     }
 

@@ -20,6 +20,12 @@ public class DirectoryFileSystemPresenter extends DirectoryPresenter<DirectoryFi
     }
 
     @Override
+    public void subscribe() {
+        view.showLoadingIndicator();
+        super.subscribe();
+    }
+
+    @Override
     public void attachView(@NonNull DirectoryFileSystemContact.View view) {
         this.view = Preconditions.checkNotNull(view);
     }

@@ -19,9 +19,9 @@ public class UserConnection implements Parcelable{
 
     private String password;
 
-    private String port;
+    private Integer port;
 
-    public UserConnection(String id, String nameConnection, String host, String userName, String password, String port) {
+    public UserConnection(String id, String nameConnection, String host, String userName, String password, Integer port) {
         this.id = id;
         this.nameConnection = nameConnection;
         this.host = host;
@@ -70,11 +70,11 @@ public class UserConnection implements Parcelable{
         this.password = password;
     }
 
-    public String getPort() {
+    public Integer getPort() {
         return port;
     }
 
-    public void setPort(String port) {
+    public void setPort(Integer port) {
         this.port = port;
     }
 
@@ -91,7 +91,7 @@ public class UserConnection implements Parcelable{
         dest.writeString(this.host);
         dest.writeString(this.userName);
         dest.writeString(this.password);
-        dest.writeString(this.port);
+        dest.writeValue(this.port);
     }
 
     protected UserConnection(Parcel in) {
@@ -100,7 +100,7 @@ public class UserConnection implements Parcelable{
         this.host = in.readString();
         this.userName = in.readString();
         this.password = in.readString();
-        this.port = in.readString();
+        this.port = (Integer) in.readValue(Integer.class.getClassLoader());
     }
 
     public static final Creator<UserConnection> CREATOR = new Creator<UserConnection>() {

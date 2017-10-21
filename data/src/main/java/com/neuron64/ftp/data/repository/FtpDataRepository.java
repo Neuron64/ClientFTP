@@ -43,14 +43,14 @@ public class FtpDataRepository implements FtpRepository{
     }
 
     @Override
-    public Completable connect(String id, String nameConnection, String host, String userName, String password, String port) {
+    public Completable connect(String id, String nameConnection, String host, String userName, String password, Integer port) {
         this.connectionConfig.initConfig(id, nameConnection, host, userName, password, port);
 
         return Completable.fromAction(() ->
                 ftpClientManager.connect(connectionConfig.getHost(),
                         connectionConfig.getUserName(),
                         connectionConfig.getPassword(),
-                        Integer.parseInt(connectionConfig.getPort())));
+                        connectionConfig.getPort()));
     }
 
     @Override

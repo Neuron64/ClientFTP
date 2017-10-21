@@ -15,12 +15,7 @@ import static dagger.internal.Preconditions.checkNotNull;
  * Created by Neuron on 24.09.2017.
  */
 
-public class CheckConnectionFtpUseCase extends CompletableUseCase<Void>{
-
-    private String host;
-    private String username;
-    private String password;
-    private String port;
+public class CheckConnectionFtpUseCase extends CompletableUseCase<CheckConnectionFtpUseCase.ConnectionParams>{
 
     @NonNull
     private FtpRepository repository;
@@ -31,28 +26,52 @@ public class CheckConnectionFtpUseCase extends CompletableUseCase<Void>{
         this.repository = checkNotNull(repository);
     }
 
-    public CheckConnectionFtpUseCase init(String host, String username, String password, String port){
-        this.host = host;
-        this.username = username;
-        this.password = password;
-        this.port = port;
-
-        return this;
-    }
-
-    @Override
-    public Completable buildCompletable(Void aVoid) {
-        Integer myPort = port.isEmpty() ? null : Integer.parseInt(port);
-        return validate().andThen(repository.testConnection(host, username, password, myPort));
-    }
-
-    private Completable validate() {
+    private Completable validate(ConnectionParams connectionParams) {
         return Completable.create(subscriber -> {
-            if (host.isEmpty()) {
+            if (connectionParams.getHost().isEmpty()) {
                 subscriber.onError(new InvalidHostException());
             }else{
                 subscriber.onComplete();
             }
         });
+    }
+
+    @Override
+    public Completable buildCompletable(ConnectionParams connectionParams) {
+        return validate(connectionParams).andThen(repository.testConnection(connectionParams.host,
+                connectionParams.username,
+                connectionParams.password,
+                connectionParams.port));
+    }
+
+    public static class ConnectionParams{
+
+        private String host;
+        private String username;
+        private String password;
+        private Integer port;
+
+        public ConnectionParams(String host, String username, String password, Integer port) {
+            this.host = host;
+            this.username = username;
+            this.password = password;
+            this.port = port;
+        }
+
+        public String getHost() {
+            return host;
+        }
+
+        public String getUsername() {
+            return username;
+        }
+
+        public String getPassword() {
+            return password;
+        }
+
+        public Integer getPort() {
+            return port;
+        }
     }
 }

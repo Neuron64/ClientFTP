@@ -30,10 +30,12 @@ public class DirectoryFtpSystemPresenter extends DirectoryPresenter<DirectoryFtp
     @Override
     public void subscribe() {
         UserConnection userConnection = view.getExtraUserConnection();
-        ftpConnectionUseCase.connectExecute(super::subscribe, throwable -> {
+        ftpConnectionUseCase.execute(super::subscribe, throwable -> {
             //TODO:Check throwable in connectExecute
             Log.e(TAG, "subscribe: ", throwable);
-        }, userConnection);
+            view.showLoadingIndicator();
+            view.showError();
+        }, disposable1 -> view.showLoadingIndicator(), userConnection);
     }
 
     @Override
