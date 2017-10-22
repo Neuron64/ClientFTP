@@ -49,7 +49,12 @@ public class FileFragmentInfoPresenter implements FileFragmentContact.Presenter 
     }
 
     private void initPresenter(){
-        FileInfo fileInfo = view.getExtraFileInfo();
+        FileInfo info = view.getExtraFileInfo();
+        view.showInfoAboutFile(info.getTitle(),
+                info.getType(),
+                info.getDateLastModification(),
+                info.getPath(),
+                info.getAvailableBytes());
     }
 
     private void handleEvent(Object event){

@@ -32,4 +32,7 @@
 
     <string name="title_directory">Директория</string>
     <string name="title_file">Файл</string>
+
+    <string name="file_size_byte">%1$d байт</string>
+    <string name="format_date_last_modification">yyyy.MM.dd G \'at\' HH:mm:ss z</string>
 </resources>

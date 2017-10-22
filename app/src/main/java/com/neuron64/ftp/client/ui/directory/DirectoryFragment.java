@@ -132,4 +132,19 @@ public abstract class DirectoryFragment<A extends BaseAdapter<FileInfo>,
 
     @Override
     public void onLongItemClick(View view, int position) {/*Empty*/}
+
+    @Override
+    public void removeDocument() {
+        //TODO: Remove Document
+    }
+
+    @Override
+    public void createFile() {
+        //TODO: Create File
+    }
+
+    @Override
+    public void moveFile() {
+        //TODO: Move File
+    }
 }

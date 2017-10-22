@@ -30,6 +30,12 @@ public interface DirectoryContact{
         void finishActivity();
 
         void clearRecyclerView();
+
+        void removeDocument();
+
+        void createFile();
+
+        void moveFile();
     }
 
     interface BaseDirectoryPresenter<V extends BaseView> extends BasePresenter<V> {

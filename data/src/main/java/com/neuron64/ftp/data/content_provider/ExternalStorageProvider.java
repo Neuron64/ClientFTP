@@ -34,7 +34,7 @@ public class ExternalStorageProvider extends StorageProvider {
     private static final String[] DEFAULT_DOCUMENT_PROJECTION = new String[] {
             CustomDocumentColumn.COLUMN_DOCUMENT_ID, CustomDocumentColumn.COLUMN_MIME_TYPE, CustomDocumentColumn.COLUMN_DISPLAY_NAME,
             CustomDocumentColumn.COLUMN_LAST_MODIFIED, CustomDocumentColumn.COLUMN_FLAGS, CustomDocumentColumn.COLUMN_SIZE, CustomDocumentColumn.COLUMN_SUMMARY,
-            CustomDocumentColumn.COLUMN_IS_DIRECTORY,
+            CustomDocumentColumn.COLUMN_IS_DIRECTORY, CustomDocumentColumn.COLUMN_PATH_FILE
     };
 
     private ArrayMap<String, VolumeInfo> roots = new ArrayMap<>();
@@ -199,5 +199,6 @@ public class ExternalStorageProvider extends StorageProvider {
         row.add(CustomDocumentColumn.COLUMN_FLAGS, flags);
         row.add(CustomDocumentColumn.COLUMN_LAST_MODIFIED, file.lastModified());
         row.add(CustomDocumentColumn.COLUMN_IS_DIRECTORY, file.isDirectory() ? 1 : 0);
+        row.add(CustomDocumentColumn.COLUMN_PATH_FILE, file.getAbsoluteFile());
     }
 }
