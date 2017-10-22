@@ -1,6 +1,6 @@
 package com.neuron64.ftp.domain.repository;
 
-import com.neuron64.ftp.domain.model.FileSystemDirectory;
+import com.neuron64.ftp.domain.model.FileInfo;
 
 import java.util.List;
 
@@ -13,10 +13,10 @@ import io.reactivex.annotations.Nullable;
 
 public interface FileSystemRepository {
 
-    Single<List<FileSystemDirectory>> getExternalStorageFiles();
+    Single<List<FileInfo>> getExternalStorageFiles();
 
-    Single<List<FileSystemDirectory>> getNextFiles(@Nullable String directoryId);
+    Single<List<FileInfo>> getNextFiles(@Nullable String directoryId);
 
-    Single<List<FileSystemDirectory>> getPreviousFiles();
+    Single<List<FileInfo>> getPreviousFiles();
 
 }

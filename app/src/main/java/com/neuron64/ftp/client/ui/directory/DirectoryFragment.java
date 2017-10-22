@@ -17,7 +17,7 @@ import com.neuron64.ftp.client.ui.base.BaseAdapter;
 import com.neuron64.ftp.client.ui.base.BaseFragment;
 import com.neuron64.ftp.client.ui.base.RecyclerItemClickListener;
 import com.neuron64.ftp.client.util.ViewMessage;
-import com.neuron64.ftp.domain.model.FileSystemDirectory;
+import com.neuron64.ftp.domain.model.FileInfo;
 
 import java.util.List;
 
@@ -27,7 +27,7 @@ import butterknife.BindView;
  * Created by yks-11 on 10/17/17.
  */
 
-public abstract class DirectoryFragment<A extends BaseAdapter<FileSystemDirectory>,
+public abstract class DirectoryFragment<A extends BaseAdapter<FileInfo>,
         P extends DirectoryContact.BaseDirectoryPresenter<?>> extends BaseFragment
         implements DirectoryContact.BaseDirectoryView<P>,
         RecyclerItemClickListener.OnItemClickListener{
@@ -83,7 +83,7 @@ public abstract class DirectoryFragment<A extends BaseAdapter<FileSystemDirector
     }
 
     @Override
-    public void showFiles(List<FileSystemDirectory> files) {
+    public void showFiles(List<FileInfo> files) {
         directoryAdapter.setItems(files);
     }
 
@@ -99,7 +99,9 @@ public abstract class DirectoryFragment<A extends BaseAdapter<FileSystemDirector
 
     @Override
     public void hideEmptyList() {
-        llEmptyList.setVisibility(View.GONE);
+        if(llEmptyList.getVisibility() == View.VISIBLE) {
+            llEmptyList.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -124,7 +126,7 @@ public abstract class DirectoryFragment<A extends BaseAdapter<FileSystemDirector
 
     @Override
     public void onItemClick(View view, int position) {
-        FileSystemDirectory file = directoryAdapter.at(position);
+        FileInfo file = directoryAdapter.at(position);
         presenter.clickFile(file);
     }
 

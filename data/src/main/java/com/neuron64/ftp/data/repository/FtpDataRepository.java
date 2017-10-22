@@ -3,7 +3,7 @@ package com.neuron64.ftp.data.repository;
 import com.neuron64.ftp.data.ftp.ConnectionConfig;
 import com.neuron64.ftp.data.mapper.Mapper;
 import com.neuron64.ftp.data.network.FtpClientManager;
-import com.neuron64.ftp.domain.model.FileSystemDirectory;
+import com.neuron64.ftp.domain.model.FileInfo;
 import com.neuron64.ftp.domain.repository.FtpRepository;
 
 import org.apache.commons.net.ftp.FTPFile;
@@ -26,12 +26,12 @@ import io.reactivex.functions.Function;
 public class FtpDataRepository implements FtpRepository{
 
     private FtpClientManager ftpClientManager;
-    private Mapper<FileSystemDirectory, FTPFile> ftpFileMapper;
+    private Mapper<FileInfo, FTPFile> ftpFileMapper;
 
     private ConnectionConfig connectionConfig;
 
     @Inject
-    public FtpDataRepository(@NonNull FtpClientManager ftpClientManager, @NonNull Mapper<FileSystemDirectory, FTPFile> ftpFileMapper){
+    public FtpDataRepository(@NonNull FtpClientManager ftpClientManager, @NonNull Mapper<FileInfo, FTPFile> ftpFileMapper){
         this.ftpClientManager = ftpClientManager;
         this.ftpFileMapper = ftpFileMapper;
         this.connectionConfig = new ConnectionConfig();
@@ -59,27 +59,27 @@ public class FtpDataRepository implements FtpRepository{
     }
 
     @Override
-    public Single<List<FileSystemDirectory>> getExternalStorageFiles() {
+    public Single<List<FileInfo>> getExternalStorageFiles() {
         return Single.fromCallable(() ->
                 ftpClientManager.getListFolder(connectionConfig.getFullPath())).to(funToFileSystemDto);
     }
 
     @Override
-    public Single<List<FileSystemDirectory>> getNextFiles(String pathName) {
+    public Single<List<FileInfo>> getNextFiles(String pathName) {
         return Single.fromCallable(() ->
                 ftpClientManager.getListFolder(connectionConfig.addDirectory(pathName).getFullPath())).to(funToFileSystemDto);
     }
 
     @Override
-    public Single<List<FileSystemDirectory>> getPreviousFiles() {
+    public Single<List<FileInfo>> getPreviousFiles() {
         return Single.fromCallable(() ->
                 ftpClientManager.getListFolder(connectionConfig.backDirectory().getFullPath())).to(funToFileSystemDto);
     }
 
-    private final Function<Single<List<FTPFile>>, Single<List<FileSystemDirectory>>> funToFileSystemDto =
-            new Function<Single<List<FTPFile>>, Single<List<FileSystemDirectory>>>() {
+    private final Function<Single<List<FTPFile>>, Single<List<FileInfo>>> funToFileSystemDto =
+            new Function<Single<List<FTPFile>>, Single<List<FileInfo>>>() {
         @Override
-        public Single<List<FileSystemDirectory>> apply(Single<List<FTPFile>> listSingle) throws Exception {
+        public Single<List<FileInfo>> apply(Single<List<FTPFile>> listSingle) throws Exception {
             return listSingle.toObservable()
                     .flatMap(Observable::fromIterable)
                     .map(ftpFiles -> ftpFileMapper.map(ftpFiles))

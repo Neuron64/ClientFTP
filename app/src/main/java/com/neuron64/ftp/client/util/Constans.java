@@ -6,5 +6,8 @@ package com.neuron64.ftp.client.util;
 
 public class Constans {
     public static final String EXTRA_USER_CONNECTION = "extra:user:connection";
+    public static final String EXTRA_FILE_INFO = "extra:data";
+
+    @Deprecated
     public static final String EXTRA_DATA = "extra:data";
 }

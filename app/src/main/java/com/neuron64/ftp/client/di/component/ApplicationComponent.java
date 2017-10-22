@@ -16,7 +16,7 @@ import com.neuron64.ftp.client.ui.base.bus.RxBus;
 import com.neuron64.ftp.data.mapper.Mapper;
 import com.neuron64.ftp.data.network.FtpClientManager;
 import com.neuron64.ftp.domain.executor.BaseSchedulerProvider;
-import com.neuron64.ftp.domain.model.FileSystemDirectory;
+import com.neuron64.ftp.domain.model.FileInfo;
 import com.neuron64.ftp.domain.model.UserConnection;
 import com.neuron64.ftp.domain.repository.ConnectionRepository;
 import com.neuron64.ftp.domain.repository.FtpRepository;
@@ -54,6 +54,6 @@ public interface ApplicationComponent {
     ConnectionRepository connectionRepository();
     FtpRepository ftpRepository();
     Mapper<UserConnection, com.neuron64.ftp.data.model.local.UserConnection> mapper();
-    Mapper<FileSystemDirectory, FTPFile> mapperFtp();
+    Mapper<FileInfo, FTPFile> mapperFtp();
 //    RealmService realmService();
 }

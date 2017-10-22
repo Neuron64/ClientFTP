@@ -28,6 +28,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.directory.DirectoryActivity"/>
+        <activity android:name=".ui.file_info.FileActivity"/>
 
         <provider
             android:name="com.neuron64.ftp.data.content_provider.ExternalStorageProvider"

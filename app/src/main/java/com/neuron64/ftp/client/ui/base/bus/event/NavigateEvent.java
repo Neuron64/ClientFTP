@@ -9,6 +9,7 @@ import android.os.Bundle;
 public class NavigateEvent {
 
     public static final int OPEN_DIRECTORY = 0;
+    public static final int OPEN_FILE_INFO = 1;
 
     public final int code;
     public final Bundle data;
@@ -20,5 +21,9 @@ public class NavigateEvent {
 
     public static NavigateEvent navigateOpenDirectory(Bundle data){
         return new NavigateEvent(data, OPEN_DIRECTORY);
+    }
+
+    public static NavigateEvent nabigateOpenFileInfo(Bundle data){
+        return new NavigateEvent(data, OPEN_FILE_INFO);
     }
 }

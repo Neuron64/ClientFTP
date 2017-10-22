@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ClientFTP</string>
+    <string name="app_name">Client FTP</string>
     <string name="action_settings">Settings</string>
     <string name="empty_list_connections">Нет сохраненных соединений</string>
     <string name="create">Создать</string>
@@ -29,4 +29,7 @@
     <string name="file_system">Файловая система</string>
 
     <string name="internal_storage">Internal Storage</string>
+
+    <string name="title_directory">Директория</string>
+    <string name="title_file">Файл</string>
 </resources>

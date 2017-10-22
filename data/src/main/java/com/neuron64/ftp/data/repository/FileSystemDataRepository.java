@@ -8,7 +8,7 @@ import android.provider.DocumentsContract;
 import com.neuron64.ftp.data.content_provider.CustomDocumentColumn;
 import com.neuron64.ftp.data.content_provider.ExternalStorageProvider;
 import com.neuron64.ftp.data.exception.ErrorThisIsRootDirectory;
-import com.neuron64.ftp.domain.model.FileSystemDirectory;
+import com.neuron64.ftp.domain.model.FileInfo;
 import com.neuron64.ftp.domain.repository.FileSystemRepository;
 
 import java.util.ArrayList;
@@ -40,7 +40,7 @@ public class FileSystemDataRepository implements FileSystemRepository{
     }
 
     @Override
-    public Single<List<FileSystemDirectory>> getExternalStorageFiles() {
+    public Single<List<FileInfo>> getExternalStorageFiles() {
        return Single.fromCallable(() -> {
            Uri contentsUri = DocumentsContract.buildChildDocumentsUri(ExternalStorageProvider.AUTHORITY, previousFolder.get(previousFolder.size() - 1));
            return getDirectoryFiles(contentsUri);
@@ -48,7 +48,7 @@ public class FileSystemDataRepository implements FileSystemRepository{
     }
 
     @Override
-    public Single<List<FileSystemDirectory>> getNextFiles(@NonNull String directoryId) {
+    public Single<List<FileInfo>> getNextFiles(@NonNull String directoryId) {
         return Single.fromCallable(() -> {
             previousFolder.add(directoryId);
             Uri contentsUri = DocumentsContract.buildChildDocumentsUri(ExternalStorageProvider.AUTHORITY, directoryId);
@@ -57,7 +57,7 @@ public class FileSystemDataRepository implements FileSystemRepository{
     }
 
     @Override
-    public Single<List<FileSystemDirectory>> getPreviousFiles() {
+    public Single<List<FileInfo>> getPreviousFiles() {
         if(previousFolder.size() > 1){
             return Single.fromCallable(() -> {
                 previousFolder.remove(previousFolder.size() - 1);
@@ -71,8 +71,8 @@ public class FileSystemDataRepository implements FileSystemRepository{
         }
     }
 
-    private List<FileSystemDirectory> getDirectoryFiles(Uri contentsUri){
-        List<FileSystemDirectory> fileSystemDirectories = new ArrayList<>();
+    private List<FileInfo> getDirectoryFiles(Uri contentsUri){
+        List<FileInfo> fileSystemDirectories = new ArrayList<>();
         Cursor cursor = context.getContentResolver().query(contentsUri, null, null, null, null);
 
         if(cursor != null && cursor.moveToFirst()){
@@ -82,7 +82,7 @@ public class FileSystemDataRepository implements FileSystemRepository{
                 String mimeTypes = cursor.getString(cursor.getColumnIndex(CustomDocumentColumn.COLUMN_MIME_TYPE));
                 String avalibleBytes = cursor.getString(cursor.getColumnIndex(CustomDocumentColumn.COLUMN_SIZE));
                 boolean isDirectory = cursor.getInt(cursor.getColumnIndex(CustomDocumentColumn.COLUMN_IS_DIRECTORY)) > 0;
-                fileSystemDirectories.add(new FileSystemDirectory(title, documentId, avalibleBytes, mimeTypes, isDirectory));
+                fileSystemDirectories.add(new FileInfo(title, documentId, avalibleBytes, mimeTypes, isDirectory));
             }
         }
         return fileSystemDirectories;
