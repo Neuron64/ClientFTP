@@ -10,6 +10,7 @@ import com.neuron64.ftp.client.di.module.PresenterModule;
 import com.neuron64.ftp.client.ui.base.RecyclerItemClickListener;
 import com.neuron64.ftp.client.ui.directory.DirectoryFragment;
 import com.neuron64.ftp.client.util.Preconditions;
+import com.neuron64.ftp.domain.model.FileInfo;
 
 import javax.inject.Inject;
 
@@ -17,7 +18,7 @@ import javax.inject.Inject;
  * Created by Neuron on 01.10.2017.
  */
 
-public class DirectoryFileSystemFragment extends DirectoryFragment<DirectoryFileSystemAdapter, DirectoryFileSystemContact.Presenter> implements DirectoryFileSystemContact.View, RecyclerItemClickListener.OnItemClickListener{
+public class DirectoryFileSystemFragment extends DirectoryFragment<DirectoryFileSystemAdapter, DirectoryFileSystemContact.Presenter> implements DirectoryFileSystemAdapter.OnItemClickListener, DirectoryFileSystemContact.View{
 
     private static final String TAG = "DirectoryFileSystemFrag";
 
@@ -31,7 +32,7 @@ public class DirectoryFileSystemFragment extends DirectoryFragment<DirectoryFile
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.directoryAdapter = new DirectoryFileSystemAdapter(getContext(), presenter.getEventBus());
+        this.directoryAdapter = new DirectoryFileSystemAdapter(getContext(), presenter.getEventBus(), this);
     }
 
     @Inject @Override
@@ -47,5 +48,16 @@ public class DirectoryFileSystemFragment extends DirectoryFragment<DirectoryFile
                 .presenterModule(new PresenterModule())
                 .build()
                 .inject(this);
+    }
+
+    @Override
+    public void onClickDeleteFile(FileInfo fileInfo, int positionAdapter) {
+        presenter.removeDocument(fileInfo);
+
+    }
+
+    @Override
+    public void onClickItem(FileInfo file, int position) {
+        presenter.clickFile(file);
     }
 }

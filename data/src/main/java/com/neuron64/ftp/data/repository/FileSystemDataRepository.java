@@ -7,6 +7,7 @@ import android.provider.DocumentsContract;
 
 import com.neuron64.ftp.data.content_provider.CustomDocumentColumn;
 import com.neuron64.ftp.data.content_provider.ExternalStorageProvider;
+import com.neuron64.ftp.data.exception.ErrorDeleteDocument;
 import com.neuron64.ftp.data.exception.ErrorThisIsRootDirectory;
 import com.neuron64.ftp.domain.model.FileInfo;
 import com.neuron64.ftp.domain.repository.FileSystemRepository;
@@ -17,6 +18,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.Completable;
 import io.reactivex.Single;
 import io.reactivex.annotations.NonNull;
 
@@ -70,6 +72,20 @@ public class FileSystemDataRepository implements FileSystemRepository{
                 throw new ErrorThisIsRootDirectory();
             });
         }
+    }
+
+    @Override
+    public Completable deleteFile(String documentId) {
+        return Completable.fromAction(() -> {
+            boolean isDeleted = DocumentsContract.deleteDocument(context.getContentResolver(), deriveFields(documentId));
+            if(!isDeleted){
+                throw new ErrorDeleteDocument();
+            }
+        });
+    }
+
+    private Uri deriveFields(String documentId) {
+        return DocumentsContract.buildDocumentUri(ExternalStorageProvider.AUTHORITY, documentId);
     }
 
     private List<FileInfo> getDirectoryFiles(Uri contentsUri){

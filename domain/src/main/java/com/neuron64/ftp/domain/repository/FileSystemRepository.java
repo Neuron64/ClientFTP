@@ -4,6 +4,7 @@ import com.neuron64.ftp.domain.model.FileInfo;
 
 import java.util.List;
 
+import io.reactivex.Completable;
 import io.reactivex.Single;
 import io.reactivex.annotations.Nullable;
 
@@ -19,4 +20,5 @@ public interface FileSystemRepository {
 
     Single<List<FileInfo>> getPreviousFiles();
 
+    Completable deleteFile(String idFile);
 }
