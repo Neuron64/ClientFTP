@@ -10,6 +10,7 @@ import com.neuron64.ftp.client.di.module.PresenterModule;
 import com.neuron64.ftp.client.ui.directory.DirectoryFragment;
 import com.neuron64.ftp.client.util.Constans;
 import com.neuron64.ftp.client.util.Preconditions;
+import com.neuron64.ftp.domain.model.FileInfo;
 import com.neuron64.ftp.domain.model.UserConnection;
 
 import javax.inject.Inject;
@@ -40,6 +41,11 @@ public class DirectoryFtpFragment extends DirectoryFragment<DirectoryFtpAdapter,
     public void attachPresenter(@NonNull DirectoryFtpContact.Presenter presenter) {
         this.presenter = Preconditions.checkNotNull(presenter);
         this.presenter.attachView(this);
+    }
+
+    @Override
+    public void onClickItem(FileInfo file, int positionAdapter) {
+        presenter.clickFile(file);
     }
 
     @Override

@@ -29,13 +29,14 @@ import butterknife.BindView;
 
 public abstract class DirectoryFragment<A extends BaseAdapter<FileInfo>,
         P extends DirectoryContact.BaseDirectoryPresenter<?>> extends BaseFragment
-        implements DirectoryContact.BaseDirectoryView<P>,
-        RecyclerItemClickListener.OnItemClickListener{
+        implements DirectoryContact.BaseDirectoryView<P>{
 
     @Override
     public abstract void initializeDependencies();
 
     public abstract void attachPresenter(@NonNull P presenter);
+
+    public abstract void onClickItem(FileInfo file, int positionAdapter);
 
     protected P presenter;
 
@@ -56,7 +57,6 @@ public abstract class DirectoryFragment<A extends BaseAdapter<FileInfo>,
         rvContent.setLayoutManager(new LinearLayoutManager(getContext()));
         rvContent.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         rvContent.setAdapter(directoryAdapter);
-        rvContent.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), rvContent, this));
 
         return view;
     }
@@ -124,27 +124,4 @@ public abstract class DirectoryFragment<A extends BaseAdapter<FileInfo>,
         directoryAdapter.clearItems();
     }
 
-    @Override
-    public void onItemClick(View view, int position) {
-        FileInfo file = directoryAdapter.at(position);
-        presenter.clickFile(file);
-    }
-
-    @Override
-    public void onLongItemClick(View view, int position) {/*Empty*/}
-
-    @Override
-    public void removeDocument() {
-        //TODO: Remove Document
-    }
-
-    @Override
-    public void createFile() {
-        //TODO: Create File
-    }
-
-    @Override
-    public void moveFile() {
-        //TODO: Move File
-    }
 }

@@ -12,6 +12,8 @@ import android.provider.DocumentsContract.Root;
 import android.util.ArrayMap;
 import android.util.Log;
 
+import com.neuron64.ftp.data.util.FileUils;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.List;
@@ -50,6 +52,7 @@ public class ExternalStorageProvider extends StorageProvider {
         updateVolumesLocked();
     }
 
+    //TODO: Support <23 version API
     private void updateVolumesLocked() {
         StorageManager storageManager = (StorageManager) getContext().getSystemService(Context.STORAGE_SERVICE);
         List<StorageVolume> storageVolumes = storageManager.getStorageVolumes();
@@ -93,6 +96,12 @@ public class ExternalStorageProvider extends StorageProvider {
             includeFile(result, null, file);
         }
         return result;
+    }
+
+    @Override
+    public void deleteDocument(String documentId) throws FileNotFoundException {
+        File file = getFileForDocId(documentId);
+        FileUils.deleteFile(getContext(), file);
     }
 
     private File getFileForDocId(String docId) throws FileNotFoundException {

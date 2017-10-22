@@ -76,6 +76,12 @@ public class FtpDataRepository implements FtpRepository{
                 ftpClientManager.getListFolder(connectionConfig.backDirectory().getFullPath())).to(funToFileSystemDto);
     }
 
+    @Override
+    public Completable deleteFile(String idFile) {
+        //TODO Delete ftp document
+        return null;
+    }
+
     private final Function<Single<List<FTPFile>>, Single<List<FileInfo>>> funToFileSystemDto =
             new Function<Single<List<FTPFile>>, Single<List<FileInfo>>>() {
         @Override

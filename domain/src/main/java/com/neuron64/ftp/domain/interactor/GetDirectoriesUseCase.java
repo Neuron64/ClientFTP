@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.Completable;
 import io.reactivex.Single;
 
 /**
@@ -34,5 +35,10 @@ public class GetDirectoriesUseCase extends DirectoryUseCase<String>{
     @Override
     public Single<List<FileInfo>> getNextDirectory(String documentId) {
         return fileSystemRepository.getNextFiles(documentId);
+    }
+
+    @Override
+    public Completable deleteDocument(String documentId) {
+        return fileSystemRepository.deleteFile(documentId);
     }
 }

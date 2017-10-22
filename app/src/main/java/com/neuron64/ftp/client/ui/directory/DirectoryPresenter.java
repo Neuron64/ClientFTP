@@ -17,7 +17,9 @@ import com.neuron64.ftp.domain.model.FileInfo;
 import java.util.List;
 
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
+import io.reactivex.functions.Consumer;
 
 /**
  * Created by yks-11 on 10/17/17.
@@ -108,6 +110,27 @@ public abstract class DirectoryPresenter<V extends DirectoryContact.BaseDirector
                 }
             }
         }
+    }
+
+    @Override
+    public void removeDocument(FileInfo file) {
+        directoryUseCase.executeDeleteDocument(() -> {
+
+        }, throwable -> {
+
+        }, disposable -> {
+
+        }, file.getDocumentId());
+}
+
+    @Override
+    public void createFile() {
+        //TODO: Create File
+    }
+
+    @Override
+    public void moveFile(FileInfo file) {
+        //TODO: Move File
     }
 
     private void goToPreviousIfNotRoot(){
