@@ -38,4 +38,6 @@ public class CustomDocumentColumn {
 
     public static final String COLUMN_IS_DIRECTORY = "is_directory";
 
+    public static final String COLUMN_PATH_FILE = "path_file";
+
 }

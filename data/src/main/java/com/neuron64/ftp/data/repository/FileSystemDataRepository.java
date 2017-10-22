@@ -12,6 +12,7 @@ import com.neuron64.ftp.domain.model.FileInfo;
 import com.neuron64.ftp.domain.repository.FileSystemRepository;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -80,9 +81,11 @@ public class FileSystemDataRepository implements FileSystemRepository{
                 String title = cursor.getString(cursor.getColumnIndex(CustomDocumentColumn.COLUMN_DISPLAY_NAME));
                 String documentId = cursor.getString(cursor.getColumnIndex(CustomDocumentColumn.COLUMN_DOCUMENT_ID));
                 String mimeTypes = cursor.getString(cursor.getColumnIndex(CustomDocumentColumn.COLUMN_MIME_TYPE));
-                String avalibleBytes = cursor.getString(cursor.getColumnIndex(CustomDocumentColumn.COLUMN_SIZE));
+                long avalibleBytes = cursor.getLong(cursor.getColumnIndex(CustomDocumentColumn.COLUMN_SIZE));
                 boolean isDirectory = cursor.getInt(cursor.getColumnIndex(CustomDocumentColumn.COLUMN_IS_DIRECTORY)) > 0;
-                fileSystemDirectories.add(new FileInfo(title, documentId, avalibleBytes, mimeTypes, isDirectory));
+                String pathFile = cursor.getString(cursor.getColumnIndex(CustomDocumentColumn.COLUMN_PATH_FILE));
+                Date dateLastModification = new Date(cursor.getLong(cursor.getColumnIndex(CustomDocumentColumn.COLUMN_LAST_MODIFIED)));
+                fileSystemDirectories.add(new FileInfo(title, documentId, avalibleBytes, mimeTypes, isDirectory, dateLastModification, pathFile));
             }
         }
         return fileSystemDirectories;
