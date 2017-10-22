@@ -10,6 +10,8 @@ import com.neuron64.ftp.domain.interactor.FtpConnectionUseCase;
 import com.neuron64.ftp.domain.interactor.GetFtpDirectoriesUseCase;
 import com.neuron64.ftp.domain.model.UserConnection;
 
+import io.reactivex.functions.Action;
+
 /**
  * Created by yks-11 on 10/17/17.
  */
@@ -29,13 +31,7 @@ public class DirectoryFtpSystemPresenter extends DirectoryPresenter<DirectoryFtp
 
     @Override
     public void subscribe() {
-        UserConnection userConnection = view.getExtraUserConnection();
-        ftpConnectionUseCase.execute(super::subscribe, throwable -> {
-            //TODO:Check throwable in connectExecute
-            Log.e(TAG, "subscribe: ", throwable);
-            view.showLoadingIndicator();
-            view.showError();
-        }, disposable1 -> view.showLoadingIndicator(), userConnection);
+       super.subscribe();
     }
 
     @Override
@@ -49,5 +45,16 @@ public class DirectoryFtpSystemPresenter extends DirectoryPresenter<DirectoryFtp
     @Override
     protected String getSimpleNameClass() {
         return this.getClass().getSimpleName();
+    }
+
+    @Override
+    protected void checkConnection(Action complete) {
+        UserConnection userConnection = view.getExtraUserConnection();
+        ftpConnectionUseCase.execute(complete, throwable -> {
+            //TODO:Check throwable in connectExecute
+            Log.e(TAG, "subscribe: ", throwable);
+            view.showLoadingIndicator();
+            view.showError();
+        }, disposable1 -> view.showLoadingIndicator(), userConnection);
     }
 }

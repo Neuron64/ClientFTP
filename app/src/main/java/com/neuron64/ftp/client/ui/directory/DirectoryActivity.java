@@ -17,7 +17,9 @@ import android.view.MenuItem;
 import com.neuron64.ftp.client.App;
 import com.neuron64.ftp.client.R;
 import com.neuron64.ftp.client.ui.base.BaseActivity;
+import com.neuron64.ftp.client.ui.base.Navigator;
 import com.neuron64.ftp.client.ui.base.bus.event.ButtonEvent;
+import com.neuron64.ftp.client.ui.base.bus.event.NavigateEvent;
 import com.neuron64.ftp.client.ui.directory.file_system.DirectoryFileSystemFragment;
 import com.neuron64.ftp.client.ui.directory.file_system.DirectoryFileSystemPresenter;
 import com.neuron64.ftp.client.ui.directory.ftp.DirectoryFtpFragment;
@@ -80,11 +82,8 @@ public class DirectoryActivity extends BaseActivity{
     private UserConnection getExtraUserConnection(){
         Bundle bundle = getIntent().getExtras();
 
-        if(bundle != null && bundle.containsKey(Constans.EXTRA_DATA)) {
-            Bundle bundle1 = bundle.getBundle(Constans.EXTRA_DATA);
-            if (bundle1 != null && bundle1.containsKey(Constans.EXTRA_USER_CONNECTION)) {
-                return bundle1.getParcelable(Constans.EXTRA_USER_CONNECTION);
-            }
+        if(bundle != null && bundle.containsKey(Constans.EXTRA_USER_CONNECTION)) {
+            return bundle.getParcelable(Constans.EXTRA_USER_CONNECTION);
         }
         return null;
     }
@@ -116,7 +115,9 @@ public class DirectoryActivity extends BaseActivity{
 
     @Override
     public void handleEvent(@NonNull Object event) {
-        //Empty
+        if(event instanceof NavigateEvent){
+            new Navigator().navigate(this, (NavigateEvent) event);
+        }
     }
 
     @Override

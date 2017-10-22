@@ -1,16 +1,23 @@
 package com.neuron64.ftp.client.ui.directory;
 
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.neuron64.ftp.client.ui.base.bus.RxBus;
 import com.neuron64.ftp.client.ui.base.bus.event.ButtonEvent;
+import com.neuron64.ftp.client.ui.base.bus.event.NavigateEvent;
+import com.neuron64.ftp.client.util.ActivityUtils;
+import com.neuron64.ftp.client.util.Constans;
 import com.neuron64.ftp.client.util.Preconditions;
 import com.neuron64.ftp.data.exception.ErrorThisIsRootDirectory;
 import com.neuron64.ftp.domain.interactor.DirectoryUseCase;
-import com.neuron64.ftp.domain.model.FileSystemDirectory;
+import com.neuron64.ftp.domain.model.FileInfo;
+
+import java.util.List;
 
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Action;
 
 /**
  * Created by yks-11 on 10/17/17.
@@ -21,6 +28,13 @@ public abstract class DirectoryPresenter<V extends DirectoryContact.BaseDirector
     private static final String TAG = "DirectoryFileSystemPresenter";
 
     protected abstract String getSimpleNameClass();
+
+    /**
+     * Check connection before start {@link #getRootDirectory()}
+     *
+     * @param complete
+     */
+    protected abstract void checkConnection(Action complete);
 
     protected V view;
 
@@ -54,7 +68,7 @@ public abstract class DirectoryPresenter<V extends DirectoryContact.BaseDirector
     }
 
     private void initData(){
-        getRootDirectory();
+        checkConnection(this::getRootDirectory);
     }
 
     @Override
@@ -69,8 +83,12 @@ public abstract class DirectoryPresenter<V extends DirectoryContact.BaseDirector
     }
 
     @Override
-    public void clickFile(FileSystemDirectory file) {
-        getNextDirectory(file.getDocumentId());
+    public void clickFile(FileInfo file) {
+        if(file.isDirectory()) {
+            getNextDirectory(file.getDocumentId());
+        }else{
+            openFileInfoActivity(file);
+        }
     }
 
     @Override
@@ -101,9 +119,7 @@ public abstract class DirectoryPresenter<V extends DirectoryContact.BaseDirector
     }
 
     protected void getRootDirectory() {
-        directoryUseCase.executeRootDirectory(fileSystemDirectories -> {
-                    view.showFiles(fileSystemDirectories);
-                },
+        directoryUseCase.executeRootDirectory(this::showFiles,
                 throwable -> {
                     Log.e(TAG, "subscribe getRootDirectory: throwable", throwable);
                     view.clearRecyclerView();
@@ -117,7 +133,7 @@ public abstract class DirectoryPresenter<V extends DirectoryContact.BaseDirector
     protected void getNextDirectory(String directory) {
         directoryUseCase.executeNextDirectory(fileSystemDirectories -> {
                     lvlFolder++;
-                    view.showFiles(fileSystemDirectories);
+                    showFiles(fileSystemDirectories);
                 },
                 throwable -> {
                     Log.e(TAG, "subscribe getNextDirectory: throwable", throwable);
@@ -133,7 +149,7 @@ public abstract class DirectoryPresenter<V extends DirectoryContact.BaseDirector
     protected void getPreviousDirectory() {
         directoryUseCase.executePreviousDirectory(fileSystemDirectories -> {
                     lvlFolder--;
-                    view.showFiles(fileSystemDirectories);
+                    showFiles(fileSystemDirectories);
                 },
                 throwable -> {
                     if(throwable instanceof ErrorThisIsRootDirectory){
@@ -147,5 +163,21 @@ public abstract class DirectoryPresenter<V extends DirectoryContact.BaseDirector
                 },
                 disposable1 -> view.showLoadingIndicator(),
                 () -> view.hideLoadingIndicator());
+    }
+
+    protected void showFiles(List<FileInfo> fileSystemDirectories){
+        if(!fileSystemDirectories.isEmpty()) {
+            view.hideEmptyList();
+            view.showFiles(fileSystemDirectories);
+        }else{
+            view.clearRecyclerView();
+            view.showEmptyList();
+        }
+    }
+
+    private void openFileInfoActivity(FileInfo file){
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(Constans.EXTRA_FILE_INFO, file);
+        eventBus.send(NavigateEvent.nabigateOpenFileInfo(bundle));
     }
 }

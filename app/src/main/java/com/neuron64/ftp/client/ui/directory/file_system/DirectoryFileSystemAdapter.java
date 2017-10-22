@@ -9,7 +9,7 @@ import android.widget.TextView;
 import com.neuron64.ftp.client.R;
 import com.neuron64.ftp.client.ui.base.BaseAdapter;
 import com.neuron64.ftp.client.ui.base.bus.RxBus;
-import com.neuron64.ftp.domain.model.FileSystemDirectory;
+import com.neuron64.ftp.domain.model.FileInfo;
 
 import butterknife.BindView;
 
@@ -17,7 +17,7 @@ import butterknife.BindView;
  * Created by Neuron on 01.10.2017.
  */
 
-public class DirectoryFileSystemAdapter extends BaseAdapter<FileSystemDirectory>{
+public class DirectoryFileSystemAdapter extends BaseAdapter<FileInfo>{
 
     public DirectoryFileSystemAdapter(@NonNull Context context, @NonNull RxBus busEvent) {
         super(context, busEvent);
@@ -47,10 +47,10 @@ public class DirectoryFileSystemAdapter extends BaseAdapter<FileSystemDirectory>
 
         @Override
         public void onBind() {
-            FileSystemDirectory fileSystemDirectory = at(getAdapterPosition());
+            FileInfo fileSystemDirectory = at(getAdapterPosition());
             tvTitle.setText(fileSystemDirectory.getTitle());
-            String isDirectory = fileSystemDirectory.isDirectory() ? "Директория": "Неа";
-            tvIsDirectory.setText(isDirectory);
+            int isDirectoryRes = fileSystemDirectory.isDirectory() ? R.string.title_directory : R.string.title_file;
+            tvIsDirectory.setText(isDirectoryRes);
         }
     }
 }

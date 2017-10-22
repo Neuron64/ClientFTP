@@ -5,6 +5,7 @@ import android.content.Intent;
 
 import com.neuron64.ftp.client.ui.base.bus.event.NavigateEvent;
 import com.neuron64.ftp.client.ui.directory.DirectoryActivity;
+import com.neuron64.ftp.client.ui.file_info.FileActivity;
 import com.neuron64.ftp.client.util.Constans;
 
 /**
@@ -20,10 +21,14 @@ public class Navigator {
                 clazz = DirectoryActivity.class;
                 break;
             }
+            case NavigateEvent.OPEN_FILE_INFO:{
+                clazz = FileActivity.class;
+                break;
+            }
         }
 
         Intent intent = new Intent(activity, clazz);
-        intent.putExtra(Constans.EXTRA_DATA, navigateEvent.data);
+        intent.putExtras(navigateEvent.data);
         activity.startActivity(intent);
     }
 }

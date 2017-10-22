@@ -3,7 +3,7 @@ package com.neuron64.ftp.client.di.module;
 import com.neuron64.ftp.data.mapper.ConnectionMapper;
 import com.neuron64.ftp.data.mapper.FtpFileMapper;
 import com.neuron64.ftp.data.mapper.Mapper;
-import com.neuron64.ftp.domain.model.FileSystemDirectory;
+import com.neuron64.ftp.domain.model.FileInfo;
 import com.neuron64.ftp.domain.model.UserConnection;
 
 import org.apache.commons.net.ftp.FTPFile;
@@ -26,7 +26,7 @@ public class MapperModule {
     }
 
     @Singleton @Provides
-    Mapper<FileSystemDirectory, FTPFile> ftpFileMapper(){
+    Mapper<FileInfo, FTPFile> ftpFileMapper(){
         return new FtpFileMapper();
     }
 }

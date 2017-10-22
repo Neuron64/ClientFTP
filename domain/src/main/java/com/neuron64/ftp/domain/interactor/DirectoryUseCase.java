@@ -1,7 +1,7 @@
 package com.neuron64.ftp.domain.interactor;
 
 import com.neuron64.ftp.domain.executor.BaseSchedulerProvider;
-import com.neuron64.ftp.domain.model.FileSystemDirectory;
+import com.neuron64.ftp.domain.model.FileInfo;
 import com.neuron64.ftp.domain.repository.FileSystemRepository;
 
 import java.util.List;
@@ -30,17 +30,17 @@ public abstract class DirectoryUseCase<Params> {
         this.disposables = new CompositeDisposable();
     }
 
-    protected abstract Single<List<FileSystemDirectory>> getRootDirectory();
+    protected abstract Single<List<FileInfo>> getRootDirectory();
 
-    protected abstract Single<List<FileSystemDirectory>> getPreviousDirectory();
+    protected abstract Single<List<FileInfo>> getPreviousDirectory();
 
-    public abstract Single<List<FileSystemDirectory>> getNextDirectory(Params params);
+    public abstract Single<List<FileInfo>> getNextDirectory(Params params);
 
-    public void executeRootDirectory(Consumer<? super List<FileSystemDirectory>> onSuccess,
+    public void executeRootDirectory(Consumer<? super List<FileInfo>> onSuccess,
                                      Consumer<? super Throwable> onError,
                                      Consumer<? super Disposable> accept,
                                      Action run){
-        Single<List<FileSystemDirectory>> single= getRootDirectory();
+        Single<List<FileInfo>> single= getRootDirectory();
         if(single != null) {
             single = single.subscribeOn(schedulerProvider.io())
                     .observeOn(schedulerProvider.ui())
@@ -50,12 +50,12 @@ public abstract class DirectoryUseCase<Params> {
         }
     }
 
-    public void executeNextDirectory(Consumer<? super List<FileSystemDirectory>> onSuccess,
+    public void executeNextDirectory(Consumer<? super List<FileInfo>> onSuccess,
                                      Consumer<? super Throwable> onError,
                                      Consumer<? super Disposable> accept,
                                      Action run,
                                      Params params){
-        Single<List<FileSystemDirectory>> single= getNextDirectory(params);
+        Single<List<FileInfo>> single= getNextDirectory(params);
         if(single != null) {
             single = single.subscribeOn(schedulerProvider.io())
                     .observeOn(schedulerProvider.ui())
@@ -65,11 +65,11 @@ public abstract class DirectoryUseCase<Params> {
         }
     }
 
-    public void executePreviousDirectory(Consumer<? super List<FileSystemDirectory>> onSuccess,
+    public void executePreviousDirectory(Consumer<? super List<FileInfo>> onSuccess,
                                          Consumer<? super Throwable> onError,
                                          Consumer<? super Disposable> accept,
                                          Action run){
-        Single<List<FileSystemDirectory>> single= getPreviousDirectory();
+        Single<List<FileInfo>> single= getPreviousDirectory();
         if(single != null) {
             single = single.subscribeOn(schedulerProvider.io())
                     .observeOn(schedulerProvider.ui())

@@ -3,7 +3,7 @@ package com.neuron64.ftp.client.ui.directory;
 import com.neuron64.ftp.client.ui.base.BasePresenter;
 import com.neuron64.ftp.client.ui.base.BaseView;
 import com.neuron64.ftp.client.ui.base.bus.RxBus;
-import com.neuron64.ftp.domain.model.FileSystemDirectory;
+import com.neuron64.ftp.domain.model.FileInfo;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ public interface DirectoryContact{
 
     interface BaseDirectoryView<P extends BaseDirectoryPresenter<?>> extends BaseView<P> {
 
-        void showFiles(List<FileSystemDirectory> files);
+        void showFiles(List<FileInfo> files);
 
         void showError();
 
@@ -36,7 +36,7 @@ public interface DirectoryContact{
 
         RxBus getEventBus();
 
-        void clickFile(FileSystemDirectory file);
+        void clickFile(FileInfo file);
 
         void clickHome();
     }

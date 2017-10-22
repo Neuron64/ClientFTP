@@ -1,6 +1,7 @@
 package com.neuron64.ftp.client.di.module;
 
 import com.neuron64.ftp.client.di.scope.DirectoryScope;
+import com.neuron64.ftp.client.di.scope.FileScope;
 import com.neuron64.ftp.client.di.scope.ViewScope;
 import com.neuron64.ftp.client.ui.base.bus.RxBus;
 import com.neuron64.ftp.client.ui.connection.ConnectionsContract;
@@ -11,6 +12,8 @@ import com.neuron64.ftp.client.ui.directory.file_system.DirectoryFileSystemConta
 import com.neuron64.ftp.client.ui.directory.file_system.DirectoryFileSystemPresenter;
 import com.neuron64.ftp.client.ui.directory.ftp.DirectoryFtpContact;
 import com.neuron64.ftp.client.ui.directory.ftp.DirectoryFtpSystemPresenter;
+import com.neuron64.ftp.client.ui.file_info.FileFragmentContact;
+import com.neuron64.ftp.client.ui.file_info.FileFragmentInfoPresenter;
 import com.neuron64.ftp.domain.interactor.CheckConnectionFtpUseCase;
 import com.neuron64.ftp.domain.interactor.CreateConnectionUserCase;
 import com.neuron64.ftp.domain.interactor.DeleteConnectionUseCase;
@@ -47,5 +50,10 @@ public class PresenterModule {
     @DirectoryScope @Provides
     DirectoryFtpContact.Presenter directoriesFtp(RxBus rxBus, GetFtpDirectoriesUseCase getDirectoriesUseCase, FtpConnectionUseCase ftpConnectionUseCase){
         return new DirectoryFtpSystemPresenter(rxBus, getDirectoriesUseCase, ftpConnectionUseCase);
+    }
+
+    @FileScope @Provides
+    FileFragmentContact.Presenter fileInfo(RxBus rxBus){
+        return new FileFragmentInfoPresenter(rxBus);
     }
 }

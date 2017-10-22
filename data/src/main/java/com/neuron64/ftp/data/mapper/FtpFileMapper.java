@@ -1,7 +1,7 @@
 package com.neuron64.ftp.data.mapper;
 
 import com.neuron64.ftp.data.exception.ErrorMappingUnavailable;
-import com.neuron64.ftp.domain.model.FileSystemDirectory;
+import com.neuron64.ftp.domain.model.FileInfo;
 
 import org.apache.commons.net.ftp.FTPFile;
 
@@ -9,15 +9,15 @@ import org.apache.commons.net.ftp.FTPFile;
  * Created by yks-11 on 10/16/17.
  */
 
-public class FtpFileMapper extends Mapper<FileSystemDirectory, FTPFile>{
+public class FtpFileMapper extends Mapper<FileInfo, FTPFile>{
 
     @Override
-    public FileSystemDirectory map(FTPFile ftpFile) {
-        return new FileSystemDirectory(ftpFile.getName(), ftpFile.getName(), String.valueOf(ftpFile.getSize()), String.valueOf(ftpFile.getType()), ftpFile.isDirectory());
+    public FileInfo map(FTPFile ftpFile) {
+        return new FileInfo(ftpFile.getName(), ftpFile.getName(), String.valueOf(ftpFile.getSize()), String.valueOf(ftpFile.getType()), ftpFile.isDirectory());
     }
 
     @Override
-    public FTPFile reverseMap(FileSystemDirectory directory) {
+    public FTPFile reverseMap(FileInfo directory) {
         throw new ErrorMappingUnavailable();
     }
 }
