@@ -1,26 +1,41 @@
 package com.neuron64.ftp.data.content_provider;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.MatrixCursor;
+import android.net.Uri;
 import android.os.CancellationSignal;
 import android.os.ParcelFileDescriptor;
 import android.os.storage.StorageManager;
 import android.os.storage.StorageVolume;
-import android.provider.DocumentsContract.Document;
 import android.provider.DocumentsContract.Root;
+import android.provider.MediaStore;
 import android.util.ArrayMap;
 import android.util.Log;
 
-import com.neuron64.ftp.data.util.FileUils;
+import com.neuron64.ftp.data.util.FileUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.List;
 
-/**
- * Created by yks-11 on 10/5/17.
- */
+/*
+    Copyright 2017 Vladimir Korolev
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+*/
+
 
 public class ExternalStorageProvider extends StorageProvider {
 
@@ -100,8 +115,30 @@ public class ExternalStorageProvider extends StorageProvider {
 
     @Override
     public void deleteDocument(String documentId) throws FileNotFoundException {
-        File file = getFileForDocId(documentId);
-        FileUils.deleteFile(getContext(), file);
+        final File file = getFileForDocId(documentId);
+        final boolean isDirectory = file.isDirectory();
+        if (isDirectory) {
+            FileUtils.deleteContents(file);
+        }
+        if (!file.delete()) {
+            throw new IllegalStateException("Failed to delete " + file);
+        }
+        final ContentResolver resolver = getContext().getContentResolver();
+        final Uri externalUri = MediaStore.Files.getContentUri("external");
+        // Remove media store entries for any files inside this directory, using
+        // path prefix match. Logic borrowed from MtpDatabase.
+        if (isDirectory) {
+            final String path = file.getAbsolutePath() + "/";
+            resolver.delete(externalUri,
+                    "_data LIKE ?1 AND lower(substr(_data,1,?2))=lower(?3)",
+                    new String[] { path + "%", Integer.toString(path.length()), path });
+        }
+        // Remove media store entry for this exact file.
+        final String path = file.getAbsolutePath();
+        resolver.delete(externalUri,
+                "_data LIKE ?1 AND lower(_data)=lower(?2)",
+                new String[] { path, path });
+
     }
 
     private File getFileForDocId(String docId) throws FileNotFoundException {
