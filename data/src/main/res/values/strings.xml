@@ -1,3 +1,39 @@
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name">data</string>
+
+    <!-- Short summary of storage media status when removed [CHAR LIMIT=32] -->
+    <string name="ext_media_status_removed">Removed</string>
+    <!-- Short summary of storage media status when unmounted [CHAR LIMIT=32] -->
+    <string name="ext_media_status_unmounted">Ejected</string>
+    <!-- Short summary of storage media status when checking [CHAR LIMIT=32] -->
+    <string name="ext_media_status_checking">Checking\u2026</string>
+    <!-- Short summary of storage media status when mounted [CHAR LIMIT=32] -->
+    <string name="ext_media_status_mounted">Ready</string>
+    <!-- Short summary of storage media status when mounted read-only [CHAR LIMIT=32] -->
+    <string name="ext_media_status_mounted_ro">Read-only</string>
+    <!-- Short summary of storage media status when removed unsafely [CHAR LIMIT=32] -->
+    <string name="ext_media_status_bad_removal">Removed unsafely</string>
+    <!-- Short summary of storage media status when unmountable [CHAR LIMIT=32] -->
+    <string name="ext_media_status_unmountable">Corrupted</string>
+    <!-- Short summary of storage media status when unsupported [CHAR LIMIT=32] -->
+    <string name="ext_media_status_unsupported">Unsupported</string>
+    <!-- Short summary of storage media status when ejecting [CHAR LIMIT=32] -->
+    <string name="ext_media_status_ejecting">Ejecting\u2026</string>
+    <!-- Short summary of storage media status when formatting [CHAR LIMIT=32] -->
+    <string name="ext_media_status_formatting">Formatting\u2026</string>
+
+    //TODO: Check android source strings
+    <string name="root_internal_storage">internal storage</string>
+    <string name="root_documents">root documents</string>
+
+    <!-- Storage description for a generic SD card. [CHAR LIMIT=NONE] -->
+    <string name="storage_sd_card">SD card</string>
+    <!-- Storage description for a SD card from a specific manufacturer. [CHAR LIMIT=NONE] -->
+    <string name="storage_sd_card_label"><xliff:g id="manufacturer" example="SanDisk">%s</xliff:g> SD card</string>
+    <!-- Storage description for a generic USB drive. [CHAR LIMIT=NONE] -->
+    <string name="storage_usb_drive">USB drive</string>
+    <!-- Storage description for a USB drive from a specific manufacturer. [CHAR LIMIT=NONE] -->
+    <string name="storage_usb_drive_label"><xliff:g id="manufacturer" example="Seagate">%s</xliff:g> USB drive</string>
+    <!-- Storage description for internal shared storage. [CHAR LIMIT=NONE] -->
+    <string name="storage_internal">Internal shared storage</string>
 </resources>
