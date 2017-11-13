@@ -39,7 +39,7 @@ public class FileSystemDataRepository implements FileSystemRepository{
     public FileSystemDataRepository(Context context){
         this.context = context;
         previousFolder = new ArrayList<>();
-        previousFolder.add("emulated:");
+        previousFolder.add(ExternalStorageProvider.ROOT_ID_PRIMARY_EMULATED + ":");
     }
 
     @Override
