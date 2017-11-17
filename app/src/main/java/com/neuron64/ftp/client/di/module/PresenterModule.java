@@ -21,6 +21,11 @@ import com.neuron64.ftp.domain.interactor.FtpConnectionUseCase;
 import com.neuron64.ftp.domain.interactor.GetAllConnectionUseCase;
 import com.neuron64.ftp.domain.interactor.GetDirectoriesUseCase;
 import com.neuron64.ftp.domain.interactor.GetFtpDirectoriesUseCase;
+import com.neuron64.ftp.domain.interactor.MoveDocumentUseCase;
+import com.neuron64.ftp.domain.interactor.MoveFileSystemUseCase;
+import com.neuron64.ftp.domain.interactor.MoveFtpFileUseCase;
+import com.neuron64.ftp.domain.interactor.RenameFileSystemUseCase;
+import com.neuron64.ftp.domain.interactor.RenameFtpFileUseCase;
 
 import dagger.Module;
 import dagger.Provides;
@@ -43,13 +48,13 @@ public class PresenterModule {
     }
 
     @DirectoryScope @Provides
-    DirectoryFileSystemContact.Presenter directoriesFileSystem(RxBus rxBus, GetDirectoriesUseCase getDirectoriesUseCase){
-        return new DirectoryFileSystemPresenter(rxBus, getDirectoriesUseCase);
+    DirectoryFileSystemContact.Presenter directoriesFileSystem(RxBus rxBus, GetDirectoriesUseCase getDirectoriesUseCase, RenameFileSystemUseCase renameFileSystemUseCase, MoveFileSystemUseCase moveFileSystemUseCase){
+        return new DirectoryFileSystemPresenter(rxBus, getDirectoriesUseCase, renameFileSystemUseCase, moveFileSystemUseCase);
     }
 
     @DirectoryScope @Provides
-    DirectoryFtpContact.Presenter directoriesFtp(RxBus rxBus, GetFtpDirectoriesUseCase getDirectoriesUseCase, FtpConnectionUseCase ftpConnectionUseCase){
-        return new DirectoryFtpSystemPresenter(rxBus, getDirectoriesUseCase, ftpConnectionUseCase);
+    DirectoryFtpContact.Presenter directoriesFtp(RxBus rxBus, GetFtpDirectoriesUseCase getDirectoriesUseCase, FtpConnectionUseCase ftpConnectionUseCase, RenameFtpFileUseCase renameFtpFileUseCase, MoveFtpFileUseCase moveFtpFileUseCase){
+        return new DirectoryFtpSystemPresenter(rxBus, getDirectoriesUseCase, ftpConnectionUseCase, renameFtpFileUseCase, moveFtpFileUseCase);
     }
 
     @FileScope @Provides

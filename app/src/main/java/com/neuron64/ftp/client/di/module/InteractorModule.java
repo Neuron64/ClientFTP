@@ -9,7 +9,13 @@ import com.neuron64.ftp.domain.interactor.DeleteConnectionUseCase;
 import com.neuron64.ftp.domain.interactor.GetAllConnectionUseCase;
 import com.neuron64.ftp.domain.interactor.GetDirectoriesUseCase;
 import com.neuron64.ftp.domain.interactor.GetFtpDirectoriesUseCase;
+import com.neuron64.ftp.domain.interactor.MoveDocumentUseCase;
+import com.neuron64.ftp.domain.interactor.MoveFileSystemUseCase;
+import com.neuron64.ftp.domain.interactor.MoveFtpFileUseCase;
+import com.neuron64.ftp.domain.interactor.RenameFileSystemUseCase;
+import com.neuron64.ftp.domain.interactor.RenameFtpFileUseCase;
 import com.neuron64.ftp.domain.repository.ConnectionRepository;
+import com.neuron64.ftp.domain.repository.FileSystemRepository;
 import com.neuron64.ftp.domain.repository.FtpRepository;
 
 import javax.inject.Singleton;
@@ -52,5 +58,25 @@ public class InteractorModule {
     @DirectoryScope @Provides
     GetFtpDirectoriesUseCase getFtpDirectoriesUseCase(BaseSchedulerProvider schedulerProvider, FtpRepository ftpRepository){
         return new GetFtpDirectoriesUseCase(ftpRepository, schedulerProvider);
+    }
+
+    @DirectoryScope @Provides
+    RenameFtpFileUseCase renameFtpFileUseCase(BaseSchedulerProvider schedulerProvider, FtpRepository ftpRepository){
+        return new RenameFtpFileUseCase(schedulerProvider, ftpRepository);
+    }
+
+    @DirectoryScope @Provides
+    RenameFileSystemUseCase renameFileSystemUseCase(BaseSchedulerProvider schedulerProvider, FileSystemDataRepository fileSystemRepository){
+        return new RenameFileSystemUseCase(schedulerProvider, fileSystemRepository);
+    }
+
+    @DirectoryScope @Provides
+    MoveFileSystemUseCase moveFileSystemUseCase(BaseSchedulerProvider schedulerProvider, FileSystemDataRepository fileSystemRepository){
+        return new MoveFileSystemUseCase(schedulerProvider, fileSystemRepository);
+    }
+
+    @DirectoryScope @Provides
+    MoveFtpFileUseCase moveFtpFileUseCase(BaseSchedulerProvider schedulerProvider, FtpRepository ftpRepository){
+        return new MoveFtpFileUseCase(schedulerProvider, ftpRepository);
     }
 }

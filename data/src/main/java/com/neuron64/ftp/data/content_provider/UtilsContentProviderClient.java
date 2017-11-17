@@ -12,11 +12,13 @@ import java.lang.reflect.Method;
 public class UtilsContentProviderClient {
 
     public static void releaseQuietly(ContentProviderClient client) {
+//        client.release();
         Method method = null;
+        client.release();
         try {
-            method = ContentProviderClient.class.getDeclaredMethod("releaseQuietly");
+            method = ContentProviderClient.class.getDeclaredMethod("releaseQuietly", ContentProviderClient.class);
             method.setAccessible(true);
-            method.invoke(ContentProviderClient.class, client);
+            method.invoke(null, client);
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }

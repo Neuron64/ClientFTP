@@ -8,6 +8,7 @@ import android.provider.OpenableColumns;
  * Created by yks-11 on 10/18/17.
  */
 
+@Deprecated
 public class CustomDocumentColumn {
 
     /**
@@ -36,8 +37,6 @@ public class CustomDocumentColumn {
      * Custom Column
      **/
 
-    public static final String COLUMN_IS_DIRECTORY = "is_directory";
 
-    public static final String COLUMN_PATH_FILE = "path_file";
 
 }

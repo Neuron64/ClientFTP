@@ -1,6 +1,5 @@
 package com.neuron64.ftp.client.ui.file_info;
 
-
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -54,8 +53,7 @@ public class FileFragmentInfoFragment extends BaseFragment implements FileFragme
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View view = super.onCreateView(inflater, container, savedInstanceState);
-        return view;
+        return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     public FileInfo getExtraFileInfo(){

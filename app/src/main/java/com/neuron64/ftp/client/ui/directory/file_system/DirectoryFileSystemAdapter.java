@@ -27,6 +27,9 @@ public class DirectoryFileSystemAdapter extends BaseAdapter<FileInfo>{
     public interface OnItemClickListener {
         void onClickDeleteFile(FileInfo fileInfo, int positionAdapter);
         void onClickItem(FileInfo fileInfo, int positionAdapter);
+        void onClickChangeFile(FileInfo fileInfo, int positionAdapter);
+        void onClickMoveFile(FileInfo fileInfo, int positionAdapter);
+        void onClickRenameFile(FileInfo fileInfo, int positionAdapter);
     }
 
     private final OnItemClickListener listener;
@@ -94,6 +97,18 @@ public class DirectoryFileSystemAdapter extends BaseAdapter<FileInfo>{
             switch (item.getItemId()){
                 case R.id.action_delete:{
                     listener.onClickDeleteFile(fileInfo, position);
+                    return true;
+                }
+                case R.id.action_move:{
+                    listener.onClickMoveFile(fileInfo, position);
+                    return true;
+                }
+                case R.id.action_rename:{
+                    listener.onClickRenameFile(fileInfo, position);
+                    return true;
+                }
+                case R.id.action_change:{
+                    listener.onClickChangeFile(fileInfo, position);
                     return true;
                 }
             }

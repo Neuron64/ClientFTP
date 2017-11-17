@@ -82,6 +82,18 @@ public class FtpDataRepository implements FtpRepository{
         return null;
     }
 
+    @Override
+    public Completable renameConnection(String idDocument, String newName) {
+        //TODO: Rename ftp document
+        return null;
+    }
+
+    @Override
+    public Completable moveDocument(String idDocument, String idFolder) {
+        //TODO: Move ftp document
+        return null;
+    }
+
     private final Function<Single<List<FTPFile>>, Single<List<FileInfo>>> funToFileSystemDto =
             new Function<Single<List<FTPFile>>, Single<List<FileInfo>>>() {
         @Override

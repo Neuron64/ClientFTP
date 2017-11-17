@@ -273,6 +273,13 @@ public final class DocumentsContract {
         public static final String COLUMN_SIZE = OpenableColumns.SIZE;
 
         /**
+         * CUSTOM COLUMN
+         */
+        public static final String COLUMN_IS_DIRECTORY = "is_directory";
+
+        public static final String COLUMN_PATH_FILE = "path_file";
+
+        /**
          * MIME type of a document which is a directory that may contain
          * additional documents.
          *
@@ -1180,7 +1187,7 @@ public final class DocumentsContract {
      * @return the moved document, or {@code null} if failed.
      */
     public static Uri moveDocument(ContentResolver resolver, Uri sourceDocumentUri,
-            Uri sourceParentDocumentUri, Uri targetParentDocumentUri) throws FileNotFoundException {
+            Uri sourceParentDocumentUri, Uri targetParentDocumentUri) {
         final ContentProviderClient client = resolver.acquireUnstableContentProviderClient(
                 sourceDocumentUri.getAuthority());
         try {

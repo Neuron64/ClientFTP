@@ -1,6 +1,5 @@
 package com.neuron64.ftp.data.content_provider;
 
-
 import android.net.Uri;
 import android.provider.DocumentsProvider;
 import android.provider.MediaStore;

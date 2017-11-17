@@ -1,6 +1,7 @@
 package com.neuron64.ftp.client.ui.directory;
 
 import android.os.Bundle;
+import android.preference.PreferenceActivity;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
@@ -53,7 +54,7 @@ public abstract class DirectoryFragment<A extends BaseAdapter<FileInfo>,
         View view = super.onCreateView(inflater, container, savedInstanceState);
 
         setHasOptionsMenu(true);
-
+        PreferenceActivity appCompatPreferenceActivity;
         rvContent.setLayoutManager(new LinearLayoutManager(getContext()));
         rvContent.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         rvContent.setAdapter(directoryAdapter);

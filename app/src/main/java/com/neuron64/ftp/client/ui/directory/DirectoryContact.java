@@ -45,5 +45,9 @@ public interface DirectoryContact{
         void createFile();
 
         void moveFile(FileInfo file);
+
+        void renameFile(FileInfo file);
+
+        void changeFile(FileInfo file);
     }
 }

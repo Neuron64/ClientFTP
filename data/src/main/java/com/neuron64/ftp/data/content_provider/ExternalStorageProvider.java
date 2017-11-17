@@ -34,8 +34,7 @@ import android.util.ArrayMap;
 import android.util.Log;
 import android.webkit.MimeTypeMap;
 
-import com.neuron64.ftp.data.content_provider.DocumentsContract.Document;
-import com.neuron64.ftp.data.content_provider.DocumentsContract.Root;
+import com.neuron64.ftp.data.content_provider.DocumentsContract.*;
 import com.neuron64.ftp.data.util.FileUtils;
 
 import java.io.File;
@@ -66,9 +65,9 @@ public class ExternalStorageProvider extends StorageProvider {
     };
 
     private static final String[] DEFAULT_DOCUMENT_PROJECTION = new String[] {
-            CustomDocumentColumn.COLUMN_DOCUMENT_ID, CustomDocumentColumn.COLUMN_MIME_TYPE, CustomDocumentColumn.COLUMN_DISPLAY_NAME,
-            CustomDocumentColumn.COLUMN_LAST_MODIFIED, CustomDocumentColumn.COLUMN_FLAGS, CustomDocumentColumn.COLUMN_SIZE, CustomDocumentColumn.COLUMN_SUMMARY,
-            CustomDocumentColumn.COLUMN_IS_DIRECTORY, CustomDocumentColumn.COLUMN_PATH_FILE
+            Document.COLUMN_DOCUMENT_ID, Document.COLUMN_MIME_TYPE, Document.COLUMN_DISPLAY_NAME,
+            Document.COLUMN_LAST_MODIFIED, Document.COLUMN_FLAGS, Document.COLUMN_SIZE, Document.COLUMN_SUMMARY,
+            Document.COLUMN_IS_DIRECTORY, Document.COLUMN_PATH_FILE
     };
 
     private ArrayMap<String, RootInfo> mRoots = new ArrayMap<>();
@@ -270,6 +269,25 @@ public class ExternalStorageProvider extends StorageProvider {
 
             return result;
     }
+
+    @Override
+    public String renameDocument(String docId, String displayName) throws FileNotFoundException {
+        // Since this provider treats renames as generating a completely new
+        // docId, we're okay with letting the MIME type change.
+        displayName = FileUtils.buildValidFatFilename(displayName);
+        final File before = getFileForDocId(docId);
+        final File after = FileUtils.buildUniqueFile(before.getParentFile(), displayName);
+        if (!before.renameTo(after)) {
+            throw new IllegalStateException("Failed to rename to " + after);
+        }
+        final String afterDocId = getDocIdForFile(after);
+        if (!TextUtils.equals(docId, afterDocId)) {
+            return afterDocId;
+        } else {
+            return null;
+        }
+    }
+
 
     @Override
     public Cursor queryDocument(String documentId, String[] projection) throws FileNotFoundException {
@@ -485,6 +503,7 @@ public class ExternalStorageProvider extends StorageProvider {
         row.add(Document.COLUMN_SIZE, file.length());
         row.add(Document.COLUMN_MIME_TYPE, mimeType);
         row.add(Document.COLUMN_FLAGS, flags);
+        row.add(Document.COLUMN_IS_DIRECTORY, file.isDirectory() ? 1 : 0);
         row.add(DocumentArchiveHelper.COLUMN_LOCAL_FILE_PATH, file.getPath());
         // Only publish dates reasonably after epoch
         long lastModified = file.lastModified();

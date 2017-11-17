@@ -60,4 +60,19 @@ public class DirectoryFileSystemFragment extends DirectoryFragment<DirectoryFile
     public void onClickItem(FileInfo file, int position) {
         presenter.clickFile(file);
     }
+
+    @Override
+    public void onClickChangeFile(FileInfo fileInfo, int positionAdapter) {
+        presenter.changeFile(fileInfo);
+    }
+
+    @Override
+    public void onClickMoveFile(FileInfo fileInfo, int positionAdapter) {
+        presenter.moveFile(fileInfo);
+    }
+
+    @Override
+    public void onClickRenameFile(FileInfo fileInfo, int positionAdapter) {
+        presenter.renameFile(fileInfo);
+    }
 }

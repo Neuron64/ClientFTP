@@ -7,12 +7,15 @@ import android.util.Log;
 import com.neuron64.ftp.client.ui.base.bus.RxBus;
 import com.neuron64.ftp.client.ui.base.bus.event.ButtonEvent;
 import com.neuron64.ftp.client.ui.base.bus.event.NavigateEvent;
-import com.neuron64.ftp.client.util.ActivityUtils;
 import com.neuron64.ftp.client.util.Constans;
 import com.neuron64.ftp.client.util.Preconditions;
 import com.neuron64.ftp.data.exception.ErrorThisIsRootDirectory;
+import com.neuron64.ftp.domain.interactor.CompletableUseCase;
 import com.neuron64.ftp.domain.interactor.DirectoryUseCase;
+import com.neuron64.ftp.domain.interactor.RenameDocumentUseCase;
 import com.neuron64.ftp.domain.model.FileInfo;
+import com.neuron64.ftp.domain.params.MoveFileParams;
+import com.neuron64.ftp.domain.params.RenameFileParams;
 
 import java.util.List;
 
@@ -48,12 +51,23 @@ public abstract class DirectoryPresenter<V extends DirectoryContact.BaseDirector
     @NonNull
     protected DirectoryUseCase<String> directoryUseCase;
 
+    @NonNull
+    protected CompletableUseCase<RenameFileParams> renameFileUseCase;
+
+    @NonNull
+    protected CompletableUseCase<MoveFileParams> moveFileUseCase;
+
     protected int lvlFolder;
 
-    public DirectoryPresenter(@NonNull RxBus rxBus, @NonNull DirectoryUseCase<String> directoryUseCase){
+    public DirectoryPresenter(@NonNull RxBus rxBus,
+                              @NonNull DirectoryUseCase<String> directoryUseCase,
+                              @NonNull CompletableUseCase<RenameFileParams> renameFileUseCase,
+                              @NonNull CompletableUseCase<MoveFileParams> moveFileUseCase){
         this.eventBus = Preconditions.checkNotNull(rxBus);
         this.lvlFolder = 0;
-        this.directoryUseCase = directoryUseCase;
+        this.directoryUseCase = Preconditions.checkNotNull(directoryUseCase);
+        this.renameFileUseCase = Preconditions.checkNotNull(renameFileUseCase);
+        this.moveFileUseCase = Preconditions.checkNotNull(moveFileUseCase);
     }
 
     @Override
@@ -114,13 +128,9 @@ public abstract class DirectoryPresenter<V extends DirectoryContact.BaseDirector
 
     @Override
     public void removeDocument(FileInfo file) {
-        directoryUseCase.executeDeleteDocument(() -> {
-
-        }, throwable -> {
-
-        }, disposable -> {
-
-        }, file.getDocumentId());
+        directoryUseCase.executeDeleteDocument(() -> Log.d(TAG, "executeDeleteDocument: "),
+                throwable -> Log.e(TAG, "removeDocument: ", throwable),
+                disposable -> Log.d(TAG, "removeDocument: disposable"), file.getDocumentId());
 }
 
     @Override
@@ -130,7 +140,24 @@ public abstract class DirectoryPresenter<V extends DirectoryContact.BaseDirector
 
     @Override
     public void moveFile(FileInfo file) {
-        //TODO: Move File
+        MoveFileParams params = new MoveFileParams(file.getDocumentId(), file.getDocumentId(), "");
+        moveFileUseCase.execute(() -> Log.d(TAG, "run: "),
+                throwable -> Log.e(TAG, "accept: ", throwable),
+                disposable -> Log.d(TAG, "moveFile: disposable"),
+                params);
+    }
+
+    @Override
+    public void renameFile(FileInfo file) {
+        RenameFileParams params = new RenameFileParams("newName", file.getDocumentId());
+        renameFileUseCase.execute(() -> Log.d(TAG, "run: "),
+                throwable -> Log.e(TAG, "accept: ", throwable),
+                disposable -> Log.d(TAG, "renameFile: disposable"), params);
+    }
+
+    @Override
+    public void changeFile(FileInfo file) {
+        //TODO: Change File
     }
 
     private void goToPreviousIfNotRoot(){

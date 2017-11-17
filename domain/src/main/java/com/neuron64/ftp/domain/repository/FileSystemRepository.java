@@ -6,6 +6,7 @@ import java.util.List;
 
 import io.reactivex.Completable;
 import io.reactivex.Single;
+import io.reactivex.annotations.NonNull;
 import io.reactivex.annotations.Nullable;
 
 /**
@@ -20,5 +21,9 @@ public interface FileSystemRepository {
 
     Single<List<FileInfo>> getPreviousFiles();
 
-    Completable deleteFile(String idFile);
+    Completable deleteFile(@NonNull String idFile);
+
+    Completable renameConnection(@NonNull String idDocument, @NonNull String newName);
+
+    Completable moveDocument(@NonNull String idDocument, String idFolder);
 }

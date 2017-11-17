@@ -24,6 +24,8 @@
     <string name="delete">Удалить</string>
     <string name="test">Тестировать</string>
     <string name="cancel">Отменить</string>
+    <string name="rename">Переименовать</string>
+    <string name="move">Переместить</string>
 
     <string name="ftp">FTP</string>
     <string name="file_system">Файловая система</string>
