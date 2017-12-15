@@ -18,7 +18,6 @@ import com.neuron64.ftp.client.R;
 import com.neuron64.ftp.client.di.component.DaggerViewComponent;
 import com.neuron64.ftp.client.di.module.PresenterModule;
 import com.neuron64.ftp.client.ui.base.BaseFragment;
-import com.neuron64.ftp.client.ui.base.RecyclerItemClickListener;
 import com.neuron64.ftp.client.util.ViewMessage;
 import com.neuron64.ftp.domain.model.UserConnection;
 
@@ -98,8 +97,8 @@ public class ConnectionsFragment extends BaseFragment implements ConnectionsCont
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
+    public void onPause() {
+        super.onPause();
         if(presenter != null) {
             presenter.unsubscribe();
         }

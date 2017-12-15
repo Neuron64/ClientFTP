@@ -82,8 +82,8 @@ public class FileFragmentInfoFragment extends BaseFragment implements FileFragme
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
+    public void onPause() {
+        super.onPause();
         if(presenter != null){
             presenter.unsubscribe();
         }

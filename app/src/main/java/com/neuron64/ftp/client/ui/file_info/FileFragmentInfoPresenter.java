@@ -1,7 +1,6 @@
 package com.neuron64.ftp.client.ui.file_info;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.neuron64.ftp.client.ui.base.bus.RxBus;
 import com.neuron64.ftp.client.util.Preconditions;

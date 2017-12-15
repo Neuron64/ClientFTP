@@ -6,7 +6,6 @@ import android.content.Intent;
 import com.neuron64.ftp.client.ui.base.bus.event.NavigateEvent;
 import com.neuron64.ftp.client.ui.directory.DirectoryActivity;
 import com.neuron64.ftp.client.ui.file_info.FileActivity;
-import com.neuron64.ftp.client.util.Constans;
 
 /**
  * Created by Neuron on 01.10.2017.

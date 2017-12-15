@@ -26,6 +26,8 @@
     <string name="cancel">Отменить</string>
     <string name="rename">Переименовать</string>
     <string name="move">Переместить</string>
+    <string name="upload">Загрузить</string>
+    <string name="download">Скачать</string>
 
     <string name="ftp">FTP</string>
     <string name="file_system">Файловая система</string>

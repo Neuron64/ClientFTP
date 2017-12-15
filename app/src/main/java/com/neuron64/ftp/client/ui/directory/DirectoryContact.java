@@ -1,5 +1,7 @@
 package com.neuron64.ftp.client.ui.directory;
 
+import android.support.annotation.StringRes;
+
 import com.neuron64.ftp.client.ui.base.BasePresenter;
 import com.neuron64.ftp.client.ui.base.BaseView;
 import com.neuron64.ftp.client.ui.base.bus.RxBus;
@@ -30,6 +32,8 @@ public interface DirectoryContact{
         void finishActivity();
 
         void clearRecyclerView();
+
+        void showMessage(@StringRes int id);
     }
 
     interface BaseDirectoryPresenter<V extends BaseView> extends BasePresenter<V> {

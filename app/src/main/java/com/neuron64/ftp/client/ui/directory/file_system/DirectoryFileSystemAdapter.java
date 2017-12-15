@@ -13,7 +13,6 @@ import com.neuron64.ftp.client.R;
 import com.neuron64.ftp.client.ui.base.BaseAdapter;
 import com.neuron64.ftp.client.ui.base.bus.RxBus;
 import com.neuron64.ftp.domain.model.FileInfo;
-import com.neuron64.ftp.domain.model.UserConnection;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -30,6 +29,7 @@ public class DirectoryFileSystemAdapter extends BaseAdapter<FileInfo>{
         void onClickChangeFile(FileInfo fileInfo, int positionAdapter);
         void onClickMoveFile(FileInfo fileInfo, int positionAdapter);
         void onClickRenameFile(FileInfo fileInfo, int positionAdapter);
+        void onClickUploadFile(FileInfo fileInfo, int positionAdapter);
     }
 
     private final OnItemClickListener listener;
@@ -84,7 +84,7 @@ public class DirectoryFileSystemAdapter extends BaseAdapter<FileInfo>{
             PopupMenu popup = new PopupMenu(context, view);
 
             popup.setOnMenuItemClickListener(this);
-            popup.inflate(R.menu.menu_select_file);
+            popup.inflate(R.menu.menu_select_file_system);
             popup.show();
         }
 

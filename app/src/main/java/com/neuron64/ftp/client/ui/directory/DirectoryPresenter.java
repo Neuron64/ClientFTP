@@ -12,7 +12,6 @@ import com.neuron64.ftp.client.util.Preconditions;
 import com.neuron64.ftp.data.exception.ErrorThisIsRootDirectory;
 import com.neuron64.ftp.domain.interactor.CompletableUseCase;
 import com.neuron64.ftp.domain.interactor.DirectoryUseCase;
-import com.neuron64.ftp.domain.interactor.RenameDocumentUseCase;
 import com.neuron64.ftp.domain.model.FileInfo;
 import com.neuron64.ftp.domain.params.MoveFileParams;
 import com.neuron64.ftp.domain.params.RenameFileParams;
@@ -20,9 +19,7 @@ import com.neuron64.ftp.domain.params.RenameFileParams;
 import java.util.List;
 
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
-import io.reactivex.functions.Consumer;
 
 /**
  * Created by yks-11 on 10/17/17.

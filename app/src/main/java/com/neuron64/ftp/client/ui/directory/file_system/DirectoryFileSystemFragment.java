@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import com.neuron64.ftp.client.App;
 import com.neuron64.ftp.client.di.component.DaggerDirectoryComponent;
 import com.neuron64.ftp.client.di.module.PresenterModule;
-import com.neuron64.ftp.client.ui.base.RecyclerItemClickListener;
 import com.neuron64.ftp.client.ui.directory.DirectoryFragment;
 import com.neuron64.ftp.client.util.Preconditions;
 import com.neuron64.ftp.domain.model.FileInfo;
@@ -74,5 +73,10 @@ public class DirectoryFileSystemFragment extends DirectoryFragment<DirectoryFile
     @Override
     public void onClickRenameFile(FileInfo fileInfo, int positionAdapter) {
         presenter.renameFile(fileInfo);
+    }
+
+    @Override
+    public void onClickUploadFile(FileInfo fileInfo, int positionAdapter) {
+        presenter.uploadFile(fileInfo);
     }
 }

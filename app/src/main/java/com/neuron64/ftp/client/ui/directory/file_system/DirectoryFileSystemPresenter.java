@@ -9,6 +9,7 @@ import com.neuron64.ftp.client.util.Preconditions;
 import com.neuron64.ftp.domain.interactor.GetDirectoriesUseCase;
 import com.neuron64.ftp.domain.interactor.MoveDocumentUseCase;
 import com.neuron64.ftp.domain.interactor.RenameDocumentUseCase;
+import com.neuron64.ftp.domain.model.FileInfo;
 import com.neuron64.ftp.domain.params.MoveFileParams;
 import com.neuron64.ftp.domain.params.RenameFileParams;
 
@@ -57,5 +58,10 @@ public class DirectoryFileSystemPresenter extends DirectoryPresenter<DirectoryFi
         } catch (Exception e) {
             Log.e(TAG, "checkConnection: ", e);
         }
+    }
+
+    @Override
+    public void uploadFile(FileInfo fileInfo) {
+        //TODO: Upload File!
     }
 }

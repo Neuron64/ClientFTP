@@ -19,7 +19,7 @@ import javax.inject.Inject;
  * Created by yks-11 on 10/17/17.
  */
 
-public class DirectoryFtpFragment extends DirectoryFragment<DirectoryFtpAdapter, DirectoryFtpContact.Presenter> implements DirectoryFtpContact.View{
+public class DirectoryFtpFragment extends DirectoryFragment<DirectoryFtpAdapter, DirectoryFtpContact.Presenter> implements DirectoryFtpContact.View, DirectoryFtpAdapter.OnItemClickListener{
 
     public static DirectoryFtpFragment newInstance(UserConnection userConnection) {
         Bundle args = new Bundle();
@@ -33,7 +33,7 @@ public class DirectoryFtpFragment extends DirectoryFragment<DirectoryFtpAdapter,
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.directoryAdapter = new DirectoryFtpAdapter(getContext(), presenter.getEventBus());
+        this.directoryAdapter = new DirectoryFtpAdapter(getContext(), presenter.getEventBus(), this);
     }
 
     @Inject
@@ -44,8 +44,33 @@ public class DirectoryFtpFragment extends DirectoryFragment<DirectoryFtpAdapter,
     }
 
     @Override
+    public void onClickDeleteFile(FileInfo fileInfo, int positionAdapter) {
+        presenter.removeDocument(fileInfo);
+    }
+
+    @Override
     public void onClickItem(FileInfo file, int positionAdapter) {
         presenter.clickFile(file);
+    }
+
+    @Override
+    public void onClickChangeFile(FileInfo fileInfo, int positionAdapter) {
+        presenter.changeFile(fileInfo);
+    }
+
+    @Override
+    public void onClickMoveFile(FileInfo fileInfo, int positionAdapter) {
+        presenter.moveFile(fileInfo);
+    }
+
+    @Override
+    public void onClickRenameFile(FileInfo fileInfo, int positionAdapter) {
+        presenter.renameFile(fileInfo);
+    }
+
+    @Override
+    public void onClickDownloadFile(FileInfo fileInfo, int positionAdapter) {
+        presenter.downloadFile(fileInfo);
     }
 
     @Override

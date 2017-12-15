@@ -86,8 +86,8 @@ public class CreateConnectionFragment extends BaseFragment implements CreateConn
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
+    public void onPause() {
+        super.onPause();
         if(presenter != null){
             presenter.unsubscribe();
         }

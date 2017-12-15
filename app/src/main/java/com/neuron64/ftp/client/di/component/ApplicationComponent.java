@@ -39,7 +39,6 @@ import dagger.Component;
         DataModule.class,
         MapperModule.class,
         RealmModule.class,
-        NetworkModule.class,
         FtpModule.class})
 public interface ApplicationComponent {
     void inject(BaseFragment fragment);
@@ -51,8 +50,8 @@ public interface ApplicationComponent {
     FtpClientManager ftpClientManager();
 
     //data
-    ConnectionRepository connectionRepository();
-    FtpRepository ftpRepository();
+//    FtpRepository ftpRepository();
+//    ConnectionRepository connectionRepository();
     Mapper<UserConnection, com.neuron64.ftp.data.model.local.UserConnection> mapper();
     Mapper<FileInfo, FTPFile> mapperFtp();
 //    RealmService realmService();

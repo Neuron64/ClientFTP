@@ -1,6 +1,7 @@
 package com.neuron64.ftp.client.ui.directory.ftp;
 
 import com.neuron64.ftp.client.ui.directory.DirectoryContact;
+import com.neuron64.ftp.domain.model.FileInfo;
 import com.neuron64.ftp.domain.model.UserConnection;
 
 /**
@@ -16,6 +17,8 @@ public interface DirectoryFtpContact extends DirectoryContact {
     }
 
     interface Presenter extends DirectoryContact.BaseDirectoryPresenter<DirectoryFtpContact.View>{
+
+        void downloadFile(FileInfo fileInfo);
 
     }
 }

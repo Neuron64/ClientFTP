@@ -1,9 +1,9 @@
 package com.neuron64.ftp.client.ui.directory;
 
 import android.os.Bundle;
-import android.preference.PreferenceActivity;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,7 +16,6 @@ import android.widget.LinearLayout;
 import com.neuron64.ftp.client.R;
 import com.neuron64.ftp.client.ui.base.BaseAdapter;
 import com.neuron64.ftp.client.ui.base.BaseFragment;
-import com.neuron64.ftp.client.ui.base.RecyclerItemClickListener;
 import com.neuron64.ftp.client.util.ViewMessage;
 import com.neuron64.ftp.domain.model.FileInfo;
 
@@ -54,7 +53,7 @@ public abstract class DirectoryFragment<A extends BaseAdapter<FileInfo>,
         View view = super.onCreateView(inflater, container, savedInstanceState);
 
         setHasOptionsMenu(true);
-        PreferenceActivity appCompatPreferenceActivity;
+
         rvContent.setLayoutManager(new LinearLayoutManager(getContext()));
         rvContent.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         rvContent.setAdapter(directoryAdapter);
@@ -76,8 +75,8 @@ public abstract class DirectoryFragment<A extends BaseAdapter<FileInfo>,
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
+    public void onPause() {
+        super.onPause();
         if(presenter != null){
             presenter.unsubscribe();
         }
@@ -125,4 +124,8 @@ public abstract class DirectoryFragment<A extends BaseAdapter<FileInfo>,
         directoryAdapter.clearItems();
     }
 
+    @Override
+    public void showMessage(@StringRes int id) {
+        ViewMessage.initSnackBarShort(clRoot, id);
+    }
 }

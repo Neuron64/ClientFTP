@@ -1,6 +1,5 @@
 package com.neuron64.ftp.client.ui.file_info;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
